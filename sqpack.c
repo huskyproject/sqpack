@@ -630,12 +630,12 @@ void renameArea(int areaType, char *oldName, char *newName)
 void purgeArea(s_area *area)
 {
 	char *oldName = area -> fileName;
-	char *newName;
-	HAREA oldArea, newArea = NULL;
-	dword highMsg, i, j, numMsg, hw;
+	char *newName=NULL;
+	HAREA oldArea=NULL, newArea = NULL;
+	dword highMsg, i, j, numMsg, hw=0;
 	int areaType = area -> msgbType & (MSGTYPE_JAM | MSGTYPE_SQUISH | MSGTYPE_SDM);
 
-	UINT32 *oldLastread, *newLastread = NULL;
+	UINT32 *oldLastread, *newLastread = 0;
 	UINT32 *removeMap;
 	UINT32 rmIndex = 0;
 
