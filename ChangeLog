@@ -1,3 +1,7 @@
+2002-10-25 Friday 08:02  stas_degteff
+
+	* sqpack.c (1.77): Fix asignment int32 into int16
+
 2002-10-22 Tuesday 10:56  sfpavel
 
 	* debian/changelog (1.12): New debian package
