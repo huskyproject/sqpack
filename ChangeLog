@@ -1,3 +1,7 @@
+2002-10-30 Wednesday 12:54  mche
+
+	* sqpack.c (1.79): free space checking
+
 2002-10-29 Tuesday 07:25  pgul
 
 	* sqpack.c (1.78): fix comparation unsigned int with zero
