@@ -876,6 +876,7 @@ int main(int argc, char **argv) {
             exit(EX_CANTCREAT);
         }
     }
+    initLog(config->logFileDir, config->logEchoToScreen, config->loglevels, config->screenloglevels);
     openLog(LOGFILE, versionStr, config);
     w_log(LL_START, "Start");
     m.req_version = 0;
