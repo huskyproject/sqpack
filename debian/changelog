@@ -1,3 +1,10 @@
+sqpack (1.4.0+beta1-2) unstable; urgency=low
+
+  * Place sqpack package to main. Now smapi has LGPL license and sqpack
+    does not depends from non-free packages
+
+ -- Pavel Andreew <pavel@collage.etel.ru>  Wed, 19 Feb 2003 11:59:15 +0500
+
 sqpack (1.4.0+beta1-1) unstable; urgency=low
 
   * New stable branch
