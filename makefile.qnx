@@ -1,20 +1,21 @@
 # Generic makefile to build sqpack on unix-like system
 
 CC   = cc
-COPT = -O2 -D__UNIX__ -I..
-LOPT = -L../fidoconf
+COPT = -O2 -D__UNIX__ -I.. -I../fidoconf
+LOPT = -L../fidoconf/make
 LIBS = -lfidoconfigqnx
 
 all : sqpack 
 
 sqpack: sqpack.c
 	$(CC) $(COPT) $(LOPT) $^ -o $@ $(LIBS)
+	strip $@
 
 sqpack.1.gz : sqpack.1
 	gzip -c sqpack.1 > sqpack.1.gz
 
 clean: 
-	-rm sqpack.1.gz
+	-rm sqpack.1.gz sqpack
 
 distclean: clean
 	-rm sqpack
