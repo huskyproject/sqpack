@@ -10,6 +10,10 @@
 #include <io.h>
 #endif
 
+#ifdef __TURBOC__
+#include <share.h>
+#endif
+
 #include <fcntl.h>
 #ifdef __EMX__
 #include <share.h>

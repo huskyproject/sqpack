@@ -1,0 +1,15 @@
+CC   = bcc
+COPT = -O2 -DOS2 -I.. -I../smapi -I../fidoconf -w
+LOPT =
+
+all : sqpack.exe
+
+sqpack.exe: sqpack.c
+	$(CC) $(COPT) $(LOPT) sqpack.c ../fidoconf/fconfbco.lib	../smapi/smapibco.lib
+
+clean:
+	-del sqpack.exe
+	-del *~
+
+distclean: clean
+

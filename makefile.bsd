@@ -1,31 +1,19 @@
-# include Husky-Makefile-Config
-include ../huskymak.cfg
-
 CC   = gcc
-
-ifeq ($(DEBUG), 1)
-  COPT = -ggdb -O2 -DUNIX -I$(INCDIR)
-else
-  COPT = -s -O2 -DUNIX -I$(INCDIR)
-endif
-
-LOPT = -L$(LIBDIR)
+COPT = -O3 -DUNIX -I..
+LOPT = -L../fidoconf -L../smapi
+# LOPT = 
 
 all : sqpack 
 
 sqpack: sqpack.c
-	$(CC) $(COPT) $(LOPT) sqpack.c -o sqpack -lsmapibsd -lfidoconfig
+	$(CC) $(COPT) $(LOPT) sqpack.c -o sqpack -lfidoconfigbsd -lsmapibsd 
 
 sqpack.1.gz : sqpack.1
 	gzip -c sqpack.1 > sqpack.1.gz
 
-install: sqpack sqpack.1.gz
-	install $(IBOPT) sqpack $(BINDIR)
-	install $(IMOPT) sqpack.1.gz $(MANDIR)/man1
-
 clean: 
-	-rm -f *.o *~
+	-rm sqpack
+	-rm sqpack.1.gz
+	-rm *~
 
 distclean: clean
-	-rm -f sqpack sqpack.1.gz
-
