@@ -1,5 +1,5 @@
 ----- cvs ci ------
-So  22 Okt 2000 01:18:55 CEST~
+So  22 Okt 2000 01:18:55 CEST
 tobi:
 * Synchronized sqpack with current developmment branch (sqpack.c 1.41). 
   This yields the following features and bug fixes. If you want to use
