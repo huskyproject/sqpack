@@ -877,7 +877,7 @@ int main(int argc, char **argv) {
         }
     }
     initLog(config->logFileDir, config->logEchoToScreen, config->loglevels, config->screenloglevels);
-    openLog(LOGFILE, versionStr, config);
+    openLog(LOGFILE, versionStr);
     w_log(LL_START, "Start");
     m.req_version = 0;
     m.def_zone = config->addr[0].zone;
