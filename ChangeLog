@@ -1,3 +1,9 @@
+2002-09-17 Tuesday 11:32  sfpavel
+
+	* VERSION, makefile.mgw, makefile.mvcdll, sqpack.1, sqpack.c,
+	debian/changelog (sqpack-1_2-stable.[1,1,1,1,4,8]): Ver. 1.2-RC2:
+	merge fixes from current branch
+
 2002-09-09 Monday 10:18  sfpavel
 
 	* sqpack.c, debian/changelog, debian/rules
@@ -7,6 +13,10 @@
 
 	* BUGS (sqpack-1_2-stable.1): Add information about big
 	messagebases bug (low memory & etc)
+
+2002-08-30 Friday 12:14  mche
+
+	* makefile.mgw (1.1): minGW makefiles corrected
 
 2002-08-27 Tuesday 10:44  sfpavel
 
@@ -31,6 +41,10 @@
 	* debian/: changelog, control, copyright
 	(sqpack-1_2-stable.[3,2,1]): Debian package patch from Pavel
 	Andreew <pavel@collage.etel.ru>
+
+2002-07-14 Sunday 17:33  stas
+
+	* VERSION (1.2): Add version info files.
 
 2002-07-02 Tuesday 14:34  stas
 
@@ -181,6 +195,11 @@
 2000-08-06 Sunday 20:36  tobi
 
 	* makefile.be (1.1): file makefile.be was initially added on branch
+	sqpack-1_1_0.
+
+2000-07-13 Thursday 22:55  tobi
+
+	* VERSION (1.1): file VERSION was initially added on branch
 	sqpack-1_1_0.
 
 2000-07-12 Wednesday 11:33  tobi
