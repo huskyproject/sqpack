@@ -8,7 +8,12 @@ else
 endif
 
 CDEFS=-D$(OSTYPE) $(ADDCDEFS)
-LOPT = -L$(LIBDIR) -lsmapi -lfidoconfig
+
+ifeq ($(SHORTNAME), 1)
+  LOPT = -L$(LIBDIR) -lsmapi -lfidoconf
+else
+  LOPT = -L$(LIBDIR) -lsmapi -lfidoconfig
+endif
 
 all : sqpack$(EXE)
 
@@ -19,8 +24,8 @@ sqpack.1.gz : sqpack.1
 	gzip -c sqpack.1 > sqpack.1.gz
 
 install: sqpack$(EXE) sqpack.1.gz
-	install $(IBOPT) sqpack$(EXE) $(BINDIR)
-	install $(IMOPT) sqpack.1.gz $(MANDIR)/man1
+	$(INSTALL) $(IBOPT) sqpack$(EXE) $(BINDIR)
+	$(INSTALL) $(IMOPT) sqpack.1.gz $(MANDIR)/man1
 
 clean: 
 	-$(RM) *~
