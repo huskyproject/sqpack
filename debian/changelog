@@ -1,0 +1,15 @@
+sqpack (1.1.0b-2) unstable; urgency=low
+
+  * Recompiled for the 0.11 unstable fidoconf.
+
+ -- Joerg Jaspert (JJ) <joerg@goliathbbs.dnsalias.net>  Wed, 11 Apr 2001 22:36:01 +0200
+
+sqpack (1.1.0b-1) unstable; urgency=low
+
+  * Initial Release.
+
+ -- Joerg Jaspert (JJ) <joerg@goliathbbs.dnsalias.net>  Thu, 29 Mar 2001 22:35:27 +0200
+
+Local variables:
+mode: debian-changelog
+End:

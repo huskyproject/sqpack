@@ -1,0 +1,16 @@
+Source: sqpack
+Section: mail
+Priority: extra
+Maintainer: Joerg Jaspert (JJ) <joerg@goliathbbs.dnsalias.net>
+Build-Depends: debhelper (>> 3.0.0), smapi (>= 1.6.4u-1), smapi (<< 1.6.5), fidoconf (<< 0.12), fidoconf (>= 0.11-1)
+Standards-Version: 3.5.2
+
+Package: sqpack
+Architecture: any
+Depends: ${shlibs:Depends}
+Description: Squish Message base Purger (stable)
+ sqPack takes the information about squish msgbases from 
+ fidoconfig and purges  the msgbases according to the -m 
+ and -p statements. See fidoconfig.
+ .
+ This is the stable release.
