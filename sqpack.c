@@ -19,8 +19,8 @@
 
 #include <smapi/msgapi.h>
 #include <smapi/progprot.h>
-#include <fidoconfig/fidoconfig.h>
-#include <fidoconfig/common.h>
+#include <fidoconf/fidoconf.h>
+#include <fidoconf/common.h>
 
 #if defined ( __WATCOMC__ )
 #include <string.h>
