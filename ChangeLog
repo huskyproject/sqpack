@@ -1,3 +1,11 @@
+2002-09-28 Saturday 14:47  pgul
+
+	* sqpack.c (1.71): update replylinks and some others
+
+2002-09-28 Saturday 11:23  pgul
+
+	* sqpack.c (1.70): purging msg areas fix
+
 2002-09-26 Thursday 14:29  pgul
 
 	* sqpack.c (1.69): update lastreads minor bugfix
