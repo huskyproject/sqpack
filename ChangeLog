@@ -1,3 +1,11 @@
+2002-08-30 Friday 12:14  mche
+
+	* makefile.mgw (1.1): minGW makefiles corrected
+
+2002-08-30 Friday 07:12  mche
+
+	* sqpack.c (1.67): fix log-message formating
+
 2002-08-29 Thursday 11:26  sfpavel
 
 	* HISTORY (1.2), sqpack.1 (1.13), debian/README.Debian (1.3),
