@@ -1,3 +1,14 @@
+2003-02-07 Friday 11:17  sfpavel
+
+	* Makefile (1.9), debian/changelog (1.13), debian/control (1.8),
+	debian/copyright (1.4), debian/huskymak.cfg (1.7), debian/rules
+	(1.11): New debian version
+
+2003-02-07 Friday 11:16  sfpavel
+
+	* VERSION (1.3), sqpack.c (1.92), version.h (1.1): Implement
+	husky-standart version string generation
+
 2003-02-06 Thursday 11:12  mche
 
 	* sqpack.c (1.91): added some aligment to output messages
