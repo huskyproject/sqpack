@@ -7,7 +7,7 @@ all : sqpack \
       install
 
 sqpack: sqpack.c
-	$(CC) $(COPT) sqpack.c -lfidoconfig -o sqpack -lsmapilnx 
+	$(CC) $(COPT) sqpack.c -o sqpack -lsmapilnx -lfidoconfig
 
 sqpack.1.gz : sqpack.1
 	gzip -c sqpack.1 > sqpack.1.gz
