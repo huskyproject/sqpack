@@ -1,3 +1,7 @@
+2002-11-10 Sunday 14:50  mche
+
+	* sqpack.c (1.80): correct freespace detection
+
 2002-10-30 Wednesday 12:54  mche
 
 	* sqpack.c (1.79): free space checking
