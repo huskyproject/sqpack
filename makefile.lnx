@@ -1,7 +1,11 @@
-# include Husky-Makefile-Config
-include ../huskymak.cfg
-
 CC   = gcc
+DEBUG=0
+INCDIR=/usr/local/include
+LIBDIR=/usr/local/lib
+MANDIR=/usr/local/man
+BINDIR=/usr/local/bin
+IMOPT=
+IBOPT=-s
 
 ifeq ($(DEBUG), 1)
   COPT = -ggdb -O2 -DUNIX -I$(INCDIR)
