@@ -9,15 +9,14 @@
 export DH_COMPAT=3
 export DEBIAN=1
 export PACKAGE=sqpack
-export VERSION=1.1.0b
+export VERSION=1.1.0
 # Next Line to build debug-versions !
-export DEB_BUILD_OPTIONS=nostrip
+# export DEB_BUILD_OPTIONS=nostrip
 
 configure: configure-stamp
 configure-stamp:
 	dh_testdir
 	# Add here commands to configure the package.
-	
 
 	touch configure-stamp
 
@@ -63,7 +62,6 @@ binary-indep: build install
 
 # Build architecture-dependent files here.
 binary-arch: build install
-	dh_testversion 2
 	dh_testdir
 	dh_testroot
 #	dh_installdebconf	

@@ -1,3 +1,11 @@
+sqpack (1.1.0-1) unstable; urgency=low
+
+  * Next Debian Package.
+  * Corrected Build-dependency for libfidocnf-dev.
+  * Disabled Debug-Version in debian/rules.
+
+ -- Joerg Jaspert (JJ) <joerg@goliathbbs.dnsalias.net>  Tue,  5 Mar 2002 14:38:29 +0100
+
 sqpack (1.1.0b-6) unstable; urgency=low
 
   * Newest cvs.
@@ -34,6 +42,4 @@ sqpack (1.1.0b-1) unstable; urgency=low
 
  -- Joerg Jaspert (JJ) <joerg@goliathbbs.dnsalias.net>  Thu, 29 Mar 2001 22:35:27 +0200
 
-Local variables:
-mode: debian-changelog
-End:
+
