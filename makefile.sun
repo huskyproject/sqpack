@@ -1,7 +1,8 @@
 CC   = gcc
-COPT = -g -O2 -DUNIX -I../smapi -I../fidoconfig
 INSTBINDIR = /usr/local/bin
 INSTMANDIR = /usr/local/man
+INCDIR = /usr/local/include
+COPT = -g -O2 -DUNIX -I$(INCDIR)
 LOPT = -L../fidoconfig -L../smapi
 # LOPT = 
 
