@@ -8,7 +8,6 @@
 include makefile.inc
 
 ## programs ##
-
 CC	= cl
 AR	= lib
 LINK	= link
@@ -16,38 +15,39 @@ RANLIB	=
 RM	= del
 
 ## file suffixes ##
-_C	= .c
-_OBJ	= .obj
-_LIB	= .lib
-_EXE	= .exe
-_DLL	= .dll
-_EXP	= .exp
-_ILK	= .ilk
-_PDB	= .pdb
+_C	  = .c
+_OBJ	  = .obj
+_EXP	  = .exp
+_LIB	  = .lib
+_DLL	  = .dll 
+_EXE	  = .exe
 
-## program options ##
-CFLAGS=-nologo -MD -Zp1 -Ob2 -c
-CINCL= -I$(H_DIR) -I..\fidoconf -I..\smapi -I..\huskylib
-LFLAGS=
-CDEFS =-D__NT__ -D_CONSOLE -D_MAKE_DLL
-EXENAMEFLAG=-Fe
+## programs ##
+CFLAGS	= -nologo -MD -Zp1
+CINCL	= -I$(H_DIR) -I..\fidoconf -I..\smapi -I..\huskylib
+CDEFS	= -D__NT__ -DNT -DWINNT -DWIN32 -D_CONSOLE
+COPT	= -Ob2
 
-# List of HUSKY libraries required to build binary file(s)
-LIBS	= ..\huskylib\make\huskymvc.lib \
-	  ..\smapi\make\smapimvc.lib ..\fidoconf\make\fconfmvc.lib \
-	  USER32.LIB msvcrt.lib Kernel32.lib \
-	  /link /nodefaultlib /opt:nowin98
+EXEFLAGS= /link /nodefaultlib /opt:nowin98
+EXENAMEFLAG = -Fe
 
-default: all
-programs: $(PROGRAMS)
+LIBS	= ..\fidoconf\make\fconfmvc.lib ..\smapi\make\smapimvc.lib \
+	  ..\huskylib\make\huskymvc.lib \
+	  USER32.LIB msvcrt.lib Kernel32.lib
+
+default:
+	@echo Run 'make programs' to build dinamic version of programs ($(PROGRAMS))
+	@echo Run 'make all' to build all above
+
 all: programs
+programs: $(PROGRAMS)
 
-{$(_SRC_DIR)}.c$(_OBJ):
-	@$(CC) $(CFLAGS) $(CINCL) $(CDEFS) $<
-
+{$(_SRC_DIR)}$(_C)$(_OBJ):
+	@$(CC) $(CFLAGS) $(CINCL) $(CDEFS) $(COPT) -c $<
 
 $(PROGRAMS): $(OBJS)
-	$(CC) $(LFLAGS) $(EXENAMEFLAG)$@ $** $(LIBS)
+	@echo Create $(PROGRAMS)...
+	@$(CC) $(CFLAGS) $(CINCL) $(COPT) $(CDEFS) $(EXENAMEFLAG)$@ $**  $(LIBS) $(EXEFLAGS)
 
 man:
 
