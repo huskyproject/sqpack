@@ -35,10 +35,7 @@ sqpack.1.gz : sqpack.1
 
 install: sqpack$(EXE) sqpack.1.gz
 	$(INSTALL) $(IBOPT) sqpack$(EXE) $(BINDIR)
-ifneq ($(DEBIAN), 1)
-# dh_installman does the trick for us.
 	$(INSTALL) $(IMOPT) sqpack.1.gz $(MANDIR)/man1
-endif
 
 uninstall:
 	-$(RM) $(RMOPT) $(BINDIR)$(DIRSEP)sqpack$(EXE)
