@@ -629,17 +629,17 @@ int renameArea(int areaType, char *oldName, char *newName)
         if (rename(newTmp, oldTmp))
             return errno;
 
+/*
         newTmp[strlen(newTmp)-2] = 'l';
-#if 0
         oldTmp[strlen(oldTmp)-2] = 'l';
 
         if (remove(oldTmp))
             return errno;
         if (rename(newTmp, oldTmp))
             return errno;
-#endif
         if (remove(newTmp))
-            return errno; /*  erase new lastread file */
+            return errno;
+*/
 
     }
 
