@@ -49,6 +49,7 @@
 
 #include <smapi/msgapi.h>
 #include <smapi/prog.h>
+#include <smapi/progprot.h>
 #include <fidoconf/fidoconf.h>
 #include <fidoconf/common.h>
 #include <fidoconf/log.h>
@@ -155,31 +156,6 @@ void SqWriteLastreadFile(char *fileName, UINT32 *lastread, ULONG lcount,
     w_log(LL_FUNC, "SqWriteLastreadFile() end");
 }
 
-/*
-*  get_dword
-*
-*  Reads in a 4 byte word that is stored in little endian (Intel) notation
-*  and converts it to the local representation n an architecture-
-*  independent manner
-*/
-
-#define get_dword(ptr)            \
-    ((dword)((unsigned char)(ptr)[0]) |           \
-    (((dword)((unsigned char)(ptr)[1])) << 8)  | \
-    (((dword)((unsigned char)(ptr)[2])) << 16) | \
-    (((dword)((unsigned char)(ptr)[3])) << 24))  \
-
-/*
-*  get_word
-*
-*  Reads in a 2 byte word that is stored in little endian (Intel) notation
-*  and converts it to the local representation in an architecture-
-*  independent manner
-*/
-
-#define get_word(ptr)         \
-    ((word)((unsigned char)(ptr)[0]) |         \
-(((word)((unsigned char)(ptr)[1])) << 8 ))
 
 typedef struct
 {
