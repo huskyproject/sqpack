@@ -16,10 +16,6 @@ sqpack.exe: sqpack.o
 clean:
 	-rm -f *.o
 	-rm *~
-	-rm 
-	-rm hpucode.exe
 
 distclean: clean
-	-rm hpucode.exe
-	-rm *.1.gz
-	-rm *.log
+	-rm sqpack.exe
