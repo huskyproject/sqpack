@@ -1,3 +1,15 @@
+2002-09-30 Monday 12:20  pgul
+
+	* sqpack.c (1.74): update replylinks fixed again
+
+2002-09-30 Monday 11:14  pgul
+
+	* sqpack.c (1.73): update replylinks fixed
+
+2002-09-30 Monday 08:42  mche
+
+	* sqpack.c (1.72): use macro get_dword & get_word in sqpack
+
 2002-09-28 Saturday 14:47  pgul
 
 	* sqpack.c (1.71): update replylinks and some others
