@@ -25,12 +25,14 @@
 #if defined ( __WATCOMC__ )
 #include <string.h>
 #include <stdlib.h>
-#include <smapi/prog.h>
+#include <prog.h>
 #include <share.h>
 #endif
 
 
-/* Changes  
+/* Changes
+  v1.0.4
+        SMS Packing ALL areas
   v1.0.3
 	K.N. Sqpack now newer thrashes reply links. Works fine for me. 
 	PS	There is something strange about all this code: it worked
@@ -301,10 +303,10 @@ void purgeArea(s_area *area)
 	UINT32 *removeMap;
 	UINT32 rmIndex = 0;
 
-	if (!area->max && !area->purge) {
-			printf("   No purging needed!\n");
-			return;
-	}
+//	if (!area->max && !area->purge) {
+//			printf("   No purging needed!\n");
+//			return;
+//	}
 
 	//generated tmp-FileName
 	newName = (char *) malloc(strlen(oldName)+4+1);
@@ -403,7 +405,7 @@ int main() {
    int i;
    struct _minf m;
    
-   printf("sqpack v1.0.3\n");
+   printf("sqpack v1.0.4\n");
 
    cfg = readConfig();
 
