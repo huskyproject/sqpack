@@ -1,3 +1,13 @@
+sqpack (1.3.0-20030207-1) unstable; urgency=low
+
+  * New cvs version
+  * Build with common huskymak.cfg from huskybase package
+  * Update depends
+  * Update standarts to 3.5.8
+  * Fix lintian warnings
+
+ -- Pavel Andreew <pavel@collage.etel.ru>  Fri,  7 Feb 2003 16:09:13 +0500
+
 sqpack (1.3.0-20021022-1) unstable; urgency=low
 
   * New cvs version
