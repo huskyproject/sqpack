@@ -31,7 +31,7 @@ sqpack$(EXE): sqpack$(OBJ)
 	$(CC) $(LFLAGS) -o sqpack$(EXE) sqpack$(OBJ) $(LOPT)
 
 sqpack.1.gz : sqpack.1
-	gzip -c sqpack.1 > sqpack.1.gz
+	gzip -9c sqpack.1 > sqpack.1.gz
 
 install: sqpack$(EXE) sqpack.1.gz
 	$(INSTALL) $(IBOPT) sqpack$(EXE) $(BINDIR)
