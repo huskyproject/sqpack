@@ -1,0 +1,21 @@
+# Microsoft Visual C++ Makefile
+
+CC=     cl
+CFLAGS= -nologo -MD -Zp1 -I.. -Ih
+CDEFS=  -D__NT__ -DNT -DWINNT -D_CONSOLE -D_MAKE_DLL
+COPT=   -O2
+TLIB=   lib -nologo
+
+SMAPIL=	..\smapi\smapimvc.lib msvcrt.lib Kernel32.lib
+FCONFL=	..\fidoconf\fconfmvc.lib
+
+all: sqpack.exe
+
+sqpack.exe:
+        $(CC) $(CFLAGS) $(CDEFS) $(COPT) -Fe$@ sqpack.c $(FCONFL) $(SMAPIL)
+
+clean:
+	-del *.obj
+
+distclean: clean
+	-del *.exe
