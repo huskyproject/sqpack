@@ -725,6 +725,7 @@ int main(int argc, char **argv) {
 	   printf ("usage: sqpack \"*\"\n");
    } else {
 
+	   setvar("module", "sqpack");
 	   cfg = readConfig(NULL);
 
 	   if (cfg != NULL ) {
