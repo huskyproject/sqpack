@@ -729,7 +729,7 @@ int main() {
    int i;
    struct _minf m;
    
-   printf("sqpack v1.1.0\n");
+   printf("sqpack v1.1.0b\n");
 
    cfg = readConfig(NULL);
 
