@@ -32,6 +32,10 @@ install: sqpack$(EXE) sqpack.1.gz
 	$(INSTALL) $(IBOPT) sqpack$(EXE) $(BINDIR)
 	$(INSTALL) $(IMOPT) sqpack.1.gz $(MANDIR)/man1
 
+uninstall:
+	-$(RM) $(BINDIR)$(DIRSEP)sqpack$(EXE)
+	-$(RM) $(MANDIR)$(DIRSEP)man1$(DIRSEP)sqpack.1.gz
+
 clean: 
 	-$(RM) *~
 	-$(RM) *$(OBJ)
