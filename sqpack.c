@@ -366,6 +366,9 @@ void SdmWriteLastreadFile(char *fileName, UINT32 *lastread, ULONG lcount,
         nfree(name);
     }
     w_log(LL_FUNC, "SdmWriteLastreadFile() end");
+#ifdef __WATCOMC__
+    area=area; /* prevent warning */
+#endif
 }
 
 void readLastreadFile(char *fileName, UINT32 **lastreadp, ULONG *lcountp,
