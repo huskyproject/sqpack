@@ -1,0 +1,22 @@
+DEBUG   = 1
+CC      = wcc386
+LINK    = WLINK
+
+!IF $(DEBUG) == 1
+CFLAGS  = -d2 -hw -i=..\smapi;..\fidoconfig -zq
+LFLAGS  =
+!ELSE
+CFLAGS  = -i..\smapi;..\fidoconfig -oneatx -zq
+LFLAGS  =
+!ENDIF
+
+all: sqpack.exe
+
+sqpack.obj : sqpack.c
+  @echo compiling sqpack
+  $(CC) $(CFLAGS) sqpack.c
+
+sqpack.exe: sqpack.obj
+  @echo linking sqpack
+  $(LINK) $(LFLAGS) FILE sqpack.obj Library ..\smapi\smapiwco, ..\fidoconfig\fidoconfig.lib NAME sqpack.exe
+
