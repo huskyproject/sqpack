@@ -1,3 +1,20 @@
+2002-10-25 Friday 05:02  stas_degteff
+
+	* sqpack.c (sqpack-1_2-stable.10): Workaroud for assignment dword
+	to word
+
+2002-10-25 Friday 05:00  stas_degteff
+
+	* makefile.bcd, makefile.bco, makefile.cyg, makefile.djg,
+	makefile.emo, makefile.emx, makefile.mgw
+	(sqpack-1_2-stable.[2,2,3,3,2,2,2]): Use quick put_word() & etc.
+	implementation for DOS, OS/2 & Windows
+
+2002-10-25 Friday 04:57  stas_degteff
+
+	* makefile.mvc, makefile.mvcdll (sqpack-1_2-stable.[1,2]): turn on
+	quick method for put_word() & etc for win32
+
 2002-10-22 Tuesday 06:04  stas_degteff
 
 	* sqpack.c (sqpack-1_2-stable.9): Optimize preprocesor directives
