@@ -790,10 +790,11 @@ int main(int argc, char **argv) {
         cfg = readConfig(NULL);
         
         if (cfg != NULL ) {
-            char *buff = NULL;
+/*            char *buff = NULL;
             xstrscat(&buff, cfg->logFileDir, LOGFILE, NULL);
             openLog(buff, PROGRAM_NAME, cfg);
             nfree(buff);
+*/          openLog(LOGFILE, PROGRAM_NAME, cfg);
             m.req_version = 0;
             m.def_zone = cfg->addr[0].zone;
             if (MsgOpenApi(&m)!= 0) {
