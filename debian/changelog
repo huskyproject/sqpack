@@ -1,3 +1,10 @@
+sqpack (1.4.0+rc1-1) unstable; urgency=low
+
+  * New stable version
+  * Change maintainers's E-mail
+
+ -- Pavel Andreew <sfpavel@users.sourceforge.net>  Wed, 21 May 2003 15:02:28 +0600
+
 sqpack (1.4.0+beta2-1) unstable; urgency=low
 
   * New cvs version
