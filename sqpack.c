@@ -427,6 +427,7 @@ int processMsg(dword msgNum, dword numMsg, HAREA oldArea, HAREA newArea,
     char *text, *ctrlText;
     dword  textLen, ctrlLen;
     int unsent, i, rc = 0;
+    unsigned long uid2msgn;
 
     /*    unsigned long offset; */
 
@@ -458,14 +459,19 @@ int processMsg(dword msgNum, dword numMsg, HAREA oldArea, HAREA newArea,
 
         if (unsent || (area -> purge == 0) || ttime == 0 ||
             (labs(actualTime - ttime) <= (long)(area -> purge * 24 *60 * 60))) {
-            xmsg.replyto = MsgUidToMsgn(oldArea, xmsg.replyto, UID_EXACT) > shift ? MsgUidToMsgn(oldArea, xmsg.replyto, UID_EXACT) - shift : 0;
+            uid2msgn = MsgUidToMsgn(oldArea, xmsg.replyto, UID_EXACT);
+            xmsg.replyto =  uid2msgn > shift ? uid2msgn - shift : 0;
             if ((area->msgbType & MSGTYPE_SQUISH) == MSGTYPE_SQUISH){
 
-                for (i = 0; i < MAX_REPLY; i++)
-                    xmsg.replies[i] = MsgUidToMsgn(oldArea, xmsg.replies[i], UID_EXACT) > shift ? MsgUidToMsgn(oldArea, xmsg.replies[i], UID_EXACT) - shift : 0;
+                for (i = 0; i < MAX_REPLY; i++) {
+                    uid2msgn = MsgUidToMsgn(oldArea, xmsg.replies[i], UID_EXACT);
+                    xmsg.replies[i] = uid2msgn > shift ? uid2msgn - shift : 0;
+                }
             }else {
-                xmsg.replies[0] = MsgUidToMsgn(oldArea, xmsg.replies[0], UID_EXACT) > shift ? MsgUidToMsgn(oldArea, xmsg.replies[0], UID_EXACT) - shift : 0;
-                xmsg.xmreplynext = MsgUidToMsgn(oldArea, xmsg.xmreplynext, UID_EXACT) > shift ? MsgUidToMsgn(oldArea, xmsg.xmreplynext, UID_EXACT) - shift : 0;
+                uid2msgn = MsgUidToMsgn(oldArea, xmsg.replies[0], UID_EXACT);
+                xmsg.replies[0] =  uid2msgn > shift ? uid2msgn - shift : 0;
+                uid2msgn = MsgUidToMsgn(oldArea, xmsg.xmreplynext, UID_EXACT);
+                xmsg.xmreplynext = uid2msgn > shift ? uid2msgn - shift : 0;
             }
             /*  copy msg */
             textLen = MsgGetTextLen(msg);
@@ -929,5 +935,4 @@ int main(int argc, char **argv) {
     }
     disposeConfig(config);
     return 0;
-
 }
