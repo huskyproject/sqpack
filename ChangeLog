@@ -1,3 +1,14 @@
+2002-10-22 Tuesday 06:04  stas_degteff
+
+	* sqpack.c (sqpack-1_2-stable.9): Optimize preprocesor directives
+
+2002-10-22 Tuesday 05:59  stas_degteff
+
+	* Makefile, makefile.bcd, makefile.bco, makefile.cyg, makefile.djg,
+	makefile.emo, makefile.emx, makefile.lnx, makefile.wco,
+	makefile.wcw (sqpack-1_2-stable.[1,1,1,2,2,1,1,1,1,1]): Fix clean
+	and distclean makefile's tags
+
 2002-10-18 Friday 09:22  stas_degteff
 
 	* makefile.cyg (sqpack-1_2-stable.1): add legacy makefile for
