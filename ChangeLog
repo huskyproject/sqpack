@@ -1,3 +1,7 @@
+2005-03-20 Sunday 01:48  sfpavel
+
+	* debian/changelog (sqpack-1_4-stable.8): 1.4-RC3 release
+
 2004-06-07 Monday 11:48  sfpavel
 
 	* debian/: changelog, compat, control, rules
