@@ -1,3 +1,7 @@
+2003-03-27 Thursday 21:59  d_sergienko
+
+	* Makefile (1.12): fix building
+
 2003-03-15 Saturday 22:03  d_sergienko
 
 	* sqpack.c (1.97): fix compiling
