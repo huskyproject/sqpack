@@ -2,7 +2,7 @@
 
 CC=     cl
 CFLAGS= -nologo -MD -Zp1 -I.. -Ih
-CDEFS=  -D__NT__ -DNT -DWINNT -D_CONSOLE -D_MAKE_DLL
+CDEFS=  -D__NT__ -DNT -DWINNT -D_CONSOLE -D_MAKE_DLL -DINTEL
 COPT=   -O2
 TLIB=   lib -nologo
 
