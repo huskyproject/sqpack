@@ -6,8 +6,9 @@ void purgeArea(s_area area, HAREA a) {
    int msgCount, i, highest;
    HMSG msg;
    XMSG xmsg;
-   struct tm *date;
+   struct tm date;
    time_t currentTime, msgTime;
+   char rc = 0;
 
    highest = MsgGetHighMsg(a);
    msgCount = MsgGetNumMsg(a);
@@ -23,11 +24,19 @@ void purgeArea(s_area area, HAREA a) {
          if (area.purge != 0) {
             MsgReadMsg(msg, &xmsg, 0,0,NULL, 0, NULL);
             MsgCloseMsg(msg);
-            DosDate_to_TmDate(xmsg.date_written, &date);
-            msgTime = mktime(date);
+            date.tm_mday = xmsg.date_written.date.da;
+            date.tm_mon  = xmsg.date_written.date.mo - 1;
+            date.tm_year = xmsg.date_written.date.yr + 80;
+            date.tm_hour = xmsg.date_written.time.hh;
+            date.tm_min  = xmsg.date_written.time.mm;
+            date.tm_sec  = xmsg.date_written.time.ss << 1;
+            
+            msgTime = mktime(&date);
             currentTime = time(NULL);
             // difference between the to times is greater then the number of seconds of the area.purge days, kill it
-            if (abs(currentTime - msgTime) > area.purge * 24 * 60 * 60) MsgKillMsg(a, i);
+            if (abs(currentTime - msgTime) > area.purge * 24 * 60 * 60) rc = MsgKillMsg(a, i);
+            if (rc) printf("Could not delete msg# %d\n", i);
+            rc = 0;
          }
       }
       
