@@ -34,6 +34,8 @@
 
 #include <huskylib/compiler.h>
 #include <huskylib/huskylib.h>
+#include <huskylib/locking.h>
+#include <huskylib/strext.h>
 
 #ifdef HAS_UNISTD_H
 #include <unistd.h>
