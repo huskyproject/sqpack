@@ -1,0 +1,11 @@
+sqpack 1.0.3
+------------
+
+----- cvs ci ------
+Tue Oct 12 19:21:43 NOVST 1999
+max:
++ start changeLog file
+* patch from Kolya Nesterov:
+  - sqpack correctly updates reply links after packing
+  - coredump in sqpack fixed (when there was a problem with opening lastread
+files)
