@@ -1,3 +1,11 @@
+sqpack (1.2.4-1) stable; urgency=low
+
+  * sqpack 1.2.4 release
+  * New maintainer's E-mail
+  * Debhelper V4
+
+ -- Pavel Andreew <sfpavel@users.sourceforge.net>  Fri, 30 May 2003 14:34:30 +0600
+
 sqpack (1.2.3-1) stable; urgency=low
 
   * sqpack 1.2 release
