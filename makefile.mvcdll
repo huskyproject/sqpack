@@ -1,19 +1,25 @@
 # $Id$
-# Microsoft Visual C++ Makefile for build DLL
+# Microsoft Visual C++ Makefile for build dinamic program(s)
+# No support for the Husky build environment.
+#
+# Tested on MS Visual C 6.0
+#
 
 CC=     cl
-CFLAGS= -nologo -MD -Zp1 -I.. -Ih -I..\fidoconf -I..\smapi -I..\huskylib
+CFLAGS= -nologo -MD -Zp1
+CINCL=	-I..\fidoconf -I..\smapi -I..\huskylib
 CDEFS=  -D__NT__ -DWIN32 -D_CONSOLE -D_MAKE_DLL
 COPT=   -O2
 TLIB=   lib -nologo
 
-SMAPIL=	..\smapi\make\smapimvc.lib ..\huskylib\make\huskymvc.lib msvcrt.lib Kernel32.lib /link /opt:nowin98
-FCONFL=	..\fidoconf\fconfmvc.lib
+LIBS=	..\huskylib\make\huskymvc.lib \
+	..\smapi\make\smapimvc.lib  ..\fidoconf\fconfmvc.lib \
+	msvcrt.lib Kernel32.lib /link /opt:nowin98
 
 all: sqpack.exe
 
 sqpack.exe:
-        $(CC) $(CFLAGS) $(CDEFS) $(COPT) -Fe$@ sqpack.c $(FCONFL) $(SMAPIL)
+        $(CC) $(CFLAGS) $(CINCL) $(CDEFS) $(COPT) -Fe$@ sqpack.c $(LIBS)
 
 clean:
 	-del *.obj

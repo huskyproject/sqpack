@@ -1,19 +1,24 @@
 # $Id$
-# Microsoft Visual C++ Makefile for build static library
+# Microsoft Visual C++ Makefile for build static program(s)
+# No support for the Husky build environment.
+#
+# Tested on MS Visual C 6.0
+#
 
 CC=     cl
-CFLAGS= -nologo -Zp1 -I.. -Ih
+CFLAGS= -nologo -Zp1 
+CINCL=	-I..\fidoconf -I..\smapi -I..\huskylib
 CDEFS=  -D__NT__ -DWIN32 -D_CONSOLE
 COPT=   -O2
 TLIB=   lib -nologo
 
-SMAPIL=	..\smapi\smapimvc.lib
-FCONFL=	..\fidoconf\fconfmvc.lib
+LIBS=	..\huskylib\make\huskymvc.lib \
+	..\fidoconf\fconfmvc.lib ..\smapi\make\smapimvc.lib \
 
 all: sqpack.exe
 
 sqpack.exe:
-        $(CC) $(CFLAGS) $(CDEFS) $(COPT) -Fe$@ sqpack.c $(FCONFL) $(SMAPIL)
+        $(CC) $(CFLAGS) $(CINCL) $(CDEFS) $(COPT) -Fe$@ sqpack.c $(LIBS)
 
 clean:
 	-del *.obj
