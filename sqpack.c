@@ -23,7 +23,6 @@
 
 #include <smapi/msgapi.h>
 #include <smapi/prog.h>
-#include <smapi/api_jam.h>
 #include <fidoconf/fidoconf.h>
 #include <fidoconf/common.h>
 
@@ -69,7 +68,7 @@ void SqReadLastreadFile(char *fileName, UINT32 **lastreadp, ULONG *lcountp,
    if (fd != -1) {
       
       fstat(fd, &st);
-      *lcountp = st.st_size / sizeof(UINT32);
+      *lcountp = st.st_size / 4;
       *lastreadp = (UINT32 *) malloc(*lcountp * sizeof(UINT32));
       
       for (i = 0; i < *lcountp; i++) {
@@ -89,6 +88,7 @@ void SqReadLastreadFile(char *fileName, UINT32 **lastreadp, ULONG *lcountp,
 
    free(name);
 }
+
 
 void SqWriteLastreadFile(char *fileName, UINT32 *lastread, ULONG lcount,
 			HAREA area)
@@ -131,6 +131,114 @@ void SqWriteLastreadFile(char *fileName, UINT32 *lastread, ULONG lcount,
    }
 }
 
+/*
+ *  get_dword
+ *
+ *  Reads in a 4 byte word that is stored in little endian (Intel) notation
+ *  and converts it to the local representation n an architecture-
+ *  independent manner
+ */
+
+#define get_dword(ptr)            \
+   ((dword)((unsigned char)(ptr)[0]) |           \
+    (((dword)((unsigned char)(ptr)[1])) << 8)  | \
+    (((dword)((unsigned char)(ptr)[2])) << 16) | \
+    (((dword)((unsigned char)(ptr)[3])) << 24))  \
+
+/*
+ *  get_word
+ *
+ *  Reads in a 2 byte word that is stored in little endian (Intel) notation
+ *  and converts it to the local representation in an architecture-
+ *  independent manner
+ */
+
+#define get_word(ptr)         \
+    ((word)((unsigned char)(ptr)[0]) |         \
+     (((word)((unsigned char)(ptr)[1])) << 8 ))
+
+/*
+ *  put_dword
+ *
+ *  Writes a 4 byte word in little endian notation, independent of the local
+ *  system architecture.
+ */
+
+void put_dword(byte *ptr, dword value)
+{
+    ptr[0] = (value & 0xFF);
+    ptr[1] = (value >> 8) & 0xFF;
+    ptr[2] = (value >> 16) & 0xFF;
+    ptr[3] = (value >> 24) & 0xFF;
+}
+
+/*
+ *  put_word
+ *
+ *  Writes a 4 byte word in little endian notation, independent of the local
+ *  system architecture.
+ */
+
+void put_word(byte *ptr, word value)
+{
+    ptr[0] = (value & 0xFF);
+    ptr[1] = (value >> 8) & 0xFF;
+}
+
+
+typedef struct
+{
+    unsigned long UserCRC;         /* CRC-32 of user name (lowercase) */
+    unsigned long UserID;          /* Unique UserID */
+    unsigned long LastReadMsg;     /* Last read message number */
+    unsigned long HighReadMsg;     /* Highest read message number */
+}
+JAMLREAD;
+#define JAMLREAD_SIZE 16
+
+int read_jamlread(int fd, JAMLREAD *plread)
+{
+    unsigned char buf[JAMLREAD_SIZE];
+        
+    if (read(fd, buf, JAMLREAD_SIZE) != JAMLREAD_SIZE)
+        return 0;
+
+    plread->UserCRC     = get_dword(buf);
+    plread->UserID      = get_dword(buf+4);
+    plread->LastReadMsg = get_dword(buf+8);
+    plread->HighReadMsg = get_dword(buf+12);
+
+    return 1;
+}
+
+int write_jamlread(int fd, JAMLREAD *plread)
+{
+    unsigned char buf[JAMLREAD_SIZE];
+        
+    put_dword(buf, plread->UserCRC);
+    put_dword(buf + 4, plread->UserID);
+    put_dword(buf + 8, plread->LastReadMsg);
+    put_dword(buf + 12, plread->HighReadMsg);
+    
+    if (write(fd, buf, JAMLREAD_SIZE) != JAMLREAD_SIZE)
+        return 0;
+
+    return 1;
+}
+
+int write_partial_jamlread(int fd, JAMLREAD *plread)
+{
+    unsigned char buf[JAMLREAD_SIZE/2];
+        
+    put_dword(buf + 0, plread->LastReadMsg);
+    put_dword(buf + 4, plread->HighReadMsg);
+    
+    if (write(fd, buf, JAMLREAD_SIZE/2) != JAMLREAD_SIZE/2)
+        return 0;
+
+    return 1;
+}
+
 void JamReadLastreadFile(char *fileName, UINT32 **lastreadp, ULONG *lcountp,
 		      HAREA area)
 {
@@ -148,11 +256,11 @@ void JamReadLastreadFile(char *fileName, UINT32 **lastreadp, ULONG *lcountp,
    if (fd != -1) {
       
       fstat(fd, &st);
-      *lcountp = st.st_size / sizeof(JAMLREAD);
+      *lcountp = st.st_size / JAMLREAD_SIZE;
       *lastreadp = (UINT32 *) malloc(*lcountp * sizeof(UINT32) * 2);
       
       for (i = 0; i < *lcountp; i++) {
-         read(fd, &lread, sizeof(JAMLREAD));
+         read_jamlread(fd, &lread); 
          (*lastreadp)[i*2] = MsgUidToMsgn(area, lread.LastReadMsg, UID_PREV);
          (*lastreadp)[i*2+1] = MsgUidToMsgn(area, lread.HighReadMsg, UID_PREV);
       }
@@ -191,10 +299,8 @@ void JamWriteLastreadFile(char *fileName, UINT32 *lastread, ULONG lcount,
             lread.LastReadMsg = MsgMsgnToUid(area, lastread[i*2]);
             lread.HighReadMsg = MsgMsgnToUid(area, lastread[i*2+1]);
 
-            lseek(fd, i*sizeof(JAMLREAD)+((UINT32)&lread.LastReadMsg-(UINT32)&lread), SEEK_SET);
-            write(fd, &lread.LastReadMsg,
-                  sizeof(lread.LastReadMsg)+sizeof(lread.HighReadMsg));
-
+            lseek(fd, i*JAMLREAD_SIZE + JAMLREAD_SIZE/2, SEEK_SET);
+            write_partial_jamlread(fd, &lread);
          }
 
          close(fd);
@@ -223,7 +329,7 @@ void SdmReadLastreadFile(char *fileName, UINT32 **lastreadp, ULONG *lcountp,
    if (fd != -1) {
       
       fstat(fd, &st);
-      *lcountp = st.st_size / sizeof(UINT16);
+      *lcountp = st.st_size / 2; /*sizeof(UINT16)*/
       *lastreadp = (UINT32 *) malloc(*lcountp * sizeof(UINT32));
       
       for (i = 0; i < *lcountp; i++) {
@@ -248,6 +354,7 @@ void SdmWriteLastreadFile(char *fileName, UINT32 *lastread, ULONG lcount,
    int fd;
    unsigned long i;
    UINT16 temp;
+   char buf[2];
    
    if (lastread) {
 
@@ -264,8 +371,8 @@ void SdmWriteLastreadFile(char *fileName, UINT32 *lastread, ULONG lcount,
          for (i = 0; i < lcount; i++) {
 
             temp = (UINT16)MsgMsgnToUid(area, lastread[i]);
-            write(fd, &temp, sizeof(UINT16));
-
+            put_word(buf, temp);
+            write(fd, buf, 2);
          }
 
          close(fd);
