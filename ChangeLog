@@ -1,3 +1,7 @@
+2003-12-28 Sunday 21:55  d_sergienko
+
+	* sqpack.c (sqpack-1_4-stable.2): fix warnings
+
 2003-09-18 Thursday 10:44  sfpavel
 
 	* Makefile (sqpack-1_4-stable.1): Fix static building
