@@ -1,3 +1,8 @@
+2004-06-07 Monday 11:48  sfpavel
+
+	* debian/compat (1.1): file compat was initially added on branch
+	sqpack-1_4-stable.
+
 2004-03-06 Saturday 17:12  mche
 
 	* sqpack.vcproj (1.2): fix project file
