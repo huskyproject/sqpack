@@ -9,6 +9,10 @@
 #endif
 
 #include <fcntl.h>
+#ifdef __EMX__
+#include <share.h>
+#include <sys/types.h>
+#endif
 #include <sys/stat.h>
 
 #include <msgapi.h>
@@ -257,7 +261,7 @@ int main() {
    int i;
    struct _minf m;
    
-   printf("sqpack v1.0.0\n");
+   printf("sqpack v1.0.1\n");
 
    cfg = readConfig();
 
