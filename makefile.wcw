@@ -1,18 +1,24 @@
+# makefile to build NT executable by Watcom C
+
 CC = wcl386
-CFLAGS = -zq -wx -bt=nt -l=nt -i=..
-COPT = -oneatx -5
+CFLAGS = -zq -wx -bt=nt -l=nt -i=.. -oneatx -5
+LFLAGS = -zq -wx -l=nt
+COPT = -c
 LIB = wlib
 LIBS = ..\smapi\smapiwcw.lib ..\fidoconf\fconfwcw.lib
 
 OBJS = sqpack.obj
 
 .c.obj:
-        $(CC) $(CFLAGS) $(COPT) -c $<
+        $(CC) $(CFLAGS) $(COPT) $<
 
 all:    $(OBJS) sqpack.exe
 
-sqpack.exe:
-        $(CC) $(CFLAGS) $(COPT) $(OBJS) $(LIBS)
+sqpack.exe:  $(OBJS)
+        $(CC) $(CFLAGS) $(LFLAGS) $<  $(LIBS)
 
 clean:
-        del *.exe *.obj *.bak *.lib
+        del *.obj
+
+distclean:
+        del *.exe

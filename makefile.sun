@@ -1,20 +1,20 @@
+# Legacy makefile to build sqpack on SUN with GNU C
+
 CC   = gcc
-COPT = -O2 -DUNIX -I..
+COPT = -O2 -I..
 LOPT = -L../fidoconf -L../smapi
-# LOPT = 
+LIBS = -lfidoconfigsun -lsmapisun
 
 all : sqpack 
 
 sqpack: sqpack.c
-	$(CC) $(COPT) $(LOPT) sqpack.c -o sqpack -lfidoconfigsun -lsmapisun 
+	$(CC) $(COPT) $(LOPT) $^ -o $@ $(LIBS)
 
 sqpack.1.gz : sqpack.1
 	gzip -c sqpack.1 > sqpack.1.gz
 
 clean: 
-	-rm sqpack
 	-rm sqpack.1.gz
-	-rm *~
-
 
 distclean: clean
+	-rm sqpack

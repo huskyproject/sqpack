@@ -1,7 +1,9 @@
-CC      = wcc386
-LINK    = WLINK
+# makefile to build OS/2 32bit executable by Watcom C
 
-CFLAGS  = -i=.. -oneatx -zq -bt=os2v2 -DOS2
+CC      = wcc386
+LINK    = wlink
+
+CFLAGS  = -i=.. -oneatx -zq -bt=os2v2
 LFLAGS  = system os2v2
 
 all: sqpack.exe

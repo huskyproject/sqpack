@@ -4,19 +4,18 @@
 
 CC   = gcc
 
-COPT = -fomit-frame-pointer -fstrength-reduce -Zcrtdll -Wall -O2 -DOS2 -I..
+COPT = -fomit-frame-pointer -fstrength-reduce -Zcrtdll -Wall -O2 -I..
 LOPT = -L../smapi -L../fidoconf
+LIBS = -lfconfemx -lsmapiemx
 
 all : sqpack.exe 
 
 sqpack.exe: sqpack.c
-	$(CC) $(COPT) $(LOPT) sqpack.c -o sqpack.exe  -lfconfemx -lsmapiemx
+	$(CC) $(COPT) $(LOPT) $^ -o $@ $(LIBS)
 
 
 clean: 
-	-del *~
 	-del *.o
 
 distclean: clean
 	-del sqpack.exe
-
