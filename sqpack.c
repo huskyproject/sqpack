@@ -181,8 +181,8 @@ void processMsg(dword msgNum, dword numMsg, HAREA oldArea, HAREA newArea,
          free(ctrlText);
       }
       
-      MsgCloseMsg(msg);
    }
+   MsgCloseMsg(msg);
    msgProcessed++;
 }
 
@@ -263,6 +263,7 @@ void purgeArea(s_area area)
       renameArea(oldName, newName);
    }
    else {
+      if (oldArea) MsgCloseArea(oldArea);
       printf("Could not open %s or create %s.\n", oldName, newName);
    }
    free(newName);
