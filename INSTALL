@@ -14,7 +14,14 @@ Unix:
                              -> fidoconfig/
 			     -> sqpack/
 
-2. compile sqPack
+2. Determine which makefile you need to use then compile and install fidoconfig
+   using selected makefile, as following examples:
+   Ex.1 (use platfom-specific makefile):
+	$ make -f makefile.lnx
+	$ make -f makefile.lnx install
+   Ex.2 (use common makefile and ../huskymak.cfg):
+	$ make
+	$ make install
 
 You're ready. If you have a working fidoconfig, you can now purge MsgBases under
 unix.
