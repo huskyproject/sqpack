@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <errno.h>
 #include <time.h>
+#include <stdlib.h>
+#include <string.h>
 
 #ifdef UNIX
 #include <unistd.h>
@@ -16,6 +18,7 @@
 #include <sys/stat.h>
 
 #include <msgapi.h>
+#include <progprot.h>
 #include <fidoconfig.h>
 #include <common.h>
 
@@ -367,7 +370,7 @@ void purgeArea(s_area *area)
 		MsgCloseArea(oldArea);
 		MsgCloseArea(newArea);
 
-		printf("   oldMsg: %u   newMsg: %u\n", numMsg, msgCopied);
+		printf("   oldMsg: %lu   newMsg: %lu\n", (unsigned long)numMsg, msgCopied);
         totaloldMsg+=numMsg; totalmsgCopied+=msgCopied; // total
 		
 		free(oldLastread);
@@ -425,7 +428,8 @@ int main() {
          // purge local areas
 	 handleArea(&(cfg->localAreas[i]));
       disposeConfig(cfg);
-      printf("\ntotal oldMsg: %u   total newMsg: %u\n", totaloldMsg, totalmsgCopied);
+      printf("\ntotal oldMsg: %lu   total newMsg: %lu\n", 
+	     (unsigned long)totaloldMsg, (unsigned long)totalmsgCopied);
       return 0;
    } else {
       printf("Could not read fido config\n");
