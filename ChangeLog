@@ -1,3 +1,7 @@
+2003-04-11 Friday 21:19  i_zkh
+
+	* makefile.mvcdll (1.8): Fixed compiling
+
 2003-03-31 Monday 20:58  d_sergienko
 
 	* Makefile (1.13): -lfidoconfig -> -lfidoconf
