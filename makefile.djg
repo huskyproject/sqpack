@@ -3,17 +3,16 @@
 
 
 CC   = gcc
-
 CINCL= -I../fidoconf -I../smapi -I../huskylib
 
-COPT = -fomit-frame-pointer -fstrength-reduce -Wall -O3 -I.. -mcpu=i486
+COPT = -fomit-frame-pointer -fstrength-reduce -Wall -O3 -mcpu=i486
 LOPT = 
-LIBS = ../fidoconf/fconfdjg.a ../smapi/make/smapidjg.a ../huskylib/make/huskydjg.a
+LIBS = ../fidoconf/make/fconfdjg.a ../smapi/make/smapidjg.a ../huskylib/make/huskydjg.a
 
 all : sqpack.exe
 
 sqpack.exe: sqpack.c
-	$(CC) $(CINCL) $(COPT) $^ -o $@
+	$(CC) $(CINCL) $(COPT) $^ -o $@ $(LIBS)
 
 clean:
 	-del *.obj
