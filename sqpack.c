@@ -260,6 +260,7 @@ void purgeArea(s_area area)
    else {
       printf("Could not open %s or create %s.\n", oldName, newName);
    }
+   free(newName);
 }
 
 int main() {
@@ -268,7 +269,7 @@ int main() {
    int i;
    struct _minf m;
    
-   printf("sqpack v1.0.1\n");
+   printf("sqpack v1.0.3\n");
 
    cfg = readConfig();
 
