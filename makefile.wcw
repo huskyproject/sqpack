@@ -1,8 +1,8 @@
 CC = wcl386
-CFLAGS = -zq -wx -bt=nt -l=nt -zp=1 -i=..
+CFLAGS = -zq -wx -bt=nt -l=nt -i=..
 COPT = -oneatx -5
 LIB = wlib
-LIBS = ..\smapi\smapiwcw.lib ..\fidoconfig\fidoconfig.lib
+LIBS = ..\smapi\smapiwcw.lib ..\fidoconfig\fconfwcw.lib
 
 OBJS = sqpack.obj
 
