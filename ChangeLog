@@ -1,3 +1,9 @@
+2002-07-01 Monday 14:42  stas
+
+	* debian/: changelog (1.5.2.1), control (1.4.2.1): Change debian
+	control files. (Patch from Pavel Andreew <pavel@collage.etel.ru>,
+	2:5080/59)
+
 2002-06-30 Sunday 13:45  mche
 
 	* sqpack.c (1.51.2.1): fixed bug with scaning locked messages
