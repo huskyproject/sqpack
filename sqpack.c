@@ -110,7 +110,7 @@ void SqReadLastreadFile(char *fileName, UINT32 **lastreadp, ULONG *lcountp,
         *lcountp = 0;
     };
 
-    free(name);
+    nfree(name);
     w_log(LL_FUNC, "SqReadLastreadFile() end");
 }
 
@@ -151,7 +151,7 @@ void SqWriteLastreadFile(char *fileName, UINT32 *lastread, ULONG lcount,
         } else
             w_log(LL_ERR, "Could not write lastread file '%s': %s", name, strerror(errno));
 
-        free(name);
+        nfree(name);
     }
     w_log(LL_FUNC, "SqWriteLastreadFile() end");
 }
@@ -261,7 +261,7 @@ void JamReadLastreadFile(char *fileName, UINT32 **lastreadp, ULONG *lcountp,
 
     *lcountp = (*lcountp) << 1; /* rest of sqpack does not now of 2 lastread ptrs */
 
-    free(name);
+    nfree(name);
     w_log(LL_FUNC, "JamReadLastreadFile() end");
 }
 
@@ -296,7 +296,7 @@ void JamWriteLastreadFile(char *fileName, UINT32 *lastread, ULONG lcount,
         } else
             w_log(LL_ERR, "JamWriteLastreadFile(): can't open %s: %s", name, strerror(errno));
 
-        free(name);
+        nfree(name);
     }
     w_log(LL_FUNC, "JamWriteLastreadFile() end");
 }
@@ -336,7 +336,7 @@ void SdmReadLastreadFile(char *fileName, UINT32 **lastreadp, ULONG *lcountp,
         *lcountp = 0;
     };
 
-    free(name);
+    nfree(name);
     w_log(LL_FUNC, "SdmReadLastreadFile() end");
 }
 
@@ -377,7 +377,7 @@ void SdmWriteLastreadFile(char *fileName, UINT32 *lastread, ULONG lcount,
         } else
             w_log(LL_ERR, "SdmWriteLastreadFile(): can't open %s: %s", name, strerror(errno));
 
-        free(name);
+        nfree(name);
     }
     w_log(LL_FUNC, "SdmWriteLastreadFile() end");
 }
@@ -494,8 +494,8 @@ int processMsg(dword msgNum, dword numMsg, HAREA oldArea, HAREA newArea,
             }
 
             msgCopied++;
-            free(text);
-            free(ctrlText);
+            nfree(text);
+            nfree(ctrlText);
             rc = 1;
         }
 
@@ -589,6 +589,12 @@ void renameArea(int areaType, char *oldName, char *newName)
     if (areaType==MSGTYPE_JAM) {
         xstrcat(&oldTmp, ".jdt");
         xstrcat(&newTmp, ".jdt");
+        /* sizes of files: for statistics */
+        stat(oldTmp,&sb);
+        oldsize += sb.st_size;
+        stat(newTmp,&sb);
+        newsize += sb.st_size;
+
         remove(oldTmp);
         rename(newTmp, oldTmp);
 
@@ -626,8 +632,8 @@ void renameArea(int areaType, char *oldName, char *newName)
     }
 
     w_log( LL_STAT, "Old size: %lu, new size: %lu", oldsize, newsize );
-    free(oldTmp);
-    free(newTmp);
+    nfree(oldTmp);
+    nfree(newTmp);
     w_log(LL_FUNC, "renameArea() end");
 }
 
@@ -746,8 +752,8 @@ void purgeArea(s_area *area)
         w_log(LL_STAT, "OldMsg: %lu; NewMsg: %lu", (unsigned long)numMsg, msgCopied);
         totaloldMsg+=numMsg; totalmsgCopied+=msgCopied; // total
 
-        free(oldLastread);
-        free(newLastread);
+        nfree(oldLastread);
+        nfree(newLastread);
 
         //rename oldArea to newArea
         renameArea(areaType, oldName, newName);
@@ -766,24 +772,74 @@ void purgeArea(s_area *area)
               w_log(LL_ERR, "Could not open '%s.*'!", oldName );
         }
     }
-    free(newName);
+    nfree(newName);
     w_log(LL_FUNC, "purgeArea() end");
 }
 
 void handleArea(s_area *area)
 {
+    ULONG freeSpace = 0;
+    int process = 1;
+
     w_log(LL_FUNC, "handleArea() begin");
-    if ((area -> msgbType & MSGTYPE_SQUISH) == MSGTYPE_SQUISH ||
-        (area -> msgbType & MSGTYPE_JAM) == MSGTYPE_JAM ||
-        (area -> msgbType & MSGTYPE_SDM) == MSGTYPE_SDM) {
-        w_log( LL_INFO, "Purge area %s (%s)", area -> areaName,
-               area -> msgbType & MSGTYPE_SQUISH ? "squish" :
-                              area -> msgbType & MSGTYPE_JAM ? "jam" :
-                              area -> msgbType & MSGTYPE_SDM ? "msg/OPUS" : "unknown type"
-             );
-        msgCopied = 0;
-        msgProcessed = 0;
-        purgeArea(area);
+    if ((area->msgbType & MSGTYPE_SQUISH) == MSGTYPE_SQUISH ||
+        (area->msgbType & MSGTYPE_JAM) == MSGTYPE_JAM ||
+        (area->msgbType & MSGTYPE_SDM) == MSGTYPE_SDM) 
+    {
+        struct stat sb;
+        ULONG baseSize = 0;
+        char *msgBaseDir = sstrdup(area->fileName);
+        char *p          = strrchr(msgBaseDir, PATH_DELIM);
+        
+        if(p) *p = '\0';
+        freeSpace = fc_GetDiskFreeSpace(msgBaseDir);
+        if(p) *p = PATH_DELIM;
+
+        if ((area->msgbType & MSGTYPE_SQUISH) == MSGTYPE_SQUISH)
+        {
+            xstrcat(&msgBaseDir, ".sqd");
+            memset(&sb,0,sizeof(sb));
+            stat(msgBaseDir,&sb);
+            baseSize += sb.st_size;
+            msgBaseDir[strlen(msgBaseDir)-1] = 'i';
+            memset(&sb,0,sizeof(sb));
+            stat(msgBaseDir,&sb);
+            baseSize += sb.st_size;
+        }
+        if ((area->msgbType & MSGTYPE_JAM) == MSGTYPE_JAM)
+        {
+            xstrcat(&msgBaseDir, ".jdt");
+            memset(&sb,0,sizeof(sb));
+            stat(msgBaseDir,&sb);
+            baseSize += sb.st_size;
+            msgBaseDir[strlen(msgBaseDir)-1] = 'x';
+            memset(&sb,0,sizeof(sb));
+            stat(msgBaseDir,&sb);
+            baseSize += sb.st_size;
+            msgBaseDir[strlen(msgBaseDir)-2] = 'h';
+            msgBaseDir[strlen(msgBaseDir)-1] = 'r';
+            memset(&sb,0,sizeof(sb));
+            stat(msgBaseDir,&sb);
+            baseSize += sb.st_size;
+         }
+        if(baseSize >= freeSpace)
+            process = 0;
+
+        if(process)
+        {
+            w_log( LL_INFO, "Purge area %s (%s)", area -> areaName,
+                area -> msgbType & MSGTYPE_SQUISH ? "squish" :
+            area -> msgbType & MSGTYPE_JAM ?    "jam" :
+            area -> msgbType & MSGTYPE_SDM ?    "msg/OPUS" : "unknown type"
+                );
+            msgCopied = 0;
+            msgProcessed = 0;
+            purgeArea(area);
+        }
+        else
+        {
+            w_log( LL_CRIT, "Not enough free space for purge area %s", area -> areaName);
+        }
     };
     w_log(LL_FUNC, "handleArea() end");
 }
