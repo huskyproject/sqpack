@@ -902,6 +902,10 @@ int main(int argc, char **argv) {
     int areaMaskCount = 0;
     char **areaMasks = NULL;
 
+#if defined ( __NT__ )
+    SetUnhandledExceptionFilter(&UExceptionFilter);
+#endif
+
     area_found = 0;
 
     versionStr = GenVersionStr( "sqpack", VER_MAJOR, VER_MINOR, VER_PATCH,
