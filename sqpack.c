@@ -142,8 +142,13 @@ void processMsg(dword msgNum, dword numMsg, HAREA oldArea, HAREA newArea,
    if (unsent || (area.max == 0) || ((numMsg - msgProcessed + msgCopied) <= area.max)) {
       //only max msgs should be in new area
      
-     DosDate_to_TmDate(&(xmsg.attr & MSGLOCAL ? xmsg.date_written :
-			 xmsg.date_arrived), &tmTime);
+   if (xmsg.attr & MSGLOCAL) {
+      DosDate_to_TmDate(&(xmsg.date_written), &tmTime);
+   } else {
+      DosDate_to_TmDate(&(xmsg.date_arrived), &tmTime);
+   }
+/*     DosDate_to_TmDate(&(xmsg.attr & MSGLOCAL ? xmsg.date_written :
+			 xmsg.date_arrived), &tmTime);*/
      ttime = mktime(&tmTime);
 
      if (unsent || (area.purge == 0) || (abs(actualTime - ttime) <= (area.purge * 24 *60 * 60))) {
