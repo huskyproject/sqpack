@@ -638,7 +638,7 @@ void renameArea(int areaType, char *oldName, char *newName)
 
     }
 
-    w_log( LL_STAT, "Old size: %ul, new size: %ul", oldsize, newsize );
+    w_log( LL_STAT, "Old size: %lu, new size: %lu", oldsize, newsize );
     free(oldTmp);
     free(newTmp);
     w_log(LL_FUNC, "renameArea() end");
