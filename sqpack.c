@@ -1,6 +1,6 @@
 /* $Id$ */
 /*****************************************************************************
- * SqPack --- FTN squish-format messagebase packer
+ * SqPack --- FTN messagebase packer
  *****************************************************************************
  * Copyright (C) 1997-1999
  *
@@ -49,6 +49,7 @@
 #include <smapi/prog.h>
 #include <fidoconf/fidoconf.h>
 #include <fidoconf/common.h>
+#include <fidoconf/log.h>
 
 #if defined ( __WATCOMC__ )
 #include <string.h>
@@ -64,6 +65,9 @@
 #define SH_DENYNO _SH_DENYNO
 #endif
 
+#define PROGRAM_NAME "sqpack v1.3.0-current"
+#define LOGFILE "sqpack.log"
+
 unsigned long msgCopied, msgProcessed; // per Area
 unsigned long totaloldMsg, totalmsgCopied;
 
@@ -76,6 +80,7 @@ void SqReadLastreadFile(char *fileName, UINT32 **lastreadp, ULONG *lcountp,
    unsigned char buffer[4];
    char *name;
 
+   w_log(LL_FUNC, "SqReadLastreadFile() begin");
    name = (char *) malloc(strlen(fileName)+4+1);
    strcpy(name, fileName);
    strcat(name, ".sql");
@@ -103,6 +108,7 @@ void SqReadLastreadFile(char *fileName, UINT32 **lastreadp, ULONG *lcountp,
    };
 
    free(name);
+   w_log(LL_FUNC, "SqReadLastreadFile() end");
 }
 
 
@@ -114,7 +120,7 @@ void SqWriteLastreadFile(char *fileName, UINT32 *lastread, ULONG lcount,
    int fd;
    unsigned long i, temp;
 
-
+   w_log(LL_FUNC, "SqWriteLastreadFile() begin");
    if (lastread) {
 
       name = (char *) malloc(strlen(fileName)+4+1);
@@ -141,10 +147,12 @@ void SqWriteLastreadFile(char *fileName, UINT32 *lastread, ULONG lcount,
 
          close(fd);
 
-      } else printf("Could not write lastread file %s, error %u!\n", name, errno);
+      } else
+         w_log(LL_ERR, "Could not write lastread file '%s': %s", name, strerror(errno));
 
       free(name);
    }
+   w_log(LL_FUNC, "SqWriteLastreadFile() end");
 }
 
 /*
@@ -187,14 +195,19 @@ int read_jamlread(int fd, JAMLREAD *plread)
 {
     unsigned char buf[JAMLREAD_SIZE];
 
-    if (read(fd, buf, JAMLREAD_SIZE) != JAMLREAD_SIZE)
+    w_log(LL_FUNC, "read_jamlread() begin");
+    if (read(fd, buf, JAMLREAD_SIZE) != JAMLREAD_SIZE) {
+        w_log(LL_ERR, "read_jamlread() error: %s", strerror(errno));
+        w_log(LL_FUNC, "read_jamlread() failed");
         return 0;
+    }
 
     plread->UserCRC     = get_dword(buf);
     plread->UserID      = get_dword(buf+4);
     plread->LastReadMsg = get_dword(buf+8);
     plread->HighReadMsg = get_dword(buf+12);
 
+    w_log(LL_FUNC, "read_jamlread() OK");
     return 1;
 }
 
@@ -202,14 +215,19 @@ int write_jamlread(int fd, JAMLREAD *plread)
 {
     unsigned char buf[JAMLREAD_SIZE];
 
+    w_log(LL_FUNC, "write_jamlread() begin");
     put_dword(buf, plread->UserCRC);
     put_dword(buf + 4, plread->UserID);
     put_dword(buf + 8, plread->LastReadMsg);
     put_dword(buf + 12, plread->HighReadMsg);
 
-    if (write(fd, buf, JAMLREAD_SIZE) != JAMLREAD_SIZE)
+    if (write(fd, buf, JAMLREAD_SIZE) != JAMLREAD_SIZE) {
+        w_log(LL_ERR, "write_jamlread() error: %s", strerror(errno));
+        w_log(LL_FUNC, "write_jamlread() failed");
         return 0;
+    }
 
+    w_log(LL_FUNC, "write_jamlread() OK");
     return 1;
 }
 
@@ -217,12 +235,17 @@ int write_partial_jamlread(int fd, JAMLREAD *plread)
 {
     unsigned char buf[JAMLREAD_SIZE/2];
 
+    w_log(LL_FUNC, "write_partial_jamlread() begin");
     put_dword(buf + 0, plread->LastReadMsg);
     put_dword(buf + 4, plread->HighReadMsg);
 
-    if (write(fd, buf, JAMLREAD_SIZE/2) != JAMLREAD_SIZE/2)
+    if (write(fd, buf, JAMLREAD_SIZE/2) != JAMLREAD_SIZE/2) {
+        w_log(LL_ERR, "write_partial_jamlread() error: %s", strerror(errno));
+        w_log(LL_FUNC, "write_partial_jamlread() failed");
         return 0;
+    }
 
+    w_log(LL_FUNC, "write_partial_jamlread() OK");
     return 1;
 }
 
@@ -235,6 +258,7 @@ void JamReadLastreadFile(char *fileName, UINT32 **lastreadp, ULONG *lcountp,
    char *name;
    JAMLREAD lread;
 
+   w_log(LL_FUNC, "JamReadLastreadFile() begin");
    name = (char *) malloc(strlen(fileName)+4+1);
    strcpy(name, fileName);
    strcat(name, ".jlr");
@@ -255,13 +279,15 @@ void JamReadLastreadFile(char *fileName, UINT32 **lastreadp, ULONG *lcountp,
       close(fd);
 
    } else {
-		*lastreadp = NULL;
-		*lcountp = 0;
+      w_log(LL_ERR, "JamReadLastreadFile(): can't open %s: %s", name, strerror(errno));
+      *lastreadp = NULL;
+      *lcountp = 0;
    };
 
    *lcountp = (*lcountp) << 1; /* rest of sqpack does not now of 2 lastread ptrs */
 
    free(name);
+   w_log(LL_FUNC, "JamReadLastreadFile() end");
 }
 
 void JamWriteLastreadFile(char *fileName, UINT32 *lastread, ULONG lcount,
@@ -272,7 +298,7 @@ void JamWriteLastreadFile(char *fileName, UINT32 *lastread, ULONG lcount,
    unsigned long i;
    JAMLREAD lread;
 
-
+   w_log(LL_FUNC, "JamWriteLastreadFile() begin");
    if (lastread) {
 
       name = (char *) malloc(strlen(fileName)+4+1);
@@ -294,10 +320,12 @@ void JamWriteLastreadFile(char *fileName, UINT32 *lastread, ULONG lcount,
 
          close(fd);
 
-      } else printf("Could not write lastread file %s, error %u!\n", name, errno);
+      } else
+          w_log(LL_ERR, "JamWriteLastreadFile(): can't open %s: %s", name, strerror(errno));
 
       free(name);
    }
+   w_log(LL_FUNC, "JamWriteLastreadFile() end");
 }
 
 void SdmReadLastreadFile(char *fileName, UINT32 **lastreadp, ULONG *lcountp,
@@ -309,6 +337,7 @@ void SdmReadLastreadFile(char *fileName, UINT32 **lastreadp, ULONG *lcountp,
    char *name;
    UINT16 temp;
 
+   w_log(LL_FUNC, "SdmReadLastreadFile() begin");
    name = (char *) malloc(strlen(fileName)+9+1);
    strcpy(name, fileName);
    Add_Trailing(name, PATH_DELIM);
@@ -329,11 +358,13 @@ void SdmReadLastreadFile(char *fileName, UINT32 **lastreadp, ULONG *lcountp,
       close(fd);
 
    } else {
-		*lastreadp = NULL;
-		*lcountp = 0;
+       w_log(LL_ERR, "SdmReadLastreadFile(): can't open %s: %s", name, strerror(errno));
+       *lastreadp = NULL;
+       *lcountp = 0;
    };
 
    free(name);
+   w_log(LL_FUNC, "SdmReadLastreadFile() end");
 }
 
 void SdmWriteLastreadFile(char *fileName, UINT32 *lastread, ULONG lcount,
@@ -345,6 +376,7 @@ void SdmWriteLastreadFile(char *fileName, UINT32 *lastread, ULONG lcount,
    UINT16 temp;
    char buf[2];
 
+   w_log(LL_FUNC, "SdmWriteLastreadFile() begin");
    if (lastread) {
 
       name = (char *) malloc(strlen(fileName)+9+1);
@@ -366,32 +398,38 @@ void SdmWriteLastreadFile(char *fileName, UINT32 *lastread, ULONG lcount,
 
          close(fd);
 
-      } else printf("Could not write lastread file %s, error %u!\n", name, errno);
+      } else
+          w_log(LL_ERR, "SdmWriteLastreadFile(): can't open %s: %s", name, strerror(errno));
 
       free(name);
    }
+   w_log(LL_FUNC, "SdmWriteLastreadFile() end");
 }
 
 void readLastreadFile(char *fileName, UINT32 **lastreadp, ULONG *lcountp,
 		      HAREA area, int areaType)
 {
+  w_log(LL_FUNC, "readLastreadFile() begin");
   if (areaType == MSGTYPE_SQUISH)
     SqReadLastreadFile(fileName, lastreadp, lcountp, area);
   else if (areaType == MSGTYPE_JAM)
     JamReadLastreadFile(fileName, lastreadp, lcountp, area);
   else if (areaType == MSGTYPE_SDM)
     SdmReadLastreadFile(fileName, lastreadp, lcountp, area);
+  w_log(LL_FUNC, "readLastreadFile() end");
 }
 
 void writeLastreadFile(char *fileName, UINT32 *lastreadp, ULONG lcount,
 		      HAREA area, int areaType)
 {
+  w_log(LL_FUNC, "writeLastreadFile() begin");
   if (areaType == MSGTYPE_SQUISH)
     SqWriteLastreadFile(fileName, lastreadp, lcount, area);
   else if (areaType == MSGTYPE_JAM)
     JamWriteLastreadFile(fileName, lastreadp, lcount, area);
   else if (areaType == MSGTYPE_SDM)
     SdmWriteLastreadFile(fileName, lastreadp, lcount, area);
+  w_log(LL_FUNC, "writeLastreadFile() end");
 }
 
 unsigned long getOffsetInLastread(UINT32 *lastread, ULONG lcount, dword msgnum)
@@ -422,6 +460,7 @@ int processMsg(dword msgNum, dword numMsg, HAREA oldArea, HAREA newArea,
 
     //   unsigned long offset;
 
+    w_log(LL_FUNC, "processMsg() begin");
     msg = MsgOpenMsg(oldArea, MOPEN_RW, msgNum);
     if (msg == NULL) return rc;
 
@@ -487,6 +526,7 @@ int processMsg(dword msgNum, dword numMsg, HAREA oldArea, HAREA newArea,
     }
     MsgCloseMsg(msg);
     msgProcessed++;
+    w_log(LL_FUNC, "processMsg() end");
     return rc;
 }
 
@@ -508,6 +548,7 @@ void updateMsgLinks(UINT32 msgNum, HAREA area, UINT32 rmCount, UINT32 *rmMap, in
    XMSG xmsg;
    int i;
 
+   w_log(LL_FUNC, "updateMsgLinks() begin");
    msg = MsgOpenMsg(area, MOPEN_RW, getShiftedNum(msgNum, rmCount, rmMap));
    if (msg == NULL) return;
 
@@ -524,6 +565,7 @@ void updateMsgLinks(UINT32 msgNum, HAREA area, UINT32 rmCount, UINT32 *rmMap, in
 
    MsgWriteMsg(msg, 0, &xmsg, NULL, 0, 0, 0, NULL);
    MsgCloseMsg(msg);
+   w_log(LL_FUNC, "updateMsgLinks() end");
 }
 
 
@@ -531,6 +573,7 @@ void renameArea(int areaType, char *oldName, char *newName)
 {
    char *oldTmp, *newTmp;
 
+   w_log(LL_FUNC, "renameArea() begin");
    oldTmp = (char *) malloc(strlen(oldName)+4+1);
    newTmp = (char *) malloc(strlen(newName)+4+1);
 
@@ -580,6 +623,7 @@ void renameArea(int areaType, char *oldName, char *newName)
 
    free(oldTmp);
    free(newTmp);
+   w_log(LL_FUNC, "renameArea() end");
 }
 
 void purgeArea(s_area *area)
@@ -594,6 +638,7 @@ void purgeArea(s_area *area)
 	UINT32 *removeMap;
 	UINT32 rmIndex = 0;
 
+        w_log(LL_FUNC, "purgeArea() begin");
 	if (area->nopack) {
 			printf("   No purging needed!\n");
 			return;
@@ -696,8 +741,8 @@ void purgeArea(s_area *area)
 		    MsgCloseArea(newArea);
 		}
 
-		printf("   oldMsg: %lu   newMsg: %lu\n", (unsigned long)numMsg, msgCopied);
-        totaloldMsg+=numMsg; totalmsgCopied+=msgCopied; // total
+                w_log(LL_STAT, "OldMsg: %lu; NewMsg: %lu", (unsigned long)numMsg, msgCopied);
+                totaloldMsg+=numMsg; totalmsgCopied+=msgCopied; // total
 
 		free(oldLastread);
 		free(newLastread);
@@ -706,22 +751,29 @@ void purgeArea(s_area *area)
 		renameArea(areaType, oldName, newName);
 	}
 	else {
-		if (oldArea) MsgCloseArea(oldArea);
-		printf("Could not open %s or create %s.\n", oldName, newName);
+          if (oldArea) {
+            MsgCloseArea(oldArea);
+            w_log(LL_ERR, "Could not create %s.", newName);
+          }else{
+            w_log(LL_ERR, "Could not open %s.", oldName);
+          }
 	}
 	free(newName);
+        w_log(LL_FUNC, "purgeArea() end");
 }
 
 void handleArea(s_area *area)
 {
-	if ((area -> msgbType & MSGTYPE_SQUISH) == MSGTYPE_SQUISH ||
-	    (area -> msgbType & MSGTYPE_JAM) == MSGTYPE_JAM ||
-	    (area -> msgbType & MSGTYPE_SDM) == MSGTYPE_SDM) {
-        	printf("%s\n", area -> areaName);
-	        msgCopied = 0;
-		msgProcessed = 0;
-		purgeArea(area);
-	};
+  w_log(LL_FUNC, "handleArea() begin");
+  if ((area -> msgbType & MSGTYPE_SQUISH) == MSGTYPE_SQUISH ||
+      (area -> msgbType & MSGTYPE_JAM) == MSGTYPE_JAM ||
+      (area -> msgbType & MSGTYPE_SDM) == MSGTYPE_SDM) {
+    printf("%s\n", area -> areaName);
+    msgCopied = 0;
+    msgProcessed = 0;
+    purgeArea(area);
+  };
+  w_log(LL_FUNC, "handleArea() end");
 }
 
 void doArea(s_area *area, char *cmp)
@@ -735,24 +787,26 @@ int main(int argc, char **argv) {
    unsigned int i;
    struct _minf m;
 
-   printf("sqpack v1.3.0-current\n");
+   printf( PROGRAM_NAME "\n");
 
    if (argc!=2) {
 	   if (argc>2) printf("too many arguments!\n");
-	   printf ("usage: sqpack \"*\"\n");
+	   printf ("Usage: sqpack \"*\"\n");
    } else {
 
 	   setvar("module", "sqpack");
 	   cfg = readConfig(NULL);
 
 	   if (cfg != NULL ) {
-                   if( openLog( LOGFILE, program_name, config) )
+                   if( openLog( LOGFILE, PROGRAM_NAME, cfg) )
                      fprintf(stderr, "Can't init log! Use stderr instead.\n");
         	   m.req_version = 0;
         	   m.def_zone = cfg->addr[0].zone;
         	   if (MsgOpenApi(&m)!= 0) {
-        		   printf("MsgOpenApi Error.\n");
-        		   exit(1);
+                      w_log(LL_ERR,"MsgOpenApi Error.");
+                      closeLog();
+                      disposeConfig(cfg);
+                      exit(1);
         	   }
 
         	   // purge dupe area
@@ -772,11 +826,11 @@ int main(int argc, char **argv) {
         		   // purge local areas
         		   doArea(&(cfg->localAreas[i]), argv[1]);
 
-        	   disposeConfig(cfg);
-        	   printf("\ntotal oldMsg: %lu   total newMsg: %lu\n",
+        	   w_log(LL_SUMMARY,"Total oldMsg: %lu; total newMsg: %lu",
         			  (unsigned long)totaloldMsg, (unsigned long)totalmsgCopied);
-        	   return 0;
+        	   disposeConfig(cfg);
                    closeLog();
+        	   return 0;
 
 	   } else {
 		   printf("Could not read fido config\n");
