@@ -1,3 +1,12 @@
+2002-10-20 Sunday 11:26  mche
+
+	* sqpack.c (1.76): Start log-message moved to correct location
+
+2002-10-20 Sunday 10:12  mche
+
+	* makefile.cyg (1.4), makefile.mvc (1.3), makefile.mvcdll (1.4):
+	Remove useless defines
+
 2002-10-18 Friday 09:26  stas_degteff
 
 	* makefile.cyg (1.3): Add comments to top
