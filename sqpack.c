@@ -693,8 +693,8 @@ void purgeArea(s_area *area)
 
         removeMap = (UINT32 *) calloc(2, sizeof(UINT32));
 
-        for (i = 1; i <= highMsg; i++) {
-            if (!processMsg(i, numMsg, oldArea, newArea, area,
+        for (i = j = 1; i <= highMsg; i++, j++) {
+            if (!processMsg(j, numMsg, oldArea, newArea, area,
                 removeMap[1])) {
                 if (!(rmIndex & 1)) {
                     /* We started to delete new portion of */
@@ -704,7 +704,7 @@ void purgeArea(s_area *area)
                 };
                 removeMap[rmIndex]++; /* Anyway, update counter */
                 if (areaType == MSGTYPE_SDM)
-                    MsgKillMsg(oldArea, i);
+                    MsgKillMsg(oldArea, j--);
             } else {
                 /* We are copying msgs */
                 if (rmIndex & 1) rmIndex++;
