@@ -590,14 +590,14 @@ void purgeArea(s_area *area)
 	strcat(newName, "_tmp");
 
 	/*oldArea = MsgOpenArea((byte *) oldName, MSGAREA_NORMAL, -1, -1, -1, MSGTYPE_SQUISH);*/
-	oldArea = MsgOpenArea((byte *) oldName, MSGAREA_NORMAL, areaType);
+	oldArea = MsgOpenArea((byte *) oldName, MSGAREA_NORMAL, (word) areaType);
 
 	/*if (oldArea) newArea = MsgOpenArea((byte *) newName, MSGAREA_CREATE, area.fperm, area.uid, area.gid,MSGTYPE_SQUISH);*/
 	if (oldArea) {
 		if (areaType == MSGTYPE_SDM)
 			newArea = oldArea;
 		else
-			newArea = MsgOpenArea((byte *) newName, MSGAREA_CREATE, areaType);
+			newArea = MsgOpenArea((byte *) newName, MSGAREA_CREATE, (word) areaType);
 	}
 
 	if ((oldArea != NULL) && (newArea != NULL)) {
