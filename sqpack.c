@@ -509,13 +509,17 @@ int processMsg(dword msgNum, dword numMsg, HAREA oldArea, HAREA newArea,
 UINT32 getShiftedNum(UINT32 msgNum, UINT32 rmCount, UINT32 *rmMap)
 {
     UINT32 i, nMsgNum = msgNum;
-    msgNum += rmMap[1];
-    for (i = 0; i < rmCount; i+=2)
-        if (msgNum >= rmMap[i])
-            nMsgNum -= rmMap[i + 1];
-        else
+
+    for (i=0; i<rmCount; i+=2) {
+        if (msgNum < rmMap[i])
             break;
-    return msgNum > 0L ? msgNum : 0L;
+        if (msgNum >= rmMap[i] + rmMap[i+1]) {
+            nMsgNum -= rmMap[i+1];
+        } else {
+            return 0L;
+        }
+    }
+    return msgNum;
 }
 
 void updateMsgLinks(UINT32 msgNum, HAREA area, UINT32 rmCount, UINT32 *rmMap, int areaType)
