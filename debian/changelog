@@ -1,3 +1,9 @@
+sqpack (1.2.1-2) stable; urgency=low
+
+  * Setup new location for apt: http://husky.sourceforge.net/deb-stable
+
+ -- Pavel Andreew <pavel@collage.etel.ru>  Fri, 16 Aug 2002 17:22:09 +0600
+
 sqpack (1.2.1-1) stable; urgency=low
 
   * New upstream version
