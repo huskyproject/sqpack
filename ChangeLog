@@ -3,6 +3,11 @@ sqpack 1.1.0
 (released on Mon May 22 14:58:56 CEST 2000)
 
 ----- cvs ci ------
+Mon Oct  9 21:33:47 NOVST 2000
+max:
+* compile with new smapi (replynext changed to xmreplynext)
+
+----- cvs ci ------
 Mon Sep  4 13:00:42 NOVST 2000
 max (patch from Pavel Gulchouck):
 * JAM replynext update

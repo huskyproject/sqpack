@@ -354,7 +354,7 @@ int processMsg(dword msgNum, dword numMsg, HAREA oldArea, HAREA newArea,
      if (unsent || (area -> purge == 0) || ttime == 0 ||
          (abs(actualTime - ttime) <= (area -> purge * 24 *60 * 60))) {
 	xmsg.replyto = xmsg.replyto > shift ? xmsg.replyto - shift : 0;
-	xmsg.replynext = xmsg.replynext > shift ? xmsg.replynext - shift : 0;
+	xmsg.xmreplynext = xmsg.xmreplynext > shift ? xmsg.xmreplynext - shift : 0;
 	for (i = 0; i < MAX_REPLY; i++)
 		xmsg.replies[i] = xmsg.replies[i] > shift ? xmsg.replies[i] - shift : 0; 
 	// copy msg
@@ -413,7 +413,7 @@ void updateMsgLinks(UINT32 msgNum, HAREA area, UINT32 rmCount, UINT32 *rmMap)
    MsgReadMsg(msg, &xmsg, 0, 0, NULL, 0, NULL);
 	
    xmsg.replyto = getShiftedNum(xmsg.replyto, rmCount, rmMap);
-   xmsg.replynext = getShiftedNum(xmsg.replynext, rmCount, rmMap);
+   xmsg.xmreplynext = getShiftedNum(xmsg.xmreplynext, rmCount, rmMap);
    for (i = 0; i < MAX_REPLY; i++)
 	xmsg.replies[i] = getShiftedNum(xmsg.replies[i], rmCount, rmMap);
    
