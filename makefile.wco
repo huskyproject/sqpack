@@ -1,16 +1,8 @@
-# include Husky-Makefile-Config
-!include ..\huskymak.cfg
-
 CC      = wcc386
 LINK    = WLINK
 
-!IF $(DEBUG) == 1
-CFLAGS  = -d2 -hw -i=$(INCDIR) -zq
-LFLAGS  = d watcom
-!ELSE
-CFLAGS  = -i$(INCDIR) -oneatx -zq
-LFLAGS  =
-!ENDIF
+CFLAGS  = -i=.. -oneatx -zq -bt=os2v2 -DOS2
+LFLAGS  = system os2v2
 
 all: sqpack.exe
 
@@ -20,14 +12,11 @@ sqpack.obj : sqpack.c
 
 sqpack.exe: sqpack.obj
   @echo linking sqpack
-  $(LINK) $(LFLAGS) FILE sqpack.obj Library $(LIBDIR)\smapiwco, $(LIBDIR)\fidoconfig.lib NAME sqpack.exe
+  $(LINK) $(LFLAGS) FILE sqpack.obj Library ..\smapi\smapiwco.lib, ..\fidoconf\fconfwco.lib NAME sqpack.exe
 
 clean:
 	del *.obj *.bak
 
 distclean: clean
 	del *.exe
-
-install:
-	copy sqpack.exe $(BINDIR)
 

@@ -1,4 +1,4 @@
-CC   = gcc
+CC   = cc
 COPT = -O2 -DUNIX -I..
 LOPT = -L../fidoconf -L../smapi
 # LOPT = 
@@ -6,7 +6,7 @@ LOPT = -L../fidoconf -L../smapi
 all : sqpack 
 
 sqpack: sqpack.c
-	$(CC) $(COPT) $(LOPT) sqpack.c -o sqpack -lfidoconfigsun -lsmapisun 
+	$(CC) $(COPT) $(LOPT) sqpack.c -o sqpack -lfidoconfigunix -lsmapiunix 
 
 sqpack.1.gz : sqpack.1
 	gzip -c sqpack.1 > sqpack.1.gz
@@ -15,6 +15,5 @@ clean:
 	-rm sqpack
 	-rm sqpack.1.gz
 	-rm *~
-
 
 distclean: clean

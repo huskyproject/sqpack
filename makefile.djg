@@ -1,0 +1,22 @@
+# makefile for DJGPP gcc for DOS/DPMI
+# legacy makefile, no support for the Husky build environment
+
+
+CC   = gcc
+
+COPT = -fomit-frame-pointer -fstrength-reduce -Wall -O2 -DMSDOS -I..
+LOPT = 
+
+all : sqpack.exe
+
+sqpack.exe: sqpack.c
+	$(CC) $(COPT) sqpack.c -o sqpack.exe ../fidoconf/fconfdjg.a ../smapi/smapidjg.a
+
+
+clean:
+	-del *~
+	-del *.obj
+
+distclean: clean
+	-del sqpack.exe
+

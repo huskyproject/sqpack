@@ -10,7 +10,7 @@ LOPT = -L../smapi -L../fidoconf
 all : sqpack.exe 
 
 sqpack.exe: sqpack.c
-	$(CC) $(COPT) $(LOPT) sqpack.c -o sqpack.exe -lsmapiemo -lfconfemo
+	$(CC) $(COPT) $(LOPT) sqpack.c -o sqpack.exe -lfconfemo -lsmapiemo 
 
 
 clean: 
