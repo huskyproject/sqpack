@@ -1,3 +1,12 @@
+2002-07-02 Tuesday 16:35  stas
+
+	* INSTALL (1.4): Update documentation
+
+2002-07-02 Tuesday 16:29  stas
+
+	* debian/: changelog (1.6), control (1.5), huskymak.cfg (1.6),
+	rules (1.5): Change debian control files (like in -stable branch)
+
 2002-06-30 Sunday 13:36  mche
 
 	* sqpack.c (1.52): fixed bug with scaning locked messages
