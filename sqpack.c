@@ -17,15 +17,15 @@
 #endif
 #include <sys/stat.h>
 
-#include <msgapi.h>
-#include <progprot.h>
-#include <fidoconfig.h>
-#include <common.h>
+#include <smapi/msgapi.h>
+#include <smapi/progprot.h>
+#include <fidoconfig/fidoconfig.h>
+#include <fidoconfig/common.h>
 
 #if defined ( __WATCOMC__ )
 #include <string.h>
 #include <stdlib.h>
-#include <prog.h>
+#include <smapi/prog.h>
 #include <share.h>
 #endif
 
