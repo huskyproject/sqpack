@@ -1,3 +1,13 @@
+2003-05-30 Friday 08:37  sfpavel
+
+	* VERSION, sqpack.c (sqpack-1_2-stable.[2,12]): sqpack 1.2.4
+	release
+
+2003-05-30 Friday 08:37  sfpavel
+
+	* debian/: changelog, control, rules (sqpack-1_2-stable.[10,3,5]):
+	New debian release
+
 2002-12-27 Friday 13:22  sfpavel
 
 	* debian/rules (sqpack-1_2-stable.4): Fix debian/rules
@@ -296,12 +306,12 @@
 
 2000-07-12 Wednesday 11:25  tobi
 
-	* makefile.bco (1.1): file makefile.bco was initially added on
+	* makefile.djg (1.1): file makefile.djg was initially added on
 	branch sqpack-1_1_0.
 
 2000-07-12 Wednesday 11:25  tobi
 
-	* makefile.djg (1.1): file makefile.djg was initially added on
+	* makefile.bco (1.1): file makefile.bco was initially added on
 	branch sqpack-1_1_0.
 
 2000-07-12 Wednesday 11:25  tobi
