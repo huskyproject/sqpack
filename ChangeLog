@@ -1,3 +1,7 @@
+2003-10-20 Monday 06:52  andr_lukyanov
+
+	* makefile.mvcdll (1.10): Fix MSVC compilation
+
 2003-10-17 Friday 07:40  andr_lukyanov
 
 	* makefile.cyg (1.6), makefile.djg (1.7), makefile.emx (1.3),
