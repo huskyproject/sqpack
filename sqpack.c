@@ -63,6 +63,7 @@ unsigned long totaloldMsg, totalmsgCopied;
 unsigned long totalOldBaseSize, totalNewBaseSize;
 int lock_fd;
 char *versionStr;
+int area_found;
 
 void SqReadLastreadFile(char *fileName, UINT32 **lastreadp, ULONG *lcountp,
                         HAREA area)
@@ -773,6 +774,7 @@ void handleArea(s_area *area)
     ULONG freeSpace = 0;
     int process = 1;
 
+    area_found = 1;
     w_log(LL_FUNC, "handleArea() begin");
     if ((area->msgbType & MSGTYPE_SQUISH) == MSGTYPE_SQUISH ||
         (area->msgbType & MSGTYPE_JAM) == MSGTYPE_JAM ||
@@ -849,6 +851,8 @@ int main(int argc, char **argv) {
     unsigned int i;
     struct _minf m;
 
+    area_found = 0;
+
     versionStr = GenVersionStr( "sqpack", VER_MAJOR, VER_MINOR, VER_PATCH,
                                VER_BRANCH, cvs_date );
     printf("%s\n", versionStr);
@@ -908,11 +912,14 @@ int main(int argc, char **argv) {
         /*  purge local areas */
         doArea(&(config->localAreas[i]), argv[1]);
 
-    w_log(LL_SUMMARY,"Total old  msg:%10lu; new  msg:%10lu",
-        (unsigned long)totaloldMsg, (unsigned long)totalmsgCopied);
-    w_log(LL_SUMMARY,"Total old size:%10lu; new size:%10lu",
-        (unsigned long)totalOldBaseSize, (unsigned long)totalNewBaseSize);
-
+    if (area_found) {
+        w_log(LL_SUMMARY,"Total old  msg:%10lu; new  msg:%10lu",
+              (unsigned long)totaloldMsg, (unsigned long)totalmsgCopied);
+        w_log(LL_SUMMARY,"Total old size:%10lu; new size:%10lu",
+              (unsigned long)totalOldBaseSize, (unsigned long)totalNewBaseSize);
+    } else {
+        w_log(LL_WARN, "No areas like `%s' found", argv[1]);
+    }
     w_log(LL_STOP,"End");
     closeLog();
     if (config->lockfile) {
