@@ -1,3 +1,9 @@
+sqpack (1.4.0+rc0-1) unstable; urgency=low
+
+  * New stable branch
+
+ -- Pavel Andreew <pavel@collage.etel.ru>  Tue, 11 Feb 2003 17:10:43 +0500
+
 sqpack (1.3.0-20030207-1) unstable; urgency=low
 
   * New cvs version
