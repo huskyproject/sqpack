@@ -2,6 +2,11 @@ sqpack 1.0.4
 ------------
 
 ----- cvs ci ------
+Fri Mar 24 00:44:00 NOVT 2000
+max(patch from Alex Bronin):
+* rollback 000307.diff - fix squish lastread problem.
+
+----- cvs ci ------
 Thu Mar 23 10:15:52 MSK 2000
 max (patch from Serguei Revtov):
 * -nopack echoarea option support

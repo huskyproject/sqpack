@@ -65,7 +65,7 @@ void readLastreadFile(char *fileName, UINT32 **lastreadp, ULONG *lcountp,
       *lastreadp = (UINT32 *) malloc(*lcountp * sizeof(UINT32));
       
       for (i = 0; i < *lcountp; i++) {
-         read(fd, buffer, 4);
+         read(fd, &buffer, 4);
          temp = buffer[0] + (((unsigned long)(buffer[1])) << 8) +
                 (((unsigned long)(buffer[2])) << 16) +
                 (((unsigned long)(buffer[3])) << 24);
@@ -112,7 +112,7 @@ void writeLastreadFile(char *fileName, UINT32 *lastread, ULONG lcount,
             buffer[2] = (temp >> 16) & 0xFF;
             buffer[3] = (temp >> 24) & 0xFF;
 
-            write(fd, buffer, 4);
+            write(fd, &buffer, 4);
          }
 
          close(fd);
