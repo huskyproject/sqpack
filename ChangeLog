@@ -1,3 +1,7 @@
+2002-06-30 Sunday 13:45  mche
+
+	* sqpack.c (1.51.2.1): fixed bug with scaning locked messages
+
 2002-03-05 Tuesday 14:42  joerg.jaspert
 
 	* debian/: changelog (1.5), control (1.4), huskymak.cfg (1.5),
