@@ -2,6 +2,12 @@ sqpack 1.0.4
 ------------
 
 ----- cvs ci ------
+Thu Mar 23 10:15:52 MSK 2000
+max (patch from Serguei Revtov):
+* -nopack echoarea option support
+* compiling without warnings on solaris
+
+----- cvs ci ------
 Mon Mar 20 08:56:28 MSK 2000
 max (patch from Serguei Revtov):
 * change legacy SUN & Win makefiles to compile with new includes, simplifying

@@ -25,7 +25,7 @@
 #if defined ( __WATCOMC__ )
 #include <string.h>
 #include <stdlib.h>
-#include <prog.h>
+#include <smapi/prog.h>
 #include <share.h>
 #endif
 
@@ -164,9 +164,9 @@ int processMsg(dword msgNum, dword numMsg, HAREA oldArea, HAREA newArea,
       //only max msgs should be in new area
      
      if (xmsg.attr & MSGLOCAL) {
-        DosDate_to_TmDate(&(xmsg.date_written), &tmTime);
+        DosDate_to_TmDate((SCOMBO*)&(xmsg.date_written), &tmTime);
      } else {
-        DosDate_to_TmDate(&(xmsg.date_arrived), &tmTime);
+        DosDate_to_TmDate((SCOMBO*)&(xmsg.date_arrived), &tmTime);
      }
 /*     DosDate_to_TmDate(&(xmsg.attr & MSGLOCAL ? xmsg.date_written :
 			 xmsg.date_arrived), &tmTime);*/
@@ -303,10 +303,10 @@ void purgeArea(s_area *area)
 	UINT32 *removeMap;
 	UINT32 rmIndex = 0;
 
-//	if (!area->max && !area->purge) {
-//			printf("   No purging needed!\n");
-//			return;
-//	}
+	if (area->nopack) {
+			printf("   No purging needed!\n");
+			return;
+	}
 
 	//generated tmp-FileName
 	newName = (char *) malloc(strlen(oldName)+4+1);
