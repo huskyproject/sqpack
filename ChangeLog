@@ -1,3 +1,11 @@
+2003-10-21 Tuesday 06:11  andr_lukyanov
+
+	* makefile.mvcdll (1.12): Fix MSVC compilation
+
+2003-10-21 Tuesday 03:45  andr_lukyanov
+
+	* makefile.mvc (1.9), makefile.mvcdll (1.11): Fix MSVC compilation
+
 2003-10-20 Monday 06:52  andr_lukyanov
 
 	* makefile.mvcdll (1.10): Fix MSVC compilation
