@@ -1,26 +1,37 @@
 # $Id$
-# Legacy makefile for Cygwin
-# Usage:
-# make -f makefile.cyg
+# Makefile to build SQPACK/win32 with Mingw32 from Cygwin.
+# No support for the Husky build environment.
 
-CC      = gcc
-COPT=-c -O3 -I. -I.. -Wall -pedantic -mno-cygwin
-LFLAGS=-mno-cygwin
+# include Husky-Makefile-Config,
+# copy this file from ../../huskybse/huskymak.cfg.cyg
+include ../huskymak.cfg
 
-LINKSMAPI=../smapi/libsmapicyg.a
-LINKFIDOC=../fidoconf/libfidoconfigcyg.a
+include makefile.inc
 
-all : sqpack.exe
+# includes directories
+CINCL= -I$(H_DIR) -I../huskylib -I../smapi -I../fidoconf
 
-sqpack.o: sqpack.c
-	$(CC) $(COPT) sqpack.c -o sqpack.o
+# libraries need to build binary file
+LIBS	= ../fidoconf/make/$(LIBPREFIX)fidoconfig$(LIBSUFFIX)$(_LIB) \
+	  ../smapi/make/$(LIBPREFIX)smapi$(LIBSUFFIX)$(_LIB) \
+	  ../huskylib/make/$(LIBPREFIX)husky$(LIBSUFFIX)$(_LIB)
 
-sqpack.exe: sqpack.o
-	$(CC) $(LFLAGS) -o sqpack.exe sqpack.o ../smapi/patmat.o $(LINKSMAPI) $(LINKFIDOC)
+READMEFILES= ./ChangeLog ./VERSION ./HISTORY ./BUGS ./INSTALL ./COPYING
 
-clean:
-	-rm -f *.o
-	-rm *~
+default:
+	@echo
+	@echo Run \'make programs\' to build static version of programs \($(PROGRAMS)\)
+	@echo
+	@echo Run \'make all\' to build all above
 
-distclean: clean
-	-rm sqpack.exe
+all:	programs
+
+programs: $(PROGRAMS)
+
+%$(_OBJ): $(SRC_DIR)%$(_C)
+	@echo Compiling $<
+	@$(CC) $(CFLAGS) $(CDEFS) $(CINCL) $(OPTCFLAGS) $<
+
+$(PROGRAMS): $(OBJS)
+	@echo Create $(PROGRAMS)
+	@$(CC) $(STRIP) $(CFLAGS) $(CDEFS) $(CINCL) $(EXENAMEFLAG) $@ $< $(LIBS)

@@ -1,22 +1,38 @@
-# makefile for DJGPP gcc for DOS/DPMI
-# legacy makefile, no support for the Husky build environment
+# $Id$
+# Makefile to build SQPACK/dpmi with gcc 3.x.x from DJGPP v2.03.
+# No support for the Husky build environment.
 
+# include Husky-Makefile-Config,
+# copy this file from ../../huskybse/huskymak.cfg.djg
+include ../huskymak.cfg
 
-CC   = gcc
-CINCL= -I../fidoconf -I../smapi -I../huskylib
+include makefile.inc
 
-COPT = -fomit-frame-pointer -fstrength-reduce -Wall -O3 -mcpu=i486
-LOPT = 
-LIBS = ../fidoconf/make/fconfdjg.a ../smapi/make/smapidjg.a ../huskylib/make/huskydjg.a
+# includes directories
+CINCL= -I$(H_DIR) -I../huskylib -I../smapi -I../fidoconf
 
-all : sqpack.exe
+# libraries need to build binary file
+LIBS	= ../fidoconf/make/$(LIBPREFIX)fconf$(LIBSUFFIX)$(_LIB) \
+	  ../smapi/make/$(LIBPREFIX)smapi$(LIBSUFFIX)$(_LIB) \
+	  ../huskylib/make/$(LIBPREFIX)husky$(LIBSUFFIX)$(_LIB)
 
-sqpack.exe: sqpack.c
-	$(CC) $(CINCL) $(COPT) $^ -o $@ $(LIBS)
+READMEFILES= ./ChangeLog ./VERSION ./HISTORY ./BUGS ./INSTALL ./COPYING
 
-clean:
-	-del *.obj
+default:
+	@echo
+	@echo Run \'make programs\' to build static version of programs \($(PROGRAMS)\)
+	@echo
+	@echo Run \'make all\' to build all above
 
-distclean: clean
-	-del sqpack.exe
+all:	programs
 
+programs: $(PROGRAMS)
+
+%$(_OBJ): $(SRC_DIR)%$(_C)
+	@echo Compiling $<
+	@$(CC) $(CFLAGS) $(CDEFS) $(CINCL) $(OPTCFLAGS) $<
+
+$(PROGRAMS): $(OBJS)
+	@echo Create $(PROGRAMS)
+	@$(CC) $(STRIP) $(CFLAGS) $(CDEFS) $(CINCL) $(EXENAMEFLAG) $@ $< $(LIBS)
+	@strip$(_EXE) $@
