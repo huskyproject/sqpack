@@ -1,3 +1,7 @@
+2003-03-31 Monday 20:58  d_sergienko
+
+	* Makefile (1.13): -lfidoconfig -> -lfidoconf
+
 2003-03-27 Thursday 21:59  d_sergienko
 
 	* Makefile (1.12): fix building
