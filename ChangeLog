@@ -1,3 +1,11 @@
+2003-06-05 Thursday 22:14  d_sergienko
+
+	* sqpack.c (1.100): speedup processing areas
+
+2003-06-05 Thursday 21:06  d_sergienko
+
+	* sqpack.c (1.99): small speedup
+
 2003-05-30 Friday 20:51  d_sergienko
 
 	* sqpack.c (1.98): warn if no area found by supplied mask
