@@ -7,8 +7,8 @@ Unix:
    linux reside:
 
    /usr/src/packages/        -> smapi/
-                             -> hpt/
                              -> fidoconfig/
+			     -> sqpack/
 
 2. compile sqPack
 
