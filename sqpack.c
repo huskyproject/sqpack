@@ -570,7 +570,7 @@ void purgeArea(s_area *area)
 	char *oldName = area -> fileName;
 	char *newName;
 	HAREA oldArea, newArea = NULL;
-	dword highMsg, i, j, numMsg;
+	dword highMsg, i, j, numMsg, hw;
 	int areaType = area -> msgbType & (MSGTYPE_JAM | MSGTYPE_SQUISH | MSGTYPE_SDM);
 
 	UINT32 *oldLastread, *newLastread = NULL;
@@ -603,6 +603,7 @@ void purgeArea(s_area *area)
 
 		highMsg = MsgGetHighMsg(oldArea);
 		numMsg = MsgGetNumMsg(oldArea);
+		if (areaType != MSGTYPE_SDM) hw = MsgGetHighWater(oldArea);
 		readLastreadFile(oldName, &oldLastread, &lcount, oldArea, areaType);
 		if (oldLastread) {
 			newLastread = (UINT32 *) malloc(lcount * sizeof(UINT32));
@@ -671,8 +672,12 @@ void purgeArea(s_area *area)
 		writeLastreadFile(oldName, newLastread, lcount, newArea, areaType);
 
 		MsgCloseArea(oldArea);
-		if (areaType != MSGTYPE_SDM)
-			MsgCloseArea(newArea);
+		if (areaType != MSGTYPE_SDM) {
+        	    if ((numMsg - msgCopied) > hw) hw=0;
+	            else hw -= (numMsg - msgCopied);
+		    MsgSetHighWater(newArea, hw);
+		    MsgCloseArea(newArea);
+		}
 
 		printf("   oldMsg: %lu   newMsg: %lu\n", (unsigned long)numMsg, msgCopied);
         totaloldMsg+=numMsg; totalmsgCopied+=msgCopied; // total
