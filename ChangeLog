@@ -2,6 +2,11 @@ sqpack 1.0.3
 ------------
 
 ----- cvs ci ------
+Tue Feb  8 00:07:06 NOVT 2000
+max (patch from Alex Bronin 2:5049/36):
+* print total statistic after packing
+
+----- cvs ci ------
 Fri Feb  4 00:34:29 NOVT 2000
 max:
 - lastread recalculation in sqpack (patch from Serguei)

@@ -37,6 +37,7 @@
 */
 
 unsigned long msgCopied, msgProcessed; // per Area
+unsigned long totaloldMsg, totalmsgCopied;
 
 void readLastreadFile(char *fileName, UINT32 **lastreadp, ULONG *lcountp,
 		      HAREA area)
@@ -367,6 +368,7 @@ void purgeArea(s_area *area)
 		MsgCloseArea(newArea);
 
 		printf("   oldMsg: %u   newMsg: %u\n", numMsg, msgCopied);
+        totaloldMsg+=numMsg; totalmsgCopied+=msgCopied; // total
 		
 		free(oldLastread);
 		free(newLastread);
@@ -423,6 +425,7 @@ int main() {
          // purge local areas
 	 handleArea(&(cfg->localAreas[i]));
       disposeConfig(cfg);
+      printf("\ntotal oldMsg: %u   total newMsg: %u\n", totaloldMsg, totalmsgCopied);
       return 0;
    } else {
       printf("Could not read fido config\n");
