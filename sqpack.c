@@ -230,7 +230,7 @@ void purgeArea(s_area area)
    strcat(newName, "_tmp");
 
    oldArea = MsgOpenArea((byte *) oldName, MSGAREA_NORMAL, MSGTYPE_SQUISH);
-   newArea = MsgOpenArea((byte *) newName, MSGAREA_CREATE, MSGTYPE_SQUISH);
+   if (oldArea) newArea = MsgOpenArea((byte *) newName, MSGAREA_CREATE, MSGTYPE_SQUISH);
 
    if ((oldArea != NULL) && (newArea != NULL)) {
       ULONG lcount;
