@@ -1,3 +1,16 @@
+2002-07-22 Monday 13:56  mche
+
+	* makefile.mvcdll (1.2): corrected file cleaning
+
+2002-07-22 Monday 12:01  stas
+
+	* sqpack.c (1.65): Expand log messages (warning level)
+
+2002-07-22 Monday 11:43  stas
+
+	* sqpack.c (1.64): Use new openLog() calling style: pass filename
+	without path
+
 2002-07-17 Wednesday 16:36  stas
 
 	* sqpack.c (1.63): print version and End string into log
