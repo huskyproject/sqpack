@@ -709,7 +709,7 @@ void purgeArea(s_area *area)
             strncpy(oldmsgname, oldName, PATHLEN);
             Add_Trailing(oldmsgname, PATH_DELIM);
             strncpy(newmsgname, oldmsgname, PATHLEN);
-            pathlen = strlen(oldName);
+            pathlen = strlen(oldmsgname);
             for (i = 1; i <= numMsg; i++) {
                 j = MsgMsgnToUid(oldArea, i);
                 if (i == j) continue;
