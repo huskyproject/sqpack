@@ -59,6 +59,7 @@
 
 unsigned long msgCopied, msgProcessed; /*  per Area */
 unsigned long totaloldMsg, totalmsgCopied;
+unsigned long totalOldBaseSize, totalNewBaseSize;
 int lock_fd;
 
 void SqReadLastreadFile(char *fileName, UINT32 **lastreadp, ULONG *lcountp,
@@ -620,7 +621,9 @@ void renameArea(int areaType, char *oldName, char *newName)
 
     }
 
-    w_log( LL_STAT, "Old size: %lu, new size: %lu", oldsize, newsize );
+    w_log(  LL_STAT, "      old size:%10lu; new size:%10lu", oldsize, newsize );
+
+    totalOldBaseSize+=oldsize, totalNewBaseSize+=newsize;
     nfree(oldTmp);
     nfree(newTmp);
     w_log(LL_FUNC, "renameArea() end");
@@ -737,9 +740,8 @@ void purgeArea(s_area *area)
             MsgCloseArea(newArea);
         }
 
-        w_log(LL_STAT, "OldMsg: %lu; NewMsg: %lu", (unsigned long)numMsg, msgCopied);
+        w_log(  LL_STAT, "      old  msg:%10lu; new  msg:%10lu", (unsigned long)numMsg, msgCopied);
         totaloldMsg+=numMsg; totalmsgCopied+=msgCopied; /*  total */
-
         nfree(oldLastread);
         nfree(newLastread);
 
@@ -902,8 +904,11 @@ int main(int argc, char **argv) {
         /*  purge local areas */
         doArea(&(config->localAreas[i]), argv[1]);
 
-    w_log(LL_SUMMARY,"Total oldMsg: %lu; total newMsg: %lu",
+    w_log(LL_SUMMARY,"Total old  msg:%10lu; new  msg:%10lu",
         (unsigned long)totaloldMsg, (unsigned long)totalmsgCopied);
+    w_log(LL_SUMMARY,"Total old size:%10lu; new size:%10lu",
+        (unsigned long)totalOldBaseSize, (unsigned long)totalNewBaseSize);
+
     w_log(LL_STOP,"End");
     closeLog();
     if (config->lockfile) {
