@@ -181,12 +181,10 @@ int processMsg(dword msgNum, dword numMsg, HAREA oldArea, HAREA newArea,
         ctrlLen = MsgGetCtrlLen(msg);
 
         text = (char *) malloc(textLen+1);
-
-        // Vlad Pluzhnikov
-        // Crashed on some msg (Watcom/NT). FIX me !!!
-        memset(text,0,textLen+1);
+        text[textLen] = '\0';
 
         ctrlText = (char *) malloc(ctrlLen+1);
+        ctrlText[ctrlLen] = '\0';
 
         MsgReadMsg(msg, NULL, 0, textLen, (byte*)text, ctrlLen, (byte*)ctrlText);
         newMsg = MsgOpenMsg(newArea, MOPEN_CREATE, 0);

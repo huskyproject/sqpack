@@ -2,6 +2,11 @@ sqpack 1.0.4
 ------------
 
 ----- cvs ci ------
+Fri Apr  7 11:24:49 MSD 2000
+max (patch from Vlad Pluzhnikov):
+* add /0 after MsgReadMsg
+
+----- cvs ci ------
 Tue Mar 28 15:25:58 MSD 2000
 max (patch from Serguei Revtov):
 * fix lastread problem
