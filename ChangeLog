@@ -1,3 +1,8 @@
+2003-06-17 Tuesday 08:53  mche
+
+	* sqpack.c (1.102): fix warning C4715: 'renameArea' : not all
+	control paths return a value
+
 2003-06-16 Monday 17:16  d_sergienko
 
 	* sqpack.c (1.101): make some checks
