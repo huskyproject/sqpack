@@ -10,7 +10,3 @@ sqpack still goos on purging messages, and in this process copies only
 part of large message-bases, and does not keep the old one, when it
 runs out of disk-space. I have twice lost an important number of
 messages now this way.
-
-Max Levenkov:
-
- Core dumps on JAM bases (sometimes).
