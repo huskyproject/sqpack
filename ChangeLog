@@ -1,3 +1,16 @@
+2003-06-19 Thursday 14:52  lmike
+
+	* sqpack.qpg (1.1): Added qpg file for automative packaging under
+	QNX6.
+
+2003-06-19 Thursday 14:46  lmike
+
+	* makefile.qnx (1.2): Fixed library and headers search pathes.
+
+2003-06-19 Thursday 14:16  lmike
+
+	* makefile.qnx (1.1): Added QNX make file
+
 2003-06-17 Tuesday 08:53  mche
 
 	* sqpack.c (1.102): fix warning C4715: 'renameArea' : not all
