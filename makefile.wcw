@@ -1,18 +1,35 @@
+# include Husky-Makefile-Config
+!include ..\huskymak.cfg
+
 CC = wcl386
-CFLAGS = -zq -wx -bt=nt -j -l=nt -i=..\fidoconfig;..\smapi;
+
+!IF $(DEBUG) == 1
+  CFLAGS = -d2 -zq -wx -bt=nt -j -l=nt -i=$(INCDIR);
+!ELSE
+  CFLAGS = -zq -wx -bt=nt -j -l=nt -i=$(INCDIR);
+!ENDIF
+
 COPT = -oneatx -5
+
 LIB = wlib
-LIBS = ..\smapi\smapiwcw.lib ..\fidoconfig\fidoconfig.lib
+LIBS = $(LIBDIR)\smapiwcw.lib $(LIBDIR)\fidoconfig.lib
 
 OBJS = sqpack.obj
 
 .c.obj:
-        $(CC) $(CFLAGS) $(COPT) -c $<
+	$(CC) $(CFLAGS) $(COPT) -c $<
 
 all:    $(OBJS) sqpack.exe
 
 sqpack.exe:
-        $(CC) $(CFLAGS) $(COPT) $(OBJS) $(LIBS)
+	$(CC) $(CFLAGS) $(COPT) $(OBJS) $(LIBS)
 
 clean:
-        del *.exe *.obj *.bak *.lib
+	del *.obj *.bak *.lib
+
+distclean: clean
+	del *.exe
+
+install:
+	copy sqpack.exe $(BINDIR)
+
