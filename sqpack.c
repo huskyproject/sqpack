@@ -721,7 +721,7 @@ int main(int argc, char **argv) {
    unsigned int i;
    struct _minf m;
 
-   printf("sqpack v1.1.0\n");
+   printf("sqpack v1.3.0-current\n");
 
    if (argc!=2) {
 	   if (argc>2) printf("too many arguments!\n");
