@@ -760,7 +760,7 @@ void handleArea(s_area *area)
   if ((area -> msgbType & MSGTYPE_SQUISH) == MSGTYPE_SQUISH ||
       (area -> msgbType & MSGTYPE_JAM) == MSGTYPE_JAM ||
       (area -> msgbType & MSGTYPE_SDM) == MSGTYPE_SDM) {
-    printf("%s\n", area -> areaName);
+    w_log(LL_INFO, "%s", area -> areaName);
     msgCopied = 0;
     msgProcessed = 0;
     purgeArea(area);
@@ -790,7 +790,7 @@ int main(int argc, char **argv) {
 	   cfg = readConfig(NULL);
 
 	   if (cfg != NULL ) {
-                   if( openLog( LOGFILE, PROGRAM_NAME, cfg) )
+                   if( !openLog( LOGFILE, PROGRAM_NAME, cfg) )
                      fprintf(stderr, "Can't init log! Use stderr instead.\n");
         	   m.req_version = 0;
         	   m.def_zone = cfg->addr[0].zone;
