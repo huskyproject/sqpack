@@ -558,14 +558,14 @@ void updateMsgLinks(UINT32 msgNum, HAREA area, UINT32 rmCount, UINT32 *rmMap, in
     if ((areaType & MSGTYPE_SQUISH) == MSGTYPE_SQUISH)
         for (i = 0; i < MAX_REPLY; i++)
             xmsg.replies[i] = getShiftedNum(xmsg.replies[i], rmCount, rmMap);
-        else {
-            xmsg.replies[0] = getShiftedNum(xmsg.replies[0], rmCount, rmMap);
-            xmsg.xmreplynext = getShiftedNum(xmsg.xmreplynext, rmCount, rmMap);
-        }
+    else {
+        xmsg.replies[0] = getShiftedNum(xmsg.replies[0], rmCount, rmMap);
+        xmsg.xmreplynext = getShiftedNum(xmsg.xmreplynext, rmCount, rmMap);
+    }
 
-        MsgWriteMsg(msg, 0, &xmsg, NULL, 0, 0, 0, NULL);
-        MsgCloseMsg(msg);
-        w_log(LL_FUNC, "updateMsgLinks() end");
+    MsgWriteMsg(msg, 0, &xmsg, NULL, 0, 0, 0, NULL);
+    MsgCloseMsg(msg);
+    w_log(LL_FUNC, "updateMsgLinks() end");
 }
 
 
@@ -693,7 +693,7 @@ void purgeArea(s_area *area)
 
         removeMap = (UINT32 *) calloc(2, sizeof(UINT32));
 
-        for (i = j = 1; i <= highMsg; i++, j++) {
+        for (i = j = 1; i <= numMsg; i++, j++) {
             if (!processMsg(j, numMsg, oldArea, newArea, area,
                 removeMap[1])) {
                 if (!(rmIndex & 1)) {
@@ -711,29 +711,28 @@ void purgeArea(s_area *area)
             };
         };
 
-        if (rmIndex && areaType == MSGTYPE_SDM) {
-            /* renumber the area */
-            char oldmsgname[PATHLEN], newmsgname[PATHLEN];
-            for (i = j = 1; i <= highMsg; i++) {
-                strncpy(oldmsgname, oldName, PATHLEN);
-                Add_Trailing(oldmsgname, PATH_DELIM);
-                strncpy(newmsgname, oldmsgname, PATHLEN);
-                sprintf(oldmsgname+strlen(oldmsgname), "%u.msg", (unsigned int)i);
-                sprintf(newmsgname+strlen(newmsgname), "%u.msg", (unsigned int)j);
-                if (access(oldmsgname, 0))
-                    continue;
-                if (i == j) {
-                    j++;
-                    continue;
-                }
-                if (rename(oldmsgname, newmsgname) == 0)
-                    j++;
-            }
+        if (rmIndex) {
+            for (i = 1; i <= numMsg; i++)
+                updateMsgLinks(i, newArea, rmIndex + 1, removeMap, areaType);
         }
 
-        if (rmIndex > 2) { /* there were several areas with deleted msgs */
-            for (j = 1; j <= highMsg; j++)
-                updateMsgLinks(i, newArea, rmIndex + 1, removeMap, areaType);
+        if (areaType == MSGTYPE_SDM) {
+            /* renumber the area */
+            /* TODO: update replylinks */
+            char oldmsgname[PATHLEN], newmsgname[PATHLEN];
+            int  pathlen;
+            numMsg = MsgGetNumMsg(oldArea);
+            strncpy(oldmsgname, oldName, PATHLEN);
+            Add_Trailing(oldmsgname, PATH_DELIM);
+            strncpy(newmsgname, oldmsgname, PATHLEN);
+            pathlen = strlen(oldName);
+            for (i = 1; i <= numMsg; i++) {
+                j = MsgMsgnToUid(oldArea, i);
+                if (i == j) continue;
+                sprintf(oldmsgname+pathlen, "%u.msg", (unsigned int)j);
+                sprintf(newmsgname+pathlen, "%u.msg", (unsigned int)i);
+                rename(oldmsgname, newmsgname);
+            }
         }
 
         if (rmIndex) { /* someting was removed, maybe need to update lastreadfile */
