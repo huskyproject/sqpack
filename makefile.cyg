@@ -1,3 +1,8 @@
+# $Id$
+# Legacy makefile for Cygwin
+# Usage:
+# make -f makefile.cyg
+
 CC      = gcc
 COPT=   -O2 -DNT -D__NT__ -DWINNT -D__CYG__ -I. -I.. -Wall -pedantic -c -Wno-char-subscripts -mno-cygwin
 LFLAGS=-mno-cygwin
