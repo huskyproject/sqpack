@@ -850,7 +850,7 @@ void handleArea(s_area *area)
 
 void doArea(s_area *area, char *cmp)
 {
-    if (patimat(area->areaName,cmp)) handleArea(area);
+    if(area) if (patimat(area->areaName,cmp)) handleArea(area);
 }
 
 int main(int argc, char **argv) {
@@ -864,65 +864,66 @@ int main(int argc, char **argv) {
     if (argc!=2) {
         if (argc>2) printf("too many arguments!\n");
         printf ("Usage: sqpack <areamask>\n");
-    } else {
+        return 0;
+    }
 
-        setvar("module", "sqpack");
-        config = readConfig(NULL);
+    setvar("module", "sqpack");
+    config = readConfig(NULL);
 
-        if (config != NULL ) {
-            if (config->lockfile) {
-                lock_fd = lockFile(config->lockfile, config->advisoryLock);
-                if( lock_fd < 0 )
-                {
-                    disposeConfig(config);
-                    exit(EX_CANTCREAT);
-                }
-            }
-            openLog(LOGFILE, PROGRAM_NAME, config);
-            w_log(LL_START, "Start");
-            m.req_version = 0;
-            m.def_zone = config->addr[0].zone;
-            if (MsgOpenApi(&m)!= 0) {
-                w_log(LL_CRIT,"MsgOpenApi Error. Exit.");
-                closeLog();
-                if (config->lockfile) {
-                    FreelockFile(config->lockfile ,lock_fd);
-                }
-                disposeConfig(config);
-                exit(1);
-            }
+    if (!config) {
+        printf("Could not read fido config\n");
+        return 1;
+    }
 
-            // purge dupe area
-            doArea(&(config->dupeArea), argv[1]);
-            // purge bad area
-            doArea(&(config->badArea), argv[1]);
-
-            for (i=0; i < config->netMailAreaCount; i++)
-                // purge netmail areas
-                doArea(&(config->netMailAreas[i]), argv[1]);
-
-            for (i=0; i < config->echoAreaCount; i++)
-                // purge echomail areas
-                doArea(&(config->echoAreas[i]), argv[1]);
-
-            for (i=0; i < config->localAreaCount; i++)
-                // purge local areas
-                doArea(&(config->localAreas[i]), argv[1]);
-
-            w_log(LL_SUMMARY,"Total oldMsg: %lu; total newMsg: %lu",
-                (unsigned long)totaloldMsg, (unsigned long)totalmsgCopied);
-            w_log(LL_STOP,"End");
-            closeLog();
-            if (config->lockfile) {
-                FreelockFile(config->lockfile ,lock_fd);
-            }
+    if (config->lockfile) {
+        lock_fd = lockFile(config->lockfile, config->advisoryLock);
+        if( lock_fd < 0 )
+        {
             disposeConfig(config);
-            return 0;
-
-        } else {
-            printf("Could not read fido config\n");
-            return 1;
+            exit(EX_CANTCREAT);
         }
     }
+    openLog(LOGFILE, PROGRAM_NAME, config);
+    w_log(LL_START, "Start");
+    m.req_version = 0;
+    m.def_zone = config->addr[0].zone;
+    if (MsgOpenApi(&m)!= 0) {
+        w_log(LL_CRIT,"MsgOpenApi Error. Exit.");
+        closeLog();
+        if (config->lockfile) {
+            FreelockFile(config->lockfile ,lock_fd);
+        }
+        disposeConfig(config);
+        exit(1);
+    }
+
+    /* purge dupe area */
+    if(config->dupeArea.areaName && config->dupeArea.fileName)
+       doArea(&(config->dupeArea), argv[1]);
+    /* purge bad area  */
+    if(config->badArea.areaName && config->badArea.fileName)
+       doArea(&(config->badArea), argv[1]);
+
+    for (i=0; i < config->netMailAreaCount; i++)
+        // purge netmail areas
+        doArea(&(config->netMailAreas[i]), argv[1]);
+
+    for (i=0; i < config->echoAreaCount; i++)
+        // purge echomail areas
+        doArea(&(config->echoAreas[i]), argv[1]);
+
+    for (i=0; i < config->localAreaCount; i++)
+        // purge local areas
+        doArea(&(config->localAreas[i]), argv[1]);
+
+    w_log(LL_SUMMARY,"Total oldMsg: %lu; total newMsg: %lu",
+        (unsigned long)totaloldMsg, (unsigned long)totalmsgCopied);
+    w_log(LL_STOP,"End");
+    closeLog();
+    if (config->lockfile) {
+        FreelockFile(config->lockfile ,lock_fd);
+    }
+    disposeConfig(config);
     return 0;
+
 }
