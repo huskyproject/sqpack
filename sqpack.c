@@ -745,9 +745,15 @@ void purgeArea(s_area *area)
     else {
         if (oldArea) {
             MsgCloseArea(oldArea);
-            w_log(LL_ERR, "Could not create %s.", newName);
+            if (areaType & MSGTYPE_SDM )
+              w_log(LL_ERR, "Could not create '%s%c*.msg'!", newName, PATH_DELIM );
+            else
+              w_log(LL_ERR, "Could not create '%s.*'!", newName );
         }else{
-            w_log(LL_ERR, "Could not open %s.", oldName);
+            if (areaType & MSGTYPE_SDM )
+              w_log(LL_ERR, "Could not open '%s%c*.msg'!", oldName, PATH_DELIM );
+            else
+              w_log(LL_ERR, "Could not open '%s.*'!", oldName );
         }
     }
     free(newName);
@@ -760,7 +766,11 @@ void handleArea(s_area *area)
     if ((area -> msgbType & MSGTYPE_SQUISH) == MSGTYPE_SQUISH ||
         (area -> msgbType & MSGTYPE_JAM) == MSGTYPE_JAM ||
         (area -> msgbType & MSGTYPE_SDM) == MSGTYPE_SDM) {
-        w_log(LL_INFO, "%s", area -> areaName);
+        w_log( LL_INFO, "Purge area %s (%s)", area -> areaName,
+               area -> msgbType & MSGTYPE_SQUISH ? "squish" : 
+                              area -> msgbType & MSGTYPE_JAM ? "jam" :
+                              area -> msgbType & MSGTYPE_SDM ? "msg/OPUS" : "unknown type"
+             );
         msgCopied = 0;
         msgProcessed = 0;
         purgeArea(area);
