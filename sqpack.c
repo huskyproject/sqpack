@@ -1,3 +1,27 @@
+/* $Id$ */
+/*****************************************************************************
+ * SqPack --- FTN squish-format messagebase packer
+ *****************************************************************************
+ * Copyright (C) 1997-1999
+ *
+ * This file is part of HUSKY Fidonet Software project.
+ *
+ * SQPACK is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by the
+ * Free Software Foundation; either version 2, or (at your option) any
+ * later version.
+ *
+ * SQPACK is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with HPT; see the file COPYING.  If not, write to the Free
+ * Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+ *****************************************************************************
+ */
+
 #include <stdio.h>
 #include <errno.h>
 #include <time.h>
@@ -36,19 +60,9 @@
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 #include <share.h>
 #endif
-#ifdef _MAKE_DLL_MVC_    
+#ifdef _MAKE_DLL_MVC_
 #define SH_DENYNO _SH_DENYNO
 #endif
-/* Changes
-  v1.0.4
-        SMS Packing ALL areas
-  v1.0.3
-	K.N. Sqpack now newer thrashes reply links. Works fine for me.
-	PS	There is something strange about all this code: it worked
-		fine for the first time, without any debugging. Be prepared for
-		bugs ;)
-	Also allows additional customization: kill read and keep unread
-*/
 
 unsigned long msgCopied, msgProcessed; // per Area
 unsigned long totaloldMsg, totalmsgCopied;
@@ -405,24 +419,24 @@ int processMsg(dword msgNum, dword numMsg, HAREA oldArea, HAREA newArea,
     char *text, *ctrlText;
     dword  textLen, ctrlLen;
     int unsent, i, rc = 0;
-    
+
     //   unsigned long offset;
-    
+
     msg = MsgOpenMsg(oldArea, MOPEN_RW, msgNum);
     if (msg == NULL) return rc;
-    
+
     if (MsgReadMsg(msg, &xmsg, 0, 0, NULL, 0, NULL)<0) {
         MsgCloseMsg(msg);
         msgProcessed++;
         return rc;
     }
-    
+
     unsent = ((xmsg.attr & MSGLOCAL) && !(xmsg.attr & MSGSENT)) || (xmsg.attr & MSGLOCKED);
-    
+
     if ( unsent || (((area -> max == 0) || ((numMsg - msgProcessed + msgCopied) <= area -> max) ||
         (area -> keepUnread && !(xmsg.attr & MSGREAD))) && !((xmsg.attr & MSGREAD) && area -> killRead))) {
         //only max msgs should be in new area
-        
+
         if (xmsg.attr & MSGLOCAL) {
             DosDate_to_TmDate((SCOMBO*)&(xmsg.date_written), &tmTime);
         } else {
@@ -432,12 +446,12 @@ int processMsg(dword msgNum, dword numMsg, HAREA oldArea, HAREA newArea,
         xmsg.date_arrived), &tmTime);*/
         ttime = mktime(&tmTime);
         if (ttime == 0xfffffffflu) ttime = 0; /* emx */
-        
+
         if (unsent || (area -> purge == 0) || ttime == 0 ||
             (abs(actualTime - ttime) <= (area -> purge * 24 *60 * 60))) {
             xmsg.replyto = MsgUidToMsgn(oldArea, xmsg.replyto, UID_EXACT) > shift ? MsgUidToMsgn(oldArea, xmsg.replyto, UID_EXACT) - shift : 0;
             if ((area->msgbType & MSGTYPE_SQUISH) == MSGTYPE_SQUISH){
-                
+
                 for (i = 0; i < MAX_REPLY; i++)
                     xmsg.replies[i] = MsgUidToMsgn(oldArea, xmsg.replies[i], UID_EXACT) > shift ? MsgUidToMsgn(oldArea, xmsg.replies[i], UID_EXACT) - shift : 0;
             }else {
@@ -447,15 +461,15 @@ int processMsg(dword msgNum, dword numMsg, HAREA oldArea, HAREA newArea,
             // copy msg
             textLen = MsgGetTextLen(msg);
             ctrlLen = MsgGetCtrlLen(msg);
-            
+
             text = (char *) malloc(textLen+1);
             text[textLen] = '\0';
-            
+
             ctrlText = (char *) malloc(ctrlLen+1);
             ctrlText[ctrlLen] = '\0';
-            
+
             MsgReadMsg(msg, NULL, 0, textLen, (byte*)text, ctrlLen, (byte*)ctrlText);
-            
+
             if (area->msgbType & MSGTYPE_SDM)
                 MsgWriteMsg(msg, 0, &xmsg, (byte*)text, textLen, textLen, ctrlLen, (byte*)ctrlText);
             else {
@@ -463,13 +477,13 @@ int processMsg(dword msgNum, dword numMsg, HAREA oldArea, HAREA newArea,
                 MsgWriteMsg(newMsg, 0, &xmsg, (byte*)text, textLen, textLen, ctrlLen, (byte*)ctrlText);
                 MsgCloseMsg(newMsg);
             }
-            
+
             msgCopied++;
             free(text);
             free(ctrlText);
             rc = 1;
         }
-        
+
     }
     MsgCloseMsg(msg);
     msgProcessed++;
@@ -732,34 +746,38 @@ int main(int argc, char **argv) {
 	   cfg = readConfig(NULL);
 
 	   if (cfg != NULL ) {
-		   m.req_version = 0;
-		   m.def_zone = cfg->addr[0].zone;
-		   if (MsgOpenApi(&m)!= 0) {
-			   printf("MsgOpenApi Error.\n");
-			   exit(1);
-		   }
+                   if( openLog( LOGFILE, program_name, config) )
+                     fprintf(stderr, "Can't init log! Use stderr instead.\n");
+        	   m.req_version = 0;
+        	   m.def_zone = cfg->addr[0].zone;
+        	   if (MsgOpenApi(&m)!= 0) {
+        		   printf("MsgOpenApi Error.\n");
+        		   exit(1);
+        	   }
 
-		   // purge dupe area
-		   doArea(&(cfg->dupeArea), argv[1]);
-		   // purge bad area
-		   doArea(&(cfg->badArea), argv[1]);
+        	   // purge dupe area
+        	   doArea(&(cfg->dupeArea), argv[1]);
+        	   // purge bad area
+        	   doArea(&(cfg->badArea), argv[1]);
 
-		   for (i=0; i < cfg->netMailAreaCount; i++)
-			   // purge netmail areas
-			   doArea(&(cfg->netMailAreas[i]), argv[1]);
+        	   for (i=0; i < cfg->netMailAreaCount; i++)
+        		   // purge netmail areas
+        		   doArea(&(cfg->netMailAreas[i]), argv[1]);
 
-		   for (i=0; i < cfg->echoAreaCount; i++)
-			   // purge echomail areas
-			   doArea(&(cfg->echoAreas[i]), argv[1]);
+        	   for (i=0; i < cfg->echoAreaCount; i++)
+        		   // purge echomail areas
+        		   doArea(&(cfg->echoAreas[i]), argv[1]);
 
-		   for (i=0; i < cfg->localAreaCount; i++)
-			   // purge local areas
-			   doArea(&(cfg->localAreas[i]), argv[1]);
+        	   for (i=0; i < cfg->localAreaCount; i++)
+        		   // purge local areas
+        		   doArea(&(cfg->localAreas[i]), argv[1]);
 
-		   disposeConfig(cfg);
-		   printf("\ntotal oldMsg: %lu   total newMsg: %lu\n",
-				  (unsigned long)totaloldMsg, (unsigned long)totalmsgCopied);
-		   return 0;
+        	   disposeConfig(cfg);
+        	   printf("\ntotal oldMsg: %lu   total newMsg: %lu\n",
+        			  (unsigned long)totaloldMsg, (unsigned long)totalmsgCopied);
+        	   return 0;
+                   closeLog();
+
 	   } else {
 		   printf("Could not read fido config\n");
 		   return 1;
