@@ -673,6 +673,7 @@ void purgeArea(s_area *area)
     if ((oldArea != NULL) && (newArea != NULL)) {
         ULONG lcount;
 
+        MsgLock(oldArea);
         highMsg = MsgGetHighMsg(oldArea);
         numMsg = MsgGetNumMsg(oldArea);
         if (areaType != MSGTYPE_SDM) hw = MsgGetHighWater(oldArea);
@@ -742,6 +743,7 @@ void purgeArea(s_area *area)
 
         writeLastreadFile(oldName, newLastread, lcount, newArea, areaType);
 
+        MsgUnlock(oldArea);
         MsgCloseArea(oldArea);
         if (areaType != MSGTYPE_SDM) {
             if ((numMsg - msgCopied) > hw) hw=0;
