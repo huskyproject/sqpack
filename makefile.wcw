@@ -1,5 +1,5 @@
 CC = wcl386
-CFLAGS = -zq -wx -bt=nt -l=nt -i=..\fidoconfig;..\smapi;
+CFLAGS = -zq -wx -bt=nt -l=nt -zp=1 -i=..\fidoconfig;..\smapi;
 COPT = -oneatx -5
 LIB = wlib
 LIBS = ..\smapi\smapiwcw.lib ..\fidoconfig\fidoconfig.lib
