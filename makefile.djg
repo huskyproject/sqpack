@@ -11,7 +11,7 @@ LIBS = ../fidoconf/fconfdjg.a ../smapi/smapidjg.a
 all : sqpack.exe
 
 sqpack.exe: sqpack.c
-	$(CC) $(COPT) $^ -o $@
+	$(CC) $(COPT) $^ -o $@ $(LIBS)
 
 clean:
 	-del *.obj
