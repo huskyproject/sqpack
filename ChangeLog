@@ -1,3 +1,13 @@
+2002-09-09 Monday 10:18  sfpavel
+
+	* sqpack.c, debian/changelog, debian/rules
+	(sqpack-1_2-stable.[3,7,3]): Fix init of 'hw' variable
+
+2002-09-09 Monday 05:34  stas_degteff
+
+	* BUGS (sqpack-1_2-stable.1): Add information about big
+	messagebases bug (low memory & etc)
+
 2002-08-27 Tuesday 10:44  sfpavel
 
 	* debian/rules (sqpack-1_2-stable.2): Fix debian/rules clean
