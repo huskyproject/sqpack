@@ -452,7 +452,7 @@ int processMsg(dword msgNum, dword numMsg, HAREA oldArea, HAREA newArea,
 
     if ( unsent || (((area -> max == 0) || ((numMsg - msgProcessed + msgCopied) <= area -> max) ||
         (area -> keepUnread && !(xmsg.attr & MSGREAD))) && !((xmsg.attr & MSGREAD) && area -> killRead))) {
-        //only max msgs should be in new area
+        /*only max msgs should be in new area*/
 
         if (xmsg.attr & MSGLOCAL) {
             DosDate_to_TmDate((SCOMBO*)&(xmsg.date_written), &tmTime);
@@ -654,16 +654,15 @@ void purgeArea(s_area *area)
     w_log(LL_FUNC, "purgeArea() begin");
     if (area->nopack) {
         printf("   No purging needed!\n");
+        w_log(LL_FUNC, "purgeArea() end");
         return;
     }
 
-    //generated tmp-FileName
+    /* generated tmp-FileName */
     xstrscat(&newName, oldName, "_tmp", NULL);
 
-    /*oldArea = MsgOpenArea((byte *) oldName, MSGAREA_NORMAL, -1, -1, -1, MSGTYPE_SQUISH);*/
     oldArea = MsgOpenArea((byte *) oldName, MSGAREA_NORMAL, (word) areaType);
 
-    /*if (oldArea) newArea = MsgOpenArea((byte *) newName, MSGAREA_CREATE, area.fperm, area.uid, area.gid,MSGTYPE_SQUISH);*/
     if (oldArea) {
         if (areaType == MSGTYPE_SDM)
             newArea = oldArea;
