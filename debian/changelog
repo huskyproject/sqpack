@@ -1,4 +1,4 @@
-sqpack (1.1.0-2) stable; urgency=low
+sqpack (1.2.0-1) stable; urgency=low
 
   * NMU. Joerg, big thanks for Debian packages! But we don't see you now
     :-(
