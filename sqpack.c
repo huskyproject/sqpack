@@ -77,7 +77,7 @@ void SqReadLastreadFile(char *fileName, UINT32 **lastreadp, ULONG *lcountp,
          temp = buffer[0] + (((unsigned long)(buffer[1])) << 8) +
                 (((unsigned long)(buffer[2])) << 16) +
                 (((unsigned long)(buffer[3])) << 24);
-         (*lastreadp)[i] = MsgUidToMsgn(area, temp, UID_NEXT);
+         (*lastreadp)[i] = MsgUidToMsgn(area, temp, UID_PREV);
       }
 
       close(fd);
@@ -153,8 +153,8 @@ void JamReadLastreadFile(char *fileName, UINT32 **lastreadp, ULONG *lcountp,
       
       for (i = 0; i < *lcountp; i++) {
          read(fd, &lread, sizeof(JAMLREAD));
-         (*lastreadp)[i*2] = MsgUidToMsgn(area, lread.LastReadMsg, UID_NEXT);
-         (*lastreadp)[i*2+1] = MsgUidToMsgn(area, lread.HighReadMsg, UID_NEXT);
+         (*lastreadp)[i*2] = MsgUidToMsgn(area, lread.LastReadMsg, UID_PREV);
+         (*lastreadp)[i*2+1] = MsgUidToMsgn(area, lread.HighReadMsg, UID_PREV);
       }
 
       close(fd);
@@ -228,7 +228,7 @@ void SdmReadLastreadFile(char *fileName, UINT32 **lastreadp, ULONG *lcountp,
       
       for (i = 0; i < *lcountp; i++) {
          read(fd, &temp, 2);
-         (*lastreadp)[i] = MsgUidToMsgn(area, temp, UID_NEXT);
+         (*lastreadp)[i] = MsgUidToMsgn(area, temp, UID_PREV);
       }
 
       close(fd);
@@ -353,10 +353,11 @@ int processMsg(dword msgNum, dword numMsg, HAREA oldArea, HAREA newArea,
 
      if (unsent || (area -> purge == 0) || ttime == 0 ||
          (abs(actualTime - ttime) <= (area -> purge * 24 *60 * 60))) {
-	xmsg.replyto = xmsg.replyto > shift ? xmsg.replyto - shift : 0;
-	xmsg.xmreplynext = xmsg.xmreplynext > shift ? xmsg.xmreplynext - shift : 0;
+	xmsg.replyto = MsgUidToMsgn(oldArea, xmsg.replyto, UID_EXACT) > shift ? MsgUidToMsgn(oldArea, xmsg.replyto, UID_EXACT) - shift : 0;
+	// xmreplynext is #define to replies[MAX_REPLY-1]
+	// xmsg.xmreplynext = xmsg.xmreplynext > shift ? xmsg.xmreplynext - shift : 0;
 	for (i = 0; i < MAX_REPLY; i++)
-		xmsg.replies[i] = xmsg.replies[i] > shift ? xmsg.replies[i] - shift : 0; 
+		xmsg.replies[i] = MsgUidToMsgn(oldArea, xmsg.replies[i], UID_EXACT) > shift ? MsgUidToMsgn(oldArea, xmsg.replies[i], UID_EXACT) - shift : 0; 
 	// copy msg
         textLen = MsgGetTextLen(msg);
         ctrlLen = MsgGetCtrlLen(msg);
@@ -413,7 +414,8 @@ void updateMsgLinks(UINT32 msgNum, HAREA area, UINT32 rmCount, UINT32 *rmMap)
    MsgReadMsg(msg, &xmsg, 0, 0, NULL, 0, NULL);
 	
    xmsg.replyto = getShiftedNum(xmsg.replyto, rmCount, rmMap);
-   xmsg.xmreplynext = getShiftedNum(xmsg.xmreplynext, rmCount, rmMap);
+   // xmreplynext is #define to replies[MAX_REPLY-1]
+   // xmsg.xmreplynext = getShiftedNum(xmsg.xmreplynext, rmCount, rmMap);
    for (i = 0; i < MAX_REPLY; i++)
 	xmsg.replies[i] = getShiftedNum(xmsg.replies[i], rmCount, rmMap);
    
@@ -569,11 +571,11 @@ void purgeArea(s_area *area)
 		if (rmIndex) { /* someting was removed, maybe need to update lastreadfile */
 		   for (j = 0; j < lcount; j++) {
 		      for (i=0; i<rmIndex; i+=2) {
-			 if (oldLastread[j] > removeMap[i]) {
+			 if (oldLastread[j] >= removeMap[i]) {
 			    if (oldLastread[j] > removeMap[i] + removeMap[i+1]) {
 			       newLastread[j] -= removeMap[i+1];
 			    } else {
-			       newLastread[j] -= oldLastread[j] - removeMap[i];
+			       newLastread[j] -= oldLastread[j] - removeMap[i] + 1;
 			    }
 			 }
 		      }
