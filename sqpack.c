@@ -822,6 +822,7 @@ void handleArea(s_area *area)
             stat(msgBaseDir,&sb);
             baseSize += sb.st_size;
          }
+        baseSize /= 1024; /* convert to Kbytes */
         if(baseSize >= freeSpace)
             process = 0;
 
