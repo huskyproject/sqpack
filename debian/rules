@@ -36,7 +36,7 @@ clean:
 	-$(MAKE) clean
 	-rm -f configure-stamp
 	-rm -f build-stamp
-	-rm -rf debian/sqpack
+	-rm -rf debian/$(PACKAGE)
 	-rm -f debian/postinst.debhelper
 	-rm -f debian/postrm.debhelper
 	-rm -f debian/prerm.debhelper
@@ -68,7 +68,7 @@ binary-arch: build install
 	dh_installdocs
 	dh_installexamples
 	dh_installmenu
-	dh_installmanpages
+#	dh_installmanpages
 	dh_installinfo
 #	dh_undocumented
 	dh_installchangelogs ChangeLog
