@@ -25,7 +25,7 @@ _EXE	  = .exe
 ## programs ##
 CFLAGS	= -nologo -MD -Zp1
 CINCL	= -I$(H_DIR) -I..\fidoconf -I..\smapi -I..\huskylib
-CDEFS	= -D__NT__ -DNT -DWINNT -DWIN32 -D_CONSOLE
+CDEFS	= -D__NT__ -DNT -DWINNT -DWIN32 -D_CONSOLE -D_MAKE_DLL
 COPT	= -Ob2
 
 EXEFLAGS= /link /nodefaultlib /opt:nowin98
