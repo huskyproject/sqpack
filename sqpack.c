@@ -35,14 +35,15 @@
 #include <io.h>
 #endif
 
-#ifdef __TURBOC__
+#if defined( __TURBOC__ ) || defined(__EMX__) || defined(MSDOS) || defined(__DOS__) || defined ( __WATCOMC__ ) || defined(_MSC_VER) && (_MSC_VER >= 1200)
 #include <share.h>
 #endif
 
-#ifdef __EMX__
-#include <share.h>
-#include <sys/types.h>
+#ifdef _MAKE_DLL_MVC_
+#define SH_DENYNO _SH_DENYNO
 #endif
+
+#include <sys/types.h>
 #include <fcntl.h>
 #include <sys/stat.h>
 
@@ -52,19 +53,6 @@
 #include <fidoconf/common.h>
 #include <fidoconf/xstr.h>
 
-#if defined ( __WATCOMC__ )
-#include <string.h>
-#include <stdlib.h>
-#include <smapi/prog.h>
-#include <share.h>
-#endif
-
-#if defined(_MSC_VER) && (_MSC_VER >= 1200)
-#include <share.h>
-#endif
-#ifdef _MAKE_DLL_MVC_
-#define SH_DENYNO _SH_DENYNO
-#endif
 
 #define PROGRAM_NAME "sqpack v1.2.2-stable"
 
