@@ -1,3 +1,7 @@
+2002-09-19 Thursday 07:43  sfpavel
+
+	* makefile.djg (sqpack-1_2-stable.1): Fix DJGPP build
+
 2002-09-17 Tuesday 11:32  sfpavel
 
 	* VERSION, makefile.mgw, makefile.mvcdll, sqpack.1, sqpack.c,
