@@ -792,12 +792,12 @@ int main(int argc, char **argv) {
         if (cfg != NULL ) {
             char *buff = NULL;
             xstrscat(&buff, cfg->logFileDir, LOGFILE, NULL);
-            openLog(buff, "sqpack", cfg);
+            openLog(buff, PROGRAM_NAME, cfg);
             nfree(buff);
             m.req_version = 0;
             m.def_zone = cfg->addr[0].zone;
             if (MsgOpenApi(&m)!= 0) {
-                w_log(LL_ERR,"MsgOpenApi Error.");
+                w_log(LL_CRIT,"MsgOpenApi Error. Exit.");
                 closeLog();
                 disposeConfig(cfg);
                 exit(1);
@@ -823,6 +823,7 @@ int main(int argc, char **argv) {
             w_log(LL_SUMMARY,"Total oldMsg: %lu; total newMsg: %lu",
                 (unsigned long)totaloldMsg, (unsigned long)totalmsgCopied);
             disposeConfig(cfg);
+            w_log(LL_STOP,"End");
             closeLog();
             return 0;
             
