@@ -1,0 +1,31 @@
+
+CC=gcc
+RM=del
+
+CDEFS=-D__NT__ -D__MINGW__ -c -I./h -I..
+CFLAGS=-Wall
+COPT=-O3
+
+LFLAGS=-L../smapi -L../fidoconf
+LIBS=-lfidoconfigmgw -lsmapimgw -luser32
+SRC_DIR=./
+
+default: all
+
+TARGET=sqpack.exe
+
+OBJS=sqpack.o
+
+all: $(TARGET)
+
+%.o: $(SRC_DIR)%.c
+	$(CC) $(CFLAGS) $(CDEFS) $(COPT) $(SRC_DIR)$*.c
+
+$(TARGET): $(OBJS)
+	$(CC) $(LFLAGS) -o $(TARGET) $(OBJS) $(LIBS)
+
+clean:
+	-$(RM) *.o
+
+distclean:
+	-$(RM) $(TARGET)
