@@ -1,3 +1,15 @@
+2002-07-17 Wednesday 16:36  stas
+
+	* sqpack.c (1.63): print version and End string into log
+
+2002-07-17 Wednesday 14:21  mche
+
+	* sqpack.c (1.62): fix wrong log location
+
+2002-07-17 Wednesday 14:14  mche
+
+	* sqpack.c (1.61): fix incorrect function calls //xstrscat()
+
 2002-07-16 Tuesday 20:45  stas
 
 	* sqpack.c (1.60): Fix log messages.
