@@ -1,8 +1,9 @@
-# Microsoft Visual C++ Makefile
+# $Id$
+# Microsoft Visual C++ Makefile for build static library
 
 CC=     cl
 CFLAGS= -nologo -Zp1 -I.. -Ih
-CDEFS=  -D_CONSOLE
+CDEFS=  -__NT__ -DWIN32 -D_CONSOLE
 COPT=   -O2
 TLIB=   lib -nologo
 
