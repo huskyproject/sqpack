@@ -1,3 +1,7 @@
+2003-03-09 Sunday 05:02  nssoft
+
+	* Makefile (1.10), sqpack.c (1.93): link with huskylib
+
 2003-02-20 Thursday 09:25  sfpavel
 
 	* HISTORY (1.4): Merge HISTORY with stable
