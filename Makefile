@@ -16,25 +16,29 @@ endif
 
 CDEFS=-D$(OSTYPE) $(ADDCDEFS)
 
-LOPT = -L$(LIBDIR) -lfidoconf -lsmapi -lhusky
+ifeq ($(SHORTNAME), 1)
+  LIBS=-L$(LIBDIR) -lfidoconf -lsmapi -lhusky
+else
+  LIBS=-L$(LIBDIR) -lfidoconfig -lsmapi -lhusky
+endif
 
-all : sqpack$(EXE) sqpack.1.gz
+all : sqpack$(_EXE) sqpack.1.gz
 
 sqpack$(_OBJ): sqpack.c
 	$(CC) $(COPT) $(CDEFS) sqpack.c -o sqpack$(_OBJ)
 
-sqpack$(EXE): sqpack$(_OBJ)
-	$(CC) $(LFLAGS) -o sqpack$(EXE) sqpack$(_OBJ) $(LOPT)
+sqpack$(_EXE): sqpack$(_OBJ)
+	$(CC) $(LFLAGS) -o sqpack$(_EXE) sqpack$(_OBJ) $(LIBS)
 
 sqpack.1.gz : sqpack.1
 	gzip -9c sqpack.1 > sqpack.1.gz
 
-install: sqpack$(EXE) sqpack.1.gz
-	$(INSTALL) $(IBOPT) sqpack$(EXE) $(BINDIR)
+install: sqpack$(_EXE) sqpack.1.gz
+	$(INSTALL) $(IBOPT) sqpack$(_EXE) $(BINDIR)
 	$(INSTALL) $(IMOPT) sqpack.1.gz $(MANDIR)/man1
 
 uninstall:
-	-$(RM) $(RMOPT) $(BINDIR)$(DIRSEP)sqpack$(EXE)
+	-$(RM) $(RMOPT) $(BINDIR)$(DIRSEP)sqpack$(_EXE)
 	-$(RM) $(RMOPT) $(MANDIR)$(DIRSEP)man1$(DIRSEP)sqpack.1.gz
 
 clean:
@@ -43,6 +47,6 @@ clean:
 
 
 distclean: clean
-	-$(RM) $(RMOPT) sqpack$(EXE)
+	-$(RM) $(RMOPT) sqpack$(_EXE)
 	-$(RM) $(RMOPT) sqpack.1.gz
 
