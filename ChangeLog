@@ -1,3 +1,17 @@
+2004-07-01 Thursday 13:04  andrew_ladutsko
+
+	* sqpack.c (1.106): alternative exception handler on win32
+
+2004-07-01 Thursday 12:50  andrew_ladutsko
+
+	* sqpack.c (1.105): fixed program's warnings when trying to delete
+	not existing lastread file of jam base
+
+2004-07-01 Thursday 09:45  andrew_ladutsko
+
+	* sqpack.c (1.104): extended command line functionality: -c key to
+	specify config filename and multiple positive and negative masks
+
 2004-06-07 Monday 11:48  sfpavel
 
 	* debian/compat (1.1): file compat was initially added on branch
