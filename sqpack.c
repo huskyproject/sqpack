@@ -434,10 +434,13 @@ int processMsg(dword msgNum, dword numMsg, HAREA oldArea, HAREA newArea,
      if (unsent || (area -> purge == 0) || ttime == 0 ||
          (abs(actualTime - ttime) <= (area -> purge * 24 *60 * 60))) {
 	xmsg.replyto = MsgUidToMsgn(oldArea, xmsg.replyto, UID_EXACT) > shift ? MsgUidToMsgn(oldArea, xmsg.replyto, UID_EXACT) - shift : 0;
-	// xmreplynext is #define to replies[MAX_REPLY-1]
-	// xmsg.xmreplynext = xmsg.xmreplynext > shift ? xmsg.xmreplynext - shift : 0;
-	for (i = 0; i < MAX_REPLY; i++)
-		xmsg.replies[i] = MsgUidToMsgn(oldArea, xmsg.replies[i], UID_EXACT) > shift ? MsgUidToMsgn(oldArea, xmsg.replies[i], UID_EXACT) - shift : 0;
+	if ((area->msgbType & MSGTYPE_SQUISH) == MSGTYPE_SQUISH)
+		for (i = 0; i < MAX_REPLY; i++)
+			xmsg.replies[i] = MsgUidToMsgn(oldArea, xmsg.replies[i], UID_EXACT) > shift ? MsgUidToMsgn(oldArea, xmsg.replies[i], UID_EXACT) - shift : 0;
+	else {
+		xmsg.replies[0] = MsgUidToMsgn(oldArea, xmsg.replies[0], UID_EXACT) > shift ? MsgUidToMsgn(oldArea, xmsg.replies[0], UID_EXACT) - shift : 0;
+		xmsg.xmreplynext = MsgUidToMsgn(oldArea, xmsg.xmreplynext, UID_EXACT) > shift ? MsgUidToMsgn(oldArea, xmsg.xmreplynext, UID_EXACT) - shift : 0;
+	}
 	// copy msg
         textLen = MsgGetTextLen(msg);
         ctrlLen = MsgGetCtrlLen(msg);
@@ -482,7 +485,7 @@ UINT32 getShiftedNum(UINT32 msgNum, UINT32 rmCount, UINT32 *rmMap)
    return msgNum > 0L ? msgNum : 0L;
 }
 
-void updateMsgLinks(UINT32 msgNum, HAREA area, UINT32 rmCount, UINT32 *rmMap)
+void updateMsgLinks(UINT32 msgNum, HAREA area, UINT32 rmCount, UINT32 *rmMap, int areaType)
 {
    HMSG msg;
    XMSG xmsg;
@@ -494,10 +497,13 @@ void updateMsgLinks(UINT32 msgNum, HAREA area, UINT32 rmCount, UINT32 *rmMap)
    MsgReadMsg(msg, &xmsg, 0, 0, NULL, 0, NULL);
 
    xmsg.replyto = getShiftedNum(xmsg.replyto, rmCount, rmMap);
-   // xmreplynext is #define to replies[MAX_REPLY-1]
-   // xmsg.xmreplynext = getShiftedNum(xmsg.xmreplynext, rmCount, rmMap);
-   for (i = 0; i < MAX_REPLY; i++)
-	xmsg.replies[i] = getShiftedNum(xmsg.replies[i], rmCount, rmMap);
+   if ((areaType & MSGTYPE_SQUISH) == MSGTYPE_SQUISH)
+   	for (i = 0; i < MAX_REPLY; i++)
+	    xmsg.replies[i] = getShiftedNum(xmsg.replies[i], rmCount, rmMap);
+   else {
+	xmsg.replies[0] = getShiftedNum(xmsg.replies[0], rmCount, rmMap);
+   	xmsg.xmreplynext = getShiftedNum(xmsg.xmreplynext, rmCount, rmMap);
+   }
 
    MsgWriteMsg(msg, 0, &xmsg, NULL, 0, 0, 0, NULL);
    MsgCloseMsg(msg);
@@ -563,7 +569,7 @@ void purgeArea(s_area *area)
 {
 	char *oldName = area -> fileName;
 	char *newName;
-	HAREA oldArea, newArea;
+	HAREA oldArea, newArea = NULL;
 	dword highMsg, i, j, numMsg;
 	int areaType = area -> msgbType & (MSGTYPE_JAM | MSGTYPE_SQUISH | MSGTYPE_SDM);
 
@@ -645,7 +651,7 @@ void purgeArea(s_area *area)
 
 		if (rmIndex > 2) { /* there were several areas with deleted msgs */
 			for (j = 1; j <= highMsg; j++)
-				updateMsgLinks(i, newArea, rmIndex + 1, removeMap);
+				updateMsgLinks(i, newArea, rmIndex + 1, removeMap, areaType);
 		}
 
 		if (rmIndex) { /* someting was removed, maybe need to update lastreadfile */
