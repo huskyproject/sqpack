@@ -1,12 +1,25 @@
-SqPack 1.9-current
-
-This file describe changes between sqpack-1.4-stable and sqpack-1.9-current
+SQPACK 1.9-current
+Changes after sqpack 1.4
 
 1. MAJOR feature improvements:
 
 2. CONFIG changes:
 
 3. IMPORTANT bugfixes:
+
+
+SQPACK 1.4
+Changes after sqpack 1.2
+
+1. MAJOR feature improvements:
+   - implement husky standard logging;
+   - checking for free space;
+   - create bsy-file while working;
+   - implement husky-standart version string generation;
+
+2. IMPORTANT bugfixes:
+   - fix update replylinks;
+   - check dupearea & badarea existence in config; check for NULL ponters.
 
 
 $Id$
