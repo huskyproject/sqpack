@@ -1,3 +1,7 @@
+2002-10-22 Tuesday 10:56  sfpavel
+
+	* debian/changelog (1.12): New debian package
+
 2002-10-20 Sunday 11:26  mche
 
 	* sqpack.c (1.76): Start log-message moved to correct location
