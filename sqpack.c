@@ -510,6 +510,10 @@ UINT32 getShiftedNum(UINT32 msgNum, UINT32 rmCount, UINT32 *rmMap)
 {
     UINT32 i, nMsgNum = msgNum;
 
+    if (*rmMap == 1) {
+        rmMap += 2;
+        rmCount -= 2;
+    }
     for (i=0; i<rmCount; i+=2) {
         if (msgNum < rmMap[i])
             break;
@@ -519,7 +523,7 @@ UINT32 getShiftedNum(UINT32 msgNum, UINT32 rmCount, UINT32 *rmMap)
             return 0L;
         }
     }
-    return msgNum;
+    return nMsgNum;
 }
 
 void updateMsgLinks(UINT32 msgNum, HAREA area, UINT32 rmCount, UINT32 *rmMap, int areaType)
@@ -675,7 +679,7 @@ void purgeArea(s_area *area)
 
         for (i = j = 1; i <= numMsg; i++, j++) {
             if (!processMsg(j, numMsg, oldArea, newArea, area,
-                removeMap[1])) {
+                removeMap[0]==1 ? removeMap[1] : 0)) {
                 if (!(rmIndex & 1)) {
                     /* We started to delete new portion of */
                     removeMap = (UINT32 *) realloc(removeMap, (rmIndex + 2) * sizeof(UINT32));
@@ -691,9 +695,9 @@ void purgeArea(s_area *area)
             };
         };
 
-        if (rmIndex) {
+        if (rmIndex > 2 || removeMap[0] > 1) {
             for (i = 1; i <= numMsg; i++)
-                updateMsgLinks(i, newArea, rmIndex + 1, removeMap, areaType);
+                updateMsgLinks(i, newArea, rmIndex, removeMap, areaType);
         }
 
         if (areaType == MSGTYPE_SDM) {
