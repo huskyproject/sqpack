@@ -1,3 +1,14 @@
+2002-12-27 Friday 13:22  sfpavel
+
+	* debian/rules (sqpack-1_2-stable.4): Fix debian/rules
+
+2002-12-26 Thursday 12:39  stas_degteff
+
+	* Makefile, makefile.bcd, makefile.bco, makefile.be, makefile.bsd,
+	makefile.emo, makefile.emx, makefile.lnx, makefile.unx,
+	makefile.wco (sqpack-1_2-stable.[2,3,3,1,1,3,3,2,1,2]): compile
+	with  -DNOSEMAPHORES
+
 2002-11-10 Sunday 09:49  sfpavel
 
 	* BUGS, sqpack.c, debian/changelog (sqpack-1_2-stable.[2,11,9])
