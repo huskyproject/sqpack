@@ -1,0 +1,33 @@
+# include Husky-Makefile-Config
+include ../huskymak.cfg
+
+ifeq ($(DEBUG), 1)
+  COPT = -ggdb -O2 -I../smapi -I$(INCDIR)
+else
+  COPT = -s -O2 -I../smapi -I$(INCDIR)
+endif
+
+CDEFS=-D$(OSTYPE) $(ADDCDEFS)
+LOPT = -L$(LIBDIR) -lsmapi -lfidoconfig
+
+all : sqpack$(EXE)
+
+sqpack$(EXE): sqpack.c
+	$(CC) $(COPT) $(CDEFS) $(LOPT) sqpack.c -o sqpack$(EXE)
+
+sqpack.1.gz : sqpack.1
+	gzip -c sqpack.1 > sqpack.1.gz
+
+install: sqpack$(EXE) sqpack.1.gz
+	install $(IBOPT) sqpack$(EXE) $(BINDIR)
+	install $(IMOPT) sqpack.1.gz $(MANDIR)/man1
+
+clean: 
+	-$(RM) *~
+	-$(RM) *.o
+
+
+distclean: clean
+	-$(RM) sqpack$(EXE)
+	-$(RM) sqpack.1.gz
+
