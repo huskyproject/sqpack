@@ -35,8 +35,8 @@
 
 2001-07-03 Tuesday 00:18  joerg.jaspert
 
-	* debian/: README.BUILD-DEB (1.2), README.Debian (1.2), changelog
-	(1.4), control (1.3): Rebuild
+	* debian/: README.Debian (1.2), changelog (1.4), control (1.3):
+	Rebuild
 
 2001-07-03 Tuesday 00:18  joerg.jaspert
 
@@ -75,10 +75,9 @@
 
 2001-04-11 Wednesday 22:56  joerg.jaspert
 
-	* debian/: README.BUILD-DEB (1.1), README.Debian (1.1), changelog
-	(1.1), control (1.1), copyright (1.1), dirs (1.1), docs (1.1),
-	huskymak.cfg (1.1), rules (1.1): Files to build Package on
-	Debian-Systems
+	* debian/: README.Debian (1.1), changelog (1.1), control (1.1),
+	copyright (1.1), dirs (1.1), docs (1.1), huskymak.cfg (1.1), rules
+	(1.1): Files to build Package on Debian-Systems
 
 2001-04-11 Wednesday 22:55  joerg.jaspert
 
@@ -130,18 +129,12 @@
 	* makefile.be (1.1): file makefile.be was initially added on branch
 	sqpack-1_1_0.
 
-2000-07-14 Friday 00:55  tobi
-
-	* VERSION (1.1): file VERSION was initially added on branch
-	sqpack-1_1_0.
-
 2000-07-12 Wednesday 13:33  tobi
 
 	* makefile.bcd (1.2), makefile.bco (1.2), makefile.bsd (1.4),
 	makefile.djg (1.2), makefile.emo (1.4), makefile.lnx (1.3),
-	makefile.osf (1.4), makefile.sun (1.7), makefile.unx (1.2),
-	makefile.wco (1.4), sqpack.c (1.37): merged makefile fixes from
-	stable
+	makefile.sun (1.7), makefile.unx (1.2), makefile.wco (1.4),
+	sqpack.c (1.37): merged makefile fixes from stable
 
 2000-07-12 Wednesday 13:25  tobi
 
@@ -174,12 +167,12 @@
 
 2000-04-21 Friday 13:14  sms
 
-	* Makefile (1.1, sqpack-1_1_0b-release, sqpack-1_1_0a-release),
-	makefile.husky (1.6): renamed makefile.husky to Makefile
+	* Makefile (1.1, sqpack-1_1_0b-release, sqpack-1_1_0a-release):
+	renamed makefile.husky to Makefile
 
 2000-04-17 Monday 17:40  tobi
 
-	* makefile.osf (1.3), makefile.sun (1.6): patches by serguei
+	* makefile.sun (1.6): patches by serguei
 
 2000-04-16 Sunday 23:42  nestyurkin.nikolay
 
@@ -195,10 +188,6 @@
 
 	* makefile.wcw (1.6): -zp=1 remove
 
-2000-03-30 Thursday 09:38  tobi
-
-	* makefile.husky (1.5): makefile fixes by max and others
-
 2000-03-18 Saturday 21:50  sms
 
 	* sqpack.1 (1.9, sqpack-1_1_0b-release, sqpack-1_1_0a-release),
@@ -210,12 +199,8 @@
 
 2000-03-09 Thursday 17:27  sms
 
-	* makefile.husky (1.4), sqpack.c (1.27): moved smapi and fidoconfig
-	headers to INCDIR/smapi and INCDIR/fidoconfig
-
-2000-03-07 Tuesday 17:06  tobi
-
-	* makefile.husky (1.3): makefile fixes
+	* sqpack.c (1.27): moved smapi and fidoconfig headers to
+	INCDIR/smapi and INCDIR/fidoconfig
 
 2000-03-07 Tuesday 17:06  tobi
 
@@ -230,15 +215,6 @@
 	* makefile.lnx (1.2): removed huskymak.cfg dependency from
 	makefile.lnx, created/updated makefile.husky for pascal programs
 
-2000-01-23 Sunday 00:42  sms
-
-	* makefile.husky (1.2): Updated makefile.husky and huskymak.cfg
-
-2000-01-22 Saturday 12:00  sms
-
-	* makefile.husky (1.1): Created/Updated makefile.husky and
-	huskymak.cfg
-
 2000-01-16 Sunday 14:13  sms
 
 	* INSTALL (1.3, sqpack-1_1_0b-release, sqpack-1_1_0a-release):
@@ -246,23 +222,19 @@
 
 1999-10-14 Thursday 18:07  sms
 
-	* makefile (1.7), makefile.lnx (1.1): reorganized Makefiles, read
+	* makefile.lnx (1.1): reorganized Makefiles, read
 	husky-common/README.Makefiles \!\!\!
 
 1999-10-14 Thursday 17:40  sms
 
-	* makefile.bsd (1.3), makefile.emo (1.2), makefile.osf (1.2),
-	makefile.sun (1.2), makefile.wco (1.2), makefile.wcw (1.2):
-	reorganized Makefiles, read husky-common/README.Makefiles \!\!\!
+	* makefile.bsd (1.3), makefile.emo (1.2), makefile.sun (1.2),
+	makefile.wco (1.2), makefile.wcw (1.2): reorganized Makefiles, read
+	husky-common/README.Makefiles \!\!\!
 
 1999-10-10 Sunday 18:10  henk-jan.krueger
 
 	* sqpack.c (1.17): * Now also packs netmail, bad, dupe and local
 	areas if they are squishmb
-
-1999-09-08 Wednesday 17:36  tobi
-
-	* makefile.osf (1.1): Added OSF / Tru64 UNIX makefile.
 
 1999-06-08 Tuesday 14:43  mt
 
@@ -296,16 +268,12 @@
 
 1999-03-01 Monday 20:05  mt
 
-	* makefile (1.6), sqpack.c (1.8): fixes
+	* sqpack.c (1.8): fixes
 
 1999-01-29 Friday 00:32  fjoe
 
 	* makefile.bsd (1.2): LOPT fixed.  [g]make clean now is as silent
 	as it should be.
-
-1999-01-19 Tuesday 20:53  mt
-
-	* makefile (1.5): fixed makefile
 
 1999-01-17 Sunday 22:48  mt
 
@@ -329,14 +297,13 @@
 
 1998-12-02 Wednesday 00:48  mt
 
-	* makefile (1.4, sqpack1-0-0), sqpack.1 (1.4), sqpack.c (1.6):
-	fixed that lastread thing
+	* sqpack.1 (1.4), sqpack.c (1.6): fixed that lastread thing
 
 1998-11-05 Thursday 11:22  mt
 
-	* makefile (1.3), sqpack.1 (1.3), sqpack.c (1.5): completely
-	rewrote sqpack it now reads all msgs and put them in a new msgbase.
-	 This speeds up tossing and scanning. and it works :-)
+	* sqpack.1 (1.3), sqpack.c (1.5): completely rewrote sqpack it now
+	reads all msgs and put them in a new msgbase.  This speeds up
+	tossing and scanning. and it works :-)
 
 1998-10-21 Wednesday 00:02  mt
 
@@ -344,7 +311,7 @@
 
 1998-09-10 Thursday 00:17  mt
 
-	* makefile (1.2), sqpack.1 (1.1): added manpage and new makefile
+	* sqpack.1 (1.1): added manpage and new makefile
 
 1998-07-18 Saturday 16:38  mt
 
@@ -355,12 +322,7 @@
 
 	* sqpack.c (1.2): it works now
 
-1998-06-16 Tuesday 18:51  mt
-
-	* sqpack.dsk (1.2): why have i put this on the server ?? :-)
-
 1998-06-10 Wednesday 09:09  mt
 
-	* makefile (1.1), sqpack.c (1.1), sqpack.dsk (1.1): Initial
-	revision
+	* sqpack.c (1.1): Initial revision
 
