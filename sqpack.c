@@ -24,11 +24,12 @@
 
 unsigned long msgCopied, msgProcessed; // per Area
 
-void readLastreadFile(char *fileName, UINT32 *lastread[], HAREA area)
+void readLastreadFile(char *fileName, UINT32 **lastreadp, ULONG *lcountp,
+		      HAREA area)
 {
    int fd;
    struct stat st;
-   unsigned long noOfElements, i, temp;
+   unsigned long i, temp;
    unsigned char buffer[4];
    char *name;
 
@@ -40,33 +41,34 @@ void readLastreadFile(char *fileName, UINT32 *lastread[], HAREA area)
    if (fd != -1) {
       
       fstat(fd, &st);
-      noOfElements = st.st_size / sizeof(UINT32);
-      *lastread = (UINT32 *) malloc(noOfElements);
+      *lcountp = st.st_size / sizeof(UINT32);
+      *lastreadp = (UINT32 *) malloc(*lcountp * sizeof(UINT32));
       
-      for (i = 0; i < noOfElements; i++) {
+      for (i = 0; i < *lcountp; i++) {
          read(fd, &buffer, 4);
          temp = buffer[0] + (((unsigned long)(buffer[1])) << 8) +
                 (((unsigned long)(buffer[2])) << 16) +
                 (((unsigned long)(buffer[3])) << 24);
-         (*lastread)[i] = MsgUidToMsgn(area, temp, UID_NEXT);
+         (*lastreadp)[i] = MsgUidToMsgn(area, temp, UID_NEXT);
       }
 
       close(fd);
       
-   } else *lastread = NULL;
+   } else *lastreadp = NULL;
 
    free(name);
 }
 
-void writeLastreadFile(char *fileName, UINT32 *lastread[], HAREA area)
+void writeLastreadFile(char *fileName, UINT32 *lastread, ULONG lcount,
+			HAREA area)
 {
    char *name;
    unsigned char buffer[4];
    int fd;
-   unsigned long i, noOfElements, temp;
+   unsigned long i, temp;
    
    
-   if (*lastread != NULL) {
+   if (lastread) {
 
       name = (char *) malloc(strlen(fileName)+4+1);
       strcpy(name, fileName);
@@ -78,11 +80,9 @@ void writeLastreadFile(char *fileName, UINT32 *lastread[], HAREA area)
 
          lseek(fd, 0l, SEEK_SET);
 
-         noOfElements = sizeof(*lastread) / sizeof(UINT32);
+         for (i = 0; i < lcount; i++) {
 
-         for (i = 0; i < noOfElements; i++) {
-
-            temp = MsgMsgnToUid(area, (*lastread)[i]);
+            temp = MsgMsgnToUid(area, lastread[i]);
             
             buffer[0] = temp & 0xFF;
             buffer[1] = (temp >> 8) & 0xFF;
@@ -100,21 +100,22 @@ void writeLastreadFile(char *fileName, UINT32 *lastread[], HAREA area)
    }
 }
 
-unsigned long getOffsetInLastread(UINT32 *lastread[], dword msgnum ) {
+unsigned long getOffsetInLastread(UINT32 *lastread, ULONG lcount, dword msgnum)
+{
 
-   unsigned long i, noOfElements;
+   unsigned long i;
 
-   noOfElements = sizeof(*lastread) / sizeof(UINT32);
-   
-   for (i = 0; i < noOfElements; i++) {
-      if ((*lastread)[i] == msgnum) return i;
+   for (i = 0; i < lcount; i++) {
+      if (lastread[i] == msgnum) return i;
    }
 
    return (-1);
    
 }
 
-void processMsg(dword msgNum, dword numMsg, HAREA oldArea, HAREA newArea, s_area area, UINT32 *oldLastread[], UINT32 *newLastread[] )
+void processMsg(dword msgNum, dword numMsg, HAREA oldArea, HAREA newArea,
+		s_area area, UINT32 *oldLastread, ULONG lcount,
+		UINT32 *newLastread)
 {
    HMSG msg, newMsg;
    XMSG xmsg;
@@ -149,14 +150,14 @@ void processMsg(dword msgNum, dword numMsg, HAREA oldArea, HAREA newArea, s_area
 
          msgCopied++;
 
-         if (*oldLastread != NULL) {
+         if (oldLastread) {
 
             oldMsgnum = msgNum;
             newMsgnum = msgCopied;
             
-            if ((offset = getOffsetInLastread(oldLastread, oldMsgnum)) != (-1)) {
+            if ((offset = getOffsetInLastread(oldLastread, lcount, oldMsgnum)) != (-1)) {
                // printf("%u\n", newMsgnum);
-               (*newLastread)[offset] = newMsgnum;
+               newLastread[offset] = newMsgnum;
             }
          }
 
@@ -216,21 +217,23 @@ void purgeArea(s_area area)
    newArea = MsgOpenArea((byte *) newName, MSGAREA_CREATE, MSGTYPE_SQUISH);
 
    if ((oldArea != NULL) && (newArea != NULL)) {
+      ULONG lcount;
 
       highMsg = MsgGetHighMsg(oldArea);
       numMsg = MsgGetNumMsg(oldArea);
-      readLastreadFile(oldName, &oldLastread, oldArea);
-      if (oldLastread != NULL) {
-         newLastread = (UINT32 *) malloc(sizeof(oldLastread));
-         memcpy(newLastread, oldLastread, sizeof(newLastread));
+      readLastreadFile(oldName, &oldLastread, &lcount, oldArea);
+      if (oldLastread) {
+         newLastread = (UINT32 *) malloc(lcount * sizeof(UINT32));
+         memcpy(newLastread, oldLastread, lcount * sizeof(UINT32));
       }
 
       for (i = 1; i <= highMsg; i++) {
          
-         processMsg(i, numMsg, oldArea, newArea, area, &oldLastread, &newLastread);
+         processMsg(i, numMsg, oldArea, newArea, area,
+		    oldLastread, lcount, newLastread);
       }
 
-      writeLastreadFile(oldName, &newLastread, newArea);
+      writeLastreadFile(oldName, newLastread, lcount, newArea);
 
       MsgCloseArea(oldArea);
       MsgCloseArea(newArea);
