@@ -1,3 +1,7 @@
+2002-10-02 Wednesday 06:30  pgul
+
+	* sqpack.c (1.75): fix msg-areas renumber
+
 2002-09-30 Monday 12:20  pgul
 
 	* sqpack.c (1.74): update replylinks fixed again
