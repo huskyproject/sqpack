@@ -143,7 +143,7 @@ int processMsg(dword msgNum, dword numMsg, HAREA oldArea, HAREA newArea,
    dword  textLen, ctrlLen;
    int unsent, i, rc = 0;
    
-   unsigned long offset;
+//   unsigned long offset;
 
    msg = MsgOpenMsg(oldArea, MOPEN_RW, msgNum);
    if (msg == NULL) return rc;
