@@ -4,7 +4,7 @@
 
 CC   = gcc
 
-COPT = -fomit-frame-pointer -fstrength-reduce -Zcrtdll -Wall -O2 -DOS2 -I..
+COPT = -fomit-frame-pointer -fstrength-reduce -Zcrtdll -Wall -O2 -DOS2 -I.. -DINTEL 
 LOPT = -L../smapi -L../fidoconf
 
 all : sqpack.exe 

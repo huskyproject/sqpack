@@ -4,7 +4,7 @@
 
 CC   = gcc
 
-COPT = -fomit-frame-pointer -fstrength-reduce -Wall -O3 -DMSDOS -I.. -DNOSEMAPHORES -mcpu=i486
+COPT = -fomit-frame-pointer -fstrength-reduce -Wall -O3 -DMSDOS -I.. -DNOSEMAPHORES -mcpu=i486  -DINTEL 
 LOPT = 
 
 all : sqpack.exe

@@ -2,7 +2,7 @@
 CC=gcc
 RM=del
 
-CDEFS=-D__NT__ -D__MINGW__ -c -I./h -I..
+CDEFS=-D__NT__ -D__MINGW__ -c -I./h -I.. -DINTEL 
 CFLAGS=-Wall
 COPT=-O3
 

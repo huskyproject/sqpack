@@ -1,5 +1,5 @@
 CC   = bcc
-COPT = -O2 -DMSDOS -I.. -I../smapi -I../fidoconf -w -ml
+COPT = -O2 -DMSDOS -DINTEL -I.. -I../smapi -I../fidoconf -w -ml
 LOPT =
 
 all : sqpack.exe
