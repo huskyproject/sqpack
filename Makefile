@@ -17,9 +17,9 @@ endif
 CDEFS=-D$(OSTYPE) $(ADDCDEFS)
 
 ifeq ($(SHORTNAME), 1)
-  LOPT = -L$(LIBDIR) -lsmapi -lfidoconf
+  LOPT = -L$(LIBDIR) -lfidoconf -lsmapi
 else
-  LOPT = -L$(LIBDIR) -lsmapi -lfidoconfig
+  LOPT = -L$(LIBDIR) -lfidoconfig -lsmapi
 endif
 
 all : sqpack$(EXE) sqpack.1.gz
@@ -41,7 +41,7 @@ uninstall:
 	-$(RM) $(RMOPT) $(BINDIR)$(DIRSEP)sqpack$(EXE)
 	-$(RM) $(RMOPT) $(MANDIR)$(DIRSEP)man1$(DIRSEP)sqpack.1.gz
 
-clean: 
+clean:
 	-$(RM) $(RMOPT) *~
 	-$(RM) $(RMOPT) *$(OBJ)
 
