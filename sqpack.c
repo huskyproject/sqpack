@@ -840,7 +840,7 @@ void handleArea(s_area *area)
         }
         else
         {
-            w_log( LL_CRIT, "Not enough free space for purge area %s (avaiable %ul, need %ul)",
+            w_log( LL_CRIT, "Not enough free space for purge area %s (avaiable %ulK, need %ulK)",
                             area -> areaName, freeSpace, baseSize);
         }
     };
