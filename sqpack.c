@@ -440,7 +440,7 @@ int processMsg(dword msgNum, dword numMsg, HAREA oldArea, HAREA newArea,
     msg = MsgOpenMsg(oldArea, MOPEN_RW, msgNum);
     if (msg == NULL) return rc;
 
-    if (MsgReadMsg(msg, &xmsg, 0, 0, NULL, 0, NULL)<0) {
+    if (MsgReadMsg(msg, &xmsg, 0, 0, NULL, 0, NULL)==(dword)-1l) {
         MsgCloseMsg(msg);
         msgProcessed++;
         return rc;
