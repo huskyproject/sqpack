@@ -709,7 +709,7 @@ int main(int argc, char **argv) {
    
    if (argc!=2) {
 	   if (argc>2) printf("too many arguments!\n");
-	   printf ("usage: sqpack *\n");
+	   printf ("usage: sqpack \"*\"\n");
    } else {
    
 	   cfg = readConfig(NULL);
