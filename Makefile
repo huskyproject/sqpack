@@ -14,6 +14,10 @@ else
   LFLAGS = $(OPTLFLAGS)
 endif
 
+ifneq ($(DYNLIBS), 1)
+  LFLAGS += -static -lc
+endif
+
 CDEFS=-D$(OSTYPE) $(ADDCDEFS)
 
 ifeq ($(SHORTNAME), 1)
