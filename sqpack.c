@@ -1,8 +1,9 @@
 /* $Id$ */
 /*****************************************************************************
- * SqPack --- FTN messagebase packer
+ * SqPack --- FTN messagebase packer (purger)
  *****************************************************************************
- * Copyright (C) 1997-1999
+ * Copyright (C) 1997-1999 Matthias Tichy (mtt@tichy.de).
+ * Copyright (C) 1999-2002 Husky developers team
  *
  * This file is part of HUSKY Fidonet Software project.
  *
@@ -791,7 +792,7 @@ int main(int argc, char **argv) {
 
    if (argc!=2) {
 	   if (argc>2) printf("too many arguments!\n");
-	   printf ("Usage: sqpack \"*\"\n");
+	   printf ("Usage: sqpack <areamask>\n");
    } else {
 
 	   setvar("module", "sqpack");
