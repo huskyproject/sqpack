@@ -30,10 +30,15 @@
 #include <string.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <smapi/compiler.h>
+#include <fcntl.h>
 
-#ifdef UNIX
+
+#ifdef HAS_UNISTD_H
 #include <unistd.h>
-#else
+#endif
+
+#ifdef HAS_IO_H
 #include <io.h>
 #endif
 
@@ -43,10 +48,15 @@
 
 #ifdef __EMX__
 #include <share.h>
-#include <sys/types.h>
 #endif
-#include <fcntl.h>
-#include <sys/stat.h>
+
+#if defined ( __WATCOMC__ )
+#include <share.h>
+#endif
+
+#if defined(__MSVC__)
+#include <share.h>
+#endif
 
 #include <smapi/msgapi.h>
 #include <smapi/prog.h>
@@ -55,17 +65,6 @@
 #include <fidoconf/common.h>
 #include <fidoconf/log.h>
 #include <fidoconf/xstr.h>
-
-#if defined ( __WATCOMC__ )
-#include <string.h>
-#include <stdlib.h>
-#include <smapi/prog.h>
-#include <share.h>
-#endif
-
-#if defined(_MSC_VER) && (_MSC_VER >= 1200)
-#include <share.h>
-#endif
 #ifdef _MAKE_DLL_MVC_
 #define SH_DENYNO _SH_DENYNO
 #endif
