@@ -14,3 +14,9 @@ sqpack still goos on purging messages, and in this process copies only
 part of large message-bases, and does not keep the old one, when it
 runs out of disk-space. I have twice lost an important number of
 messages now this way.
+
+
+2002-09-09 Stas Degteff:
+
+  Sqpack crash on very big messagebases (~50000 messages): it load all messages
+into RAM and aborted with "memory low" alert; sqpack/win32 killed by OS silent.
