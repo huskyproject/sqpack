@@ -1,3 +1,7 @@
+2002-10-29 Tuesday 07:25  pgul
+
+	* sqpack.c (1.78): fix comparation unsigned int with zero
+
 2002-10-25 Friday 08:02  stas_degteff
 
 	* sqpack.c (1.77): Fix asignment int32 into int16
