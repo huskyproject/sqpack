@@ -553,7 +553,7 @@ void updateMsgLinks(UINT32 msgNum, HAREA area, UINT32 rmCount, UINT32 *rmMap, in
 }
 
 
-void renameArea(int areaType, char *oldName, char *newName)
+int renameArea(int areaType, char *oldName, char *newName)
 {
     char *oldTmp=NULL, *newTmp=NULL;
     unsigned long oldsize=0, newsize=0;
@@ -582,8 +582,10 @@ void renameArea(int areaType, char *oldName, char *newName)
         oldsize += sb.st_size;
         stat(newTmp,&sb);
         newsize += sb.st_size;
-        remove(oldTmp);
-        rename(newTmp, oldTmp);
+        if (remove(oldTmp))
+            return errno;
+        if (rename(newTmp, oldTmp))
+            return errno;
     }
 
     if (areaType==MSGTYPE_JAM) {
@@ -595,8 +597,10 @@ void renameArea(int areaType, char *oldName, char *newName)
         stat(newTmp,&sb);
         newsize += sb.st_size;
 
-        remove(oldTmp);
-        rename(newTmp, oldTmp);
+        if (remove(oldTmp))
+            return errno;
+        if (rename(newTmp, oldTmp))
+            return errno;
 
         oldTmp[strlen(oldTmp)-1] = 'x';
         newTmp[strlen(newTmp)-1] = 'x';
@@ -605,8 +609,10 @@ void renameArea(int areaType, char *oldName, char *newName)
         oldsize += sb.st_size;
         stat(newTmp,&sb);
         newsize += sb.st_size;
-        remove(oldTmp);
-        rename(newTmp, oldTmp);
+        if (remove(oldTmp))
+            return errno;
+        if (rename(newTmp, oldTmp))
+            return errno;
 
         oldTmp[strlen(oldTmp)-2] = 'h';
         newTmp[strlen(newTmp)-2] = 'h';
@@ -617,17 +623,22 @@ void renameArea(int areaType, char *oldName, char *newName)
         oldsize += sb.st_size;
         stat(newTmp,&sb);
         newsize += sb.st_size;
-        remove(oldTmp);
-        rename(newTmp, oldTmp);
+        if (remove(oldTmp))
+            return errno;
+        if (rename(newTmp, oldTmp))
+            return errno;
 
         newTmp[strlen(newTmp)-2] = 'l';
 #if 0
         oldTmp[strlen(oldTmp)-2] = 'l';
 
-        remove(oldTmp);
-        rename(newTmp, oldTmp);
+        if (remove(oldTmp))
+            return errno;
+        if (rename(newTmp, oldTmp))
+            return errno;
 #endif
-        remove(newTmp); /*  erase new lastread file */
+        if (remove(newTmp))
+            return errno; /*  erase new lastread file */
 
     }
 
@@ -758,7 +769,9 @@ void purgeArea(s_area *area)
         nfree(newLastread);
 
         /* rename oldArea to newArea */
-        renameArea(areaType, oldName, newName);
+        if (!renameArea(areaType, oldName, newName))
+            w_log(LL_ERR, "Couldn't rename message base %s to %s: %s!",
+                  oldName, newName, strerror(errno));
     }
     else {
         if (oldArea) {
