@@ -1,223 +1,223 @@
-2002-07-30 Tuesday 11:54  stas
+2002-07-30 Tuesday 18:54  stas
 
 	* sqpack.c (1.66): Add log message: old & new size of echoarea
 	files
 
-2002-07-22 Monday 04:56  mche
+2002-07-22 Monday 11:56  mche
 
 	* makefile.mvcdll (1.2): corrected file cleaning
 
-2002-07-22 Monday 03:01  stas
+2002-07-22 Monday 10:01  stas
 
 	* sqpack.c (1.65): Expand log messages (warning level)
 
-2002-07-22 Monday 02:43  stas
+2002-07-22 Monday 09:43  stas
 
 	* sqpack.c (1.64): Use new openLog() calling style: pass filename
 	without path
 
-2002-07-17 Wednesday 07:36  stas
+2002-07-17 Wednesday 14:36  stas
 
 	* sqpack.c (1.63): print version and End string into log
 
-2002-07-17 Wednesday 05:21  mche
+2002-07-17 Wednesday 12:21  mche
 
 	* sqpack.c (1.62): fix wrong log location
 
-2002-07-17 Wednesday 05:14  mche
+2002-07-17 Wednesday 12:14  mche
 
 	* sqpack.c (1.61): fix incorrect function calls //xstrscat()
 
-2002-07-16 Tuesday 11:45  stas
+2002-07-16 Tuesday 18:45  stas
 
 	* sqpack.c (1.60): Fix log messages.
 
-2002-07-14 Sunday 11:21  stas
+2002-07-14 Sunday 18:21  stas
 
 	* sqpack.c (1.59): Use safe string functions (partially)
 
-2002-07-14 Sunday 11:10  stas
+2002-07-14 Sunday 18:10  stas
 
 	* sqpack.c (1.58): Prevent warning (use unsigned)
 
-2002-07-14 Sunday 11:09  stas
+2002-07-14 Sunday 18:09  stas
 
 	* sqpack.c (1.57): Initialise some string vars
 
-2002-07-14 Sunday 11:05  stas
+2002-07-14 Sunday 18:05  stas
 
 	* sqpack.1 (1.12), sqpack.c (1.56): Change Usage information
 
-2002-07-14 Sunday 10:59  stas
+2002-07-14 Sunday 17:59  stas
 
 	* sqpack.c (1.55): Implement husky standard logging
 
-2002-07-14 Sunday 10:33  stas
+2002-07-14 Sunday 17:33  stas
 
 	* HISTORY (1.1), VERSION (1.2), sqpack.c (1.54): Add version info
 	files.
 
-2002-07-03 Wednesday 22:59  stas
+2002-07-04 Thursday 05:59  stas
 
 	* sqpack.c (1.53): Fix version number display [patch from Pavel
 	Andreew]
 
-2002-07-03 Wednesday 22:58  stas
+2002-07-04 Thursday 05:58  stas
 
 	* debian/: changelog (1.7), rules (1.6): new Debian version [patch
 	from Pavel Andreew]
 
-2002-07-02 Tuesday 07:35  stas
+2002-07-02 Tuesday 14:35  stas
 
 	* INSTALL (1.4): Update documentation
 
-2002-07-02 Tuesday 07:29  stas
+2002-07-02 Tuesday 14:29  stas
 
 	* debian/: changelog (1.6), control (1.5), huskymak.cfg (1.6),
 	rules (1.5): Change debian control files (like in -stable branch)
 
-2002-06-30 Sunday 04:36  mche
+2002-06-30 Sunday 11:36  mche
 
 	* sqpack.c (1.52): fixed bug with scaning locked messages
 
-2002-03-05 Tuesday 05:42  joerg.jaspert
+2002-03-05 Tuesday 13:42  joerg.jaspert
 
 	* debian/: changelog (1.5), control (1.4), huskymak.cfg (1.5),
 	rules (1.4): New Debian Package
 
-2002-02-26 Tuesday 04:43  ml
+2002-02-26 Tuesday 12:43  ml
 
 	* .cvs2cl (1.1): log via cvs messages
 
-2002-02-26 Tuesday 04:27  ml
+2002-02-26 Tuesday 12:27  ml
 
 	* sqpack.c (1.51): remove warnings
 
-2002-01-03 Thursday 02:52  mche
+2002-01-03 Thursday 10:52  mche
 
 	* makefile.mvcdll (1.1): build sqpack with dlls
 
-2002-01-03 Thursday 02:42  mche
+2002-01-03 Thursday 10:42  mche
 
 	* sqpack.c (1.50): build smapimvc.dll with msvcrt.dll to provide
 	build sqpack with this dlls
 
-2001-12-29 Saturday 06:33  pavel.gulchouck
+2001-12-29 Saturday 14:33  pavel.gulchouck
 
 	* sqpack.c (1.49): added config var [module]=sqpack
 
-2001-09-29 Saturday 00:25  ml
+2001-09-29 Saturday 07:25  ml
 
 	* sqpack.c (1.48): write highwater marks in new message bases
 
-2001-09-15 Saturday 01:56  pavel.gulchouck
+2001-09-15 Saturday 08:56  pavel.gulchouck
 
 	* sqpack.c (1.47): Sqpack saves times_read and cost for Jam and Msg
 	msgbases now
 
-2001-07-02 Monday 15:18  joerg.jaspert
+2001-07-02 Monday 22:18  joerg.jaspert
 
 	* debian/: README.BUILD-DEB (1.2), README.Debian (1.2), changelog
 	(1.4), control (1.3): Rebuild
 
-2001-07-02 Monday 15:18  joerg.jaspert
+2001-07-02 Monday 22:18  joerg.jaspert
 
 	* Makefile (1.8): Just changed the gzip call to gzip -9 for the
 	manpage (to make lintian (a debian package check tool) happy).
 
-2001-05-08 Tuesday 15:32  tobi
+2001-05-08 Tuesday 22:32  tobi
 
 	* sqpack.c (1.46): fixed coredump with sqpack on jam bases
 
-2001-05-08 Tuesday 15:32  tobi
+2001-05-08 Tuesday 22:32  tobi
 
 	* Makefile (1.7): -lsmapi must be after -lfidoconf !!!
 
-2001-04-21 Saturday 08:35  joerg.jaspert
+2001-04-21 Saturday 15:35  joerg.jaspert
 
 	* debian/: huskymak.cfg (1.4), rules (1.3): Turned debug on.
 
-2001-04-21 Saturday 08:35  joerg.jaspert
+2001-04-21 Saturday 15:35  joerg.jaspert
 
 	* debian/control (1.2): Changed priority
 
-2001-04-14 Saturday 08:04  joerg.jaspert
+2001-04-14 Saturday 15:04  joerg.jaspert
 
 	* debian/: changelog (1.3), huskymak.cfg (1.3): Some changes :)
 
-2001-04-12 Thursday 04:03  joerg.jaspert
+2001-04-12 Thursday 11:03  joerg.jaspert
 
 	* debian/: changelog (1.2), dirs (1.2), huskymak.cfg (1.2), rules
 	(1.2): Changed the man-page installation
 
-2001-04-12 Thursday 04:02  joerg.jaspert
+2001-04-12 Thursday 11:02  joerg.jaspert
 
 	* Makefile (1.6): Killed one of my changes yesterday. Not
 	neccessary.
 
-2001-04-11 Wednesday 13:56  joerg.jaspert
+2001-04-11 Wednesday 20:56  joerg.jaspert
 
 	* debian/: README.BUILD-DEB (1.1), README.Debian (1.1), changelog
 	(1.1), control (1.1), copyright (1.1), dirs (1.1), docs (1.1),
 	huskymak.cfg (1.1), rules (1.1): Files to build Package on
 	Debian-Systems
 
-2001-04-11 Wednesday 13:55  joerg.jaspert
+2001-04-11 Wednesday 20:55  joerg.jaspert
 
 	* Makefile (1.5): Small Debian-Changes :)
 
-2000-12-03 Sunday 09:59  sms
+2000-12-03 Sunday 17:59  sms
 
 	* Makefile (1.4): using RMOPT from huskymak.cfg
 
-2000-10-22 Sunday 02:16  ml
+2000-10-22 Sunday 09:16  ml
 
 	* sqpack.c (1.43): new command line interface (sqpack <mask>)
 
-2000-10-21 Saturday 16:54  tobi
+2000-10-21 Saturday 23:54  tobi
 
 	* sqpack.c (1.42): assured platform indepency
 
-2000-10-15 Sunday 05:19  ml
+2000-10-15 Sunday 12:19  ml
 
 	* sqpack.c (1.41): see ChangeLog Oct 15
 
-2000-10-09 Monday 07:30  ml
+2000-10-09 Monday 14:30  ml
 
 	* sqpack.c (1.40): compile with new smapi
 
-2000-09-04 Monday 02:34  ml
+2000-09-04 Monday 09:34  ml
 
 	* sqpack.c (1.39): see changelog sep 04
 
-2000-09-03 Sunday 05:52  ml
+2000-09-03 Sunday 12:52  ml
 
 	* makefile.emo (1.5), sqpack.1 (1.10), sqpack.c (1.38): see
 	ChangeLog Sep 03
 
-2000-08-24 Thursday 05:42  sms
+2000-08-24 Thursday 12:42  sms
 
 	* Makefile (1.3): added sqpack.1.gz to target all
 
-2000-08-21 Monday 06:15  sms
+2000-08-21 Monday 13:15  sms
 
 	* Makefile (1.2): added target uninstall
 
-2000-08-06 Sunday 13:53  tobi
+2000-08-06 Sunday 20:53  tobi
 
 	* makefile.be (1.2): beos legacy makefile
 
-2000-08-06 Sunday 13:36  tobi
+2000-08-06 Sunday 20:36  tobi
 
 	* makefile.be (1.1): file makefile.be was initially added on branch
 	sqpack-1_1_0.
 
-2000-07-13 Thursday 15:55  tobi
+2000-07-13 Thursday 22:55  tobi
 
 	* VERSION (1.1): file VERSION was initially added on branch
 	sqpack-1_1_0.
 
-2000-07-12 Wednesday 04:33  tobi
+2000-07-12 Wednesday 11:33  tobi
 
 	* makefile.bcd (1.2), makefile.bco (1.2), makefile.bsd (1.4),
 	makefile.djg (1.2), makefile.emo (1.4), makefile.lnx (1.3),
@@ -225,223 +225,223 @@
 	makefile.wco (1.4), sqpack.c (1.37): merged makefile fixes from
 	stable
 
-2000-07-12 Wednesday 04:25  tobi
+2000-07-12 Wednesday 11:25  tobi
 
 	* makefile.unx (1.1): file makefile.unx was initially added on
 	branch sqpack-1_1_0.
 
-2000-07-12 Wednesday 04:25  tobi
+2000-07-12 Wednesday 11:25  tobi
 
 	* makefile.bco (1.1): file makefile.bco was initially added on
 	branch sqpack-1_1_0.
 
-2000-07-12 Wednesday 04:25  tobi
+2000-07-12 Wednesday 11:25  tobi
 
 	* makefile.djg (1.1): file makefile.djg was initially added on
 	branch sqpack-1_1_0.
 
-2000-07-12 Wednesday 04:25  tobi
+2000-07-12 Wednesday 11:25  tobi
 
 	* makefile.bcd (1.1): file makefile.bcd was initially added on
 	branch sqpack-1_1_0.
 
-2000-06-09 Friday 02:29  tobi
+2000-06-09 Friday 09:29  tobi
 
 	* makefile.emo (1.3), makefile.emx (1.1, sqpack-1_1_0b-release,
 	sqpack-1_1_0a-release): Fixed emx makefile
 
-2000-05-22 Monday 05:54  mt
+2000-05-22 Monday 12:54  mt
 
 	* sqpack.c (1.35): changed version number
 
-2000-04-21 Friday 04:14  sms
+2000-04-21 Friday 11:14  sms
 
 	* Makefile (1.1, sqpack-1_1_0b-release, sqpack-1_1_0a-release),
 	makefile.husky (1.6): renamed makefile.husky to Makefile
 
-2000-04-17 Monday 08:40  tobi
+2000-04-17 Monday 15:40  tobi
 
 	* makefile.osf (1.3), makefile.sun (1.6): patches by serguei
 
-2000-04-16 Sunday 14:42  nestyurkin.nikolay
+2000-04-16 Sunday 21:42  nestyurkin.nikolay
 
 	* makefile.wcw (1.7, sqpack-1_1_0b-release, sqpack-1_1_0a-release):
 	path fix
 
-2000-04-15 Saturday 11:09  tobi
+2000-04-15 Saturday 18:09  tobi
 
 	* sqpack.c (1.33): fixed include statements to match new 8.3
 	filenames
 
-2000-04-14 Friday 04:58  nestyurkin.nikolay
+2000-04-14 Friday 11:58  nestyurkin.nikolay
 
 	* makefile.wcw (1.6): -zp=1 remove
 
-2000-03-29 Wednesday 23:38  tobi
+2000-03-30 Thursday 07:38  tobi
 
 	* makefile.husky (1.5): makefile fixes by max and others
 
-2000-03-18 Saturday 12:50  sms
+2000-03-18 Saturday 20:50  sms
 
 	* sqpack.1 (1.9, sqpack-1_1_0b-release, sqpack-1_1_0a-release),
 	sqpack.c (1.28): now packing ALL areas
 
-2000-03-13 Monday 14:47  sms
+2000-03-13 Monday 22:47  sms
 
 	* makefile.sun (1.4): updated legacy makefiles
 
-2000-03-09 Thursday 08:27  sms
+2000-03-09 Thursday 16:27  sms
 
 	* makefile.husky (1.4), sqpack.c (1.27): moved smapi and fidoconfig
 	headers to INCDIR/smapi and INCDIR/fidoconfig
 
-2000-03-07 Tuesday 08:06  tobi
+2000-03-07 Tuesday 16:06  tobi
 
 	* makefile.husky (1.3): makefile fixes
 
-2000-03-07 Tuesday 08:06  tobi
+2000-03-07 Tuesday 16:06  tobi
 
 	* sqpack.c (1.26): 64 bit fixes
 
-2000-03-07 Tuesday 07:53  tobi
+2000-03-07 Tuesday 15:53  tobi
 
 	* sqpack.c (1.25): Cosmetical bug fix
 
-2000-01-28 Friday 05:57  sms
+2000-01-28 Friday 13:57  sms
 
 	* makefile.lnx (1.2): removed huskymak.cfg dependency from
 	makefile.lnx, created/updated makefile.husky for pascal programs
 
-2000-01-22 Saturday 15:42  sms
+2000-01-22 Saturday 23:42  sms
 
 	* makefile.husky (1.2): Updated makefile.husky and huskymak.cfg
 
-2000-01-22 Saturday 03:00  sms
+2000-01-22 Saturday 11:00  sms
 
 	* makefile.husky (1.1): Created/Updated makefile.husky and
 	huskymak.cfg
 
-2000-01-16 Sunday 05:13  sms
+2000-01-16 Sunday 13:13  sms
 
 	* INSTALL (1.3, sqpack-1_1_0b-release, sqpack-1_1_0a-release):
 	added reference to husky-common-package to INSTALL
 
-1999-10-14 Thursday 09:07  sms
+1999-10-14 Thursday 16:07  sms
 
 	* makefile (1.7), makefile.lnx (1.1): reorganized Makefiles, read
 	husky-common/README.Makefiles \!\!\!
 
-1999-10-14 Thursday 08:40  sms
+1999-10-14 Thursday 15:40  sms
 
 	* makefile.bsd (1.3), makefile.emo (1.2), makefile.osf (1.2),
 	makefile.sun (1.2), makefile.wco (1.2), makefile.wcw (1.2):
 	reorganized Makefiles, read husky-common/README.Makefiles \!\!\!
 
-1999-10-10 Sunday 09:10  henk-jan.krueger
+1999-10-10 Sunday 16:10  henk-jan.krueger
 
 	* sqpack.c (1.17): * Now also packs netmail, bad, dupe and local
 	areas if they are squishmb
 
-1999-09-08 Wednesday 08:36  tobi
+1999-09-08 Wednesday 15:36  tobi
 
 	* makefile.osf (1.1): Added OSF / Tru64 UNIX makefile.
 
-1999-06-08 Tuesday 05:43  mt
+1999-06-08 Tuesday 12:43  mt
 
 	* sqpack.1 (1.8), sqpack.c (1.13): small fixes
 
-1999-05-18 Tuesday 13:27  mt
+1999-05-18 Tuesday 20:27  mt
 
 	* sqpack.1 (1.7): release
 
-1999-05-18 Tuesday 03:16  mt
+1999-05-18 Tuesday 10:16  mt
 
 	* makefile.sun (1.1): added makefile.sun
 
-1999-05-11 Tuesday 14:27  mt
+1999-05-11 Tuesday 21:27  mt
 
 	* sqpack.c (1.12): kolya fixed the bad bug
 
-1999-05-11 Tuesday 12:00  mt
+1999-05-11 Tuesday 19:00  mt
 
 	* sqpack.1 (1.6), sqpack.c (1.11), makefile.emo (1.1): new patches
 	from oleg
 
-1999-04-13 Tuesday 10:33  mt
+1999-04-13 Tuesday 17:33  mt
 
 	* COPYING (1.1, sqpack-1_1_0b-release, sqpack-1_1_0a-release):
 	forget to add it
 
-1999-04-08 Thursday 08:25  mt
+1999-04-08 Thursday 15:25  mt
 
 	* sqpack.c (1.10): update
 
-1999-03-01 Monday 11:05  mt
+1999-03-01 Monday 19:05  mt
 
 	* makefile (1.6), sqpack.c (1.8): fixes
 
-1999-01-28 Thursday 15:32  fjoe
+1999-01-28 Thursday 23:32  fjoe
 
 	* makefile.bsd (1.2): LOPT fixed.  [g]make clean now is as silent
 	as it should be.
 
-1999-01-19 Tuesday 11:53  mt
+1999-01-19 Tuesday 19:53  mt
 
 	* makefile (1.5): fixed makefile
 
-1999-01-17 Sunday 13:48  mt
+1999-01-17 Sunday 21:48  mt
 
 	* makefile.bsd (1.1): added makefile for bsd
 
-1998-12-22 Tuesday 09:01  mt
+1998-12-22 Tuesday 17:01  mt
 
 	* INSTALL (1.2): fixed install
 
-1998-12-10 Thursday 14:43  mt
+1998-12-10 Thursday 22:43  mt
 
 	* INSTALL (1.1, sqpack1-0-0): forgot INSTALL
 
-1998-12-10 Thursday 14:42  mt
+1998-12-10 Thursday 22:42  mt
 
 	* sqpack.1 (1.5, sqpack1-0-0): release 1.0.0
 
-1998-12-08 Tuesday 02:48  mt
+1998-12-08 Tuesday 10:48  mt
 
 	* sqpack.c (1.7, sqpack1-0-0): now the -m flag works correctly
 
-1998-12-01 Tuesday 15:48  mt
+1998-12-01 Tuesday 23:48  mt
 
 	* makefile (1.4, sqpack1-0-0), sqpack.1 (1.4), sqpack.c (1.6):
 	fixed that lastread thing
 
-1998-11-05 Thursday 02:22  mt
+1998-11-05 Thursday 10:22  mt
 
 	* makefile (1.3), sqpack.1 (1.3), sqpack.c (1.5): completely
 	rewrote sqpack it now reads all msgs and put them in a new msgbase.
 	 This speeds up tossing and scanning. and it works :-)
 
-1998-10-20 Tuesday 15:02  mt
+1998-10-20 Tuesday 22:02  mt
 
 	* sqpack.1 (1.2), sqpack.c (1.4): forget it :-(
 
-1998-09-09 Wednesday 15:17  mt
+1998-09-09 Wednesday 22:17  mt
 
 	* makefile (1.2), sqpack.1 (1.1): added manpage and new makefile
 
-1998-07-18 Saturday 07:38  mt
+1998-07-18 Saturday 14:38  mt
 
 	* sqpack.c (1.3): sqpack no honours PASSTHROUGH areas and doesn't
 	try to pack them...
 
-1998-06-16 Tuesday 09:53  mt
+1998-06-16 Tuesday 16:53  mt
 
 	* sqpack.c (1.2): it works now
 
-1998-06-16 Tuesday 09:51  mt
+1998-06-16 Tuesday 16:51  mt
 
 	* sqpack.dsk (1.2): why have i put this on the server ?? :-)
 
-1998-06-10 Wednesday 00:09  mt
+1998-06-10 Wednesday 07:09  mt
 
 	* makefile (1.1), sqpack.c (1.1), sqpack.dsk (1.1): Initial
 	revision
