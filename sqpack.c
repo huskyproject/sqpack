@@ -36,7 +36,9 @@
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 #include <share.h>
 #endif
-
+#ifdef _MAKE_DLL_MVC_    
+#define SH_DENYNO _SH_DENYNO
+#endif
 /* Changes
   v1.0.4
         SMS Packing ALL areas
