@@ -54,13 +54,15 @@
 #include <fidoconf/log.h>
 #include <fidoconf/xstr.h>
 
-#define PROGRAM_NAME "sqpack v1.3.1-current"
+#include "version.h"
+
 #define LOGFILE "sqpack.log"
 
 unsigned long msgCopied, msgProcessed; /*  per Area */
 unsigned long totaloldMsg, totalmsgCopied;
 unsigned long totalOldBaseSize, totalNewBaseSize;
 int lock_fd;
+char *versionStr;
 
 void SqReadLastreadFile(char *fileName, UINT32 **lastreadp, ULONG *lcountp,
                         HAREA area)
@@ -847,7 +849,9 @@ int main(int argc, char **argv) {
     unsigned int i;
     struct _minf m;
 
-    printf( PROGRAM_NAME "\n");
+    versionStr = GenVersionStr( "sqpack", VER_MAJOR, VER_MINOR, VER_PATCH,
+                               VER_BRANCH, cvs_date );
+    printf("%s\n", versionStr);
 
     if (argc!=2) {
         if (argc>2) printf("too many arguments!\n");
@@ -871,7 +875,7 @@ int main(int argc, char **argv) {
             exit(EX_CANTCREAT);
         }
     }
-    openLog(LOGFILE, PROGRAM_NAME, config);
+    openLog(LOGFILE, versionStr, config);
     w_log(LL_START, "Start");
     m.req_version = 0;
     m.def_zone = config->addr[0].zone;
