@@ -15,13 +15,7 @@ export VERSION=1.3.0
 # Next Line to build debug-versions !
 # export DEB_BUILD_OPTIONS=nostrip
 
-configure: configure-stamp
-configure-stamp:
-	dh_testdir
-	# Add here commands to configure the package.
-	touch configure-stamp
-
-build: configure-stamp build-stamp
+build: build-stamp
 build-stamp:
 	dh_testdir
 	# Add here commands to compile the package.
@@ -31,16 +25,8 @@ build-stamp:
 clean:
 	dh_testdir
 	dh_testroot
-	rm -f build-stamp configure-stamp
+	rm -f build-stamp
 	-$(MAKE) distclean
-	-rm -f configure-stamp
-	-rm -f build-stamp
-	-rm -rf debian/$(PACKAGE)
-	-rm -f debian/postinst.debhelper
-	-rm -f debian/postrm.debhelper
-	-rm -f debian/prerm.debhelper
-	-rm -f debian/substvars
-	-rm -f debian/files
 	dh_clean
 
 install: build
@@ -81,4 +67,4 @@ binary-arch: build install
 	dh_builddeb
 
 binary: binary-indep binary-arch
-.PHONY: build clean binary-indep binary-arch binary install configure
+.PHONY: build clean binary-indep binary-arch binary install
