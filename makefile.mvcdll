@@ -2,12 +2,12 @@
 # Microsoft Visual C++ Makefile for build DLL
 
 CC=     cl
-CFLAGS= -nologo -MD -Zp1 -I.. -Ih
+CFLAGS= -nologo -MD -Zp1 -I.. -Ih -I..\fidoconf -I..\smapi -I..\huskylib
 CDEFS=  -D__NT__ -DWIN32 -D_CONSOLE -D_MAKE_DLL
 COPT=   -O2
 TLIB=   lib -nologo
 
-SMAPIL=	..\smapi\smapimvc.lib msvcrt.lib Kernel32.lib /link /opt:nowin98
+SMAPIL=	..\smapi\make\smapimvc.lib ..\huskylib\make\huskymvc.lib msvcrt.lib Kernel32.lib /link /opt:nowin98
 FCONFL=	..\fidoconf\fconfmvc.lib
 
 all: sqpack.exe
