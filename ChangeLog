@@ -1,3 +1,7 @@
+2002-08-27 Tuesday 10:44  sfpavel
+
+	* debian/rules (sqpack-1_2-stable.2): Fix debian/rules clean
+
 2002-08-26 Monday 06:21  sfpavel
 
 	* debian/: changelog, copyright, rules (sqpack-1_2-stable.[6,2,1]):
