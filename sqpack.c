@@ -671,7 +671,7 @@ void purgeArea(s_area *area)
 		   for (j = 0; j < lcount; j++) {
 		      for (i=0; i<rmIndex; i+=2) {
 			 if (oldLastread[j] >= removeMap[i]) {
-			    if (oldLastread[j] > removeMap[i] + removeMap[i+1]) {
+			    if (oldLastread[j] >= removeMap[i] + removeMap[i+1]) {
 			       newLastread[j] -= removeMap[i+1];
 			    } else {
 			       newLastread[j] -= oldLastread[j] - removeMap[i] + 1;
