@@ -12,8 +12,8 @@ sqpack.1.gz : sqpack.1
 	gzip -c sqpack.1 > sqpack.1.gz
 
 clean: 
-	-rm sqpack
 	-rm sqpack.1.gz
 	-rm *~
 
 distclean: clean
+	-rm sqpack

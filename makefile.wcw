@@ -15,4 +15,8 @@ sqpack.exe:
         $(CC) $(CFLAGS) $(COPT) $(OBJS) $(LIBS)
 
 clean:
-        del *.exe *.obj *.bak *.lib
+	del *.bak
+	del *.obj
+
+distclean: clean
+	del *.exe

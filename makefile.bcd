@@ -8,8 +8,8 @@ sqpack.exe: sqpack.c
 	$(CC) $(COPT) $(LOPT) sqpack.c ../fidoconf/fconfbcd.lib ../smapi/smapibcd.lib
 
 clean:
-	-del sqpack.exe
-	-del *~
+	-del *.bak
+	-del *.obj
 
 distclean: clean
-
+	-del sqpack.exe

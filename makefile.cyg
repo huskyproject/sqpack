@@ -20,7 +20,6 @@ sqpack.exe: sqpack.o
 
 clean:
 	-rm -f *.o
-	-rm *~
 
 distclean: clean
 	-rm sqpack.exe

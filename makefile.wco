@@ -15,8 +15,8 @@ sqpack.exe: sqpack.obj
   $(LINK) $(LFLAGS) FILE sqpack.obj Library ..\smapi\smapiwco.lib, ..\fidoconf\fconfwco.lib NAME sqpack.exe
 
 clean:
-	del *.obj *.bak
+	del *.bak
+	del *.obj
 
 distclean: clean
 	del *.exe
-

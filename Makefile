@@ -42,7 +42,6 @@ uninstall:
 	-$(RM) $(RMOPT) $(MANDIR)$(DIRSEP)man1$(DIRSEP)sqpack.1.gz
 
 clean:
-	-$(RM) $(RMOPT) *~
 	-$(RM) $(RMOPT) *$(OBJ)
 
 
