@@ -14,7 +14,7 @@ else
   LFLAGS = $(OPTLFLAGS)
 endif
 
-CDEFS=-D$(OSTYPE) $(ADDCDEFS)
+CDEFS=-D$(OSTYPE) $(ADDCDEFS) -DNOSEMAPHORES
 
 ifeq ($(SHORTNAME), 1)
   LOPT = -L$(LIBDIR) -lfidoconf -lsmapi

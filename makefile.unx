@@ -1,5 +1,5 @@
 CC   = cc
-COPT = -O2 -DUNIX -I..
+COPT = -O2 -DUNIX -I.. -DNOSEMAPHORES
 LOPT = -L../fidoconf -L../smapi
 # LOPT = 
 

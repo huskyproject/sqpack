@@ -1,7 +1,7 @@
 CC      = wcc386
 LINK    = WLINK
 
-CFLAGS  = -i=.. -oneatx -zq -bt=os2v2 -DOS2
+CFLAGS  = -i=.. -oneatx -zq -bt=os2v2 -DOS2 -DNOSEMAPHORES
 LFLAGS  = system os2v2
 
 all: sqpack.exe
