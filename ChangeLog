@@ -1,3 +1,8 @@
+2003-05-21 Wednesday 09:03  sfpavel
+
+	* debian/: changelog, control (sqpack-1_4-stable.[5,3]): New
+	version: 1.4-RC1
+
 2003-04-15 Tuesday 07:21  andr_lukyanov
 
 	* makefile.djg (sqpack-1_4-stable.1): Fixed DJGPP compilation
