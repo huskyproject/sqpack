@@ -1,3 +1,13 @@
+2002-07-04 Thursday 07:59  stas
+
+	* sqpack.c (1.53): Fix version number display [patch from Pavel
+	Andreew]
+
+2002-07-04 Thursday 07:58  stas
+
+	* debian/: changelog (1.7), rules (1.6): new Debian version [patch
+	from Pavel Andreew]
+
 2002-07-02 Tuesday 16:35  stas
 
 	* INSTALL (1.4): Update documentation
