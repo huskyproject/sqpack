@@ -32,7 +32,8 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
-#include <smapi/compiler.h>
+#include <huskylib/compiler.h>
+#include <huskylib/huskylib.h>
 
 #ifdef HAS_UNISTD_H
 #include <unistd.h>
@@ -47,8 +48,6 @@
 #endif
 
 #include <smapi/msgapi.h>
-#include <smapi/prog.h>
-#include <smapi/progprot.h>
 #include <fidoconf/fidoconf.h>
 #include <fidoconf/common.h>
 #include <fidoconf/log.h>

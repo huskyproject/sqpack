@@ -17,9 +17,9 @@ endif
 CDEFS=-D$(OSTYPE) $(ADDCDEFS)
 
 ifeq ($(SHORTNAME), 1)
-  LOPT = -L$(LIBDIR) -lfidoconf -lsmapi
+  LOPT = -L$(LIBDIR) -lfidoconf -lsmapi -lhuskylib
 else
-  LOPT = -L$(LIBDIR) -lfidoconfig -lsmapi
+  LOPT = -L$(LIBDIR) -lfidoconfig -lsmapi -lhuskylib
 endif
 
 all : sqpack$(EXE) sqpack.1.gz
