@@ -54,7 +54,7 @@
 #include <fidoconf/xstr.h>
 
 
-#define PROGRAM_NAME "sqpack v1.2.3-stable"
+#define PROGRAM_NAME "sqpack v1.2.4-release"
 
 unsigned long msgCopied, msgProcessed; // per Area
 unsigned long totaloldMsg, totalmsgCopied;
