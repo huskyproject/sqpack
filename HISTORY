@@ -3,7 +3,11 @@ SqPack 1.3-current (started 25.06.2002)
 This file describe changes between sqpack-1.2-stable and sqpack-1.3-current
 
 1. MAJOR feature improvements:
+   - implement husky standard logging
 
 2. CONFIG changes:
 
 3. IMPORTANT bugfixes:
+
+
+$Id$
