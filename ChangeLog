@@ -1,3 +1,8 @@
+2002-03-05 Tuesday 14:42  joerg.jaspert
+
+	* debian/: changelog (1.5), control (1.4), huskymak.cfg (1.5),
+	rules (1.4): New Debian Package
+
 2002-02-26 Tuesday 13:43  ml
 
 	* .cvs2cl (1.1): log via cvs messages
