@@ -1,3 +1,14 @@
+2002-10-18 Friday 09:22  stas_degteff
+
+	* makefile.cyg (sqpack-1_2-stable.1): add legacy makefile for
+	cygwin
+
+2002-10-18 Friday 06:57  stas_degteff
+
+	* sqpack.c (sqpack-1_2-stable.8): Workaround bug with unsigned
+	return value, but return -1L (prevent compiler warning comparision
+	unsigned with negative constant)
+
 2002-09-28 Saturday 11:27  pgul
 
 	* sqpack.c (sqpack-1_2-stable.7): purging msg areas fix
