@@ -365,9 +365,9 @@ void purgeArea(s_area *area)
 			 }
 		      }
 		   }
-
-		   writeLastreadFile(oldName, newLastread, lcount, newArea);
 		}
+
+		writeLastreadFile(oldName, newLastread, lcount, newArea);
 
 		MsgCloseArea(oldArea);
 		MsgCloseArea(newArea);

@@ -2,6 +2,11 @@ sqpack 1.0.4
 ------------
 
 ----- cvs ci ------
+Tue Mar 28 15:25:58 MSD 2000
+max (patch from Serguei Revtov):
+* fix lastread problem
+
+----- cvs ci ------
 Fri Mar 24 00:44:00 NOVT 2000
 max(patch from Alex Bronin):
 * rollback 000307.diff - fix squish lastread problem.
