@@ -1,7 +1,8 @@
+/* $Id$ */
+
 #ifndef _VERSION_H
 #define _VERSION_H
 
-#include <fidoconf/version.h>
 #include "cvsdate.h"
 
 /* basic version number */

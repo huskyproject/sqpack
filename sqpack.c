@@ -881,7 +881,7 @@ int main(int argc, char **argv) {
     printf("%s\n", versionStr);
 
     if (argc!=2) {
-        if (argc>2) printf("too many arguments!\n");
+        if (argc>2) printf("\ntoo many arguments!\n\n");
         printf ("Usage: sqpack <areamask>\n");
         return 0;
     }
