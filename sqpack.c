@@ -370,7 +370,6 @@ void SdmWriteLastreadFile(char *fileName, UINT32 *lastread, ULONG lcount,
     char *name;
     int fd;
     unsigned long i;
-    UINT16 temp;
     unsigned char buf[2];
 
     w_log(LL_FUNC, "SdmWriteLastreadFile() begin");
@@ -387,9 +386,13 @@ void SdmWriteLastreadFile(char *fileName, UINT32 *lastread, ULONG lcount,
 
             lseek(fd, 0, SEEK_SET);
             for (i = 0; i < lcount; i++) {
-
-                temp = (UINT16)MsgMsgnToUid(area, lastread[i]);
+#if 0 /* Messages renumbered, MsgMsgnToUid() returns old value */
+      /* We should reopen area before write lastreads */
+                UINT16 temp = (UINT16)MsgMsgnToUid(area, lastread[i]);
                 put_word(buf, temp);
+#else /* msgns are equial to uids after renumber */
+		put_word(buf, lastread[i]);
+#endif
                 write(fd, buf, 2);
             }
 
