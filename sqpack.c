@@ -287,13 +287,43 @@ int main() {
          exit(1);
       }
       
+      // purge netmail area
+      if ((cfg->netMailArea.msgbType & MSGTYPE_SQUISH) == MSGTYPE_SQUISH) {
+         printf("%s\n", cfg->netMailArea.areaName);
+         msgCopied = 0;
+         msgProcessed = 0;
+         purgeArea(cfg->netMailArea);
+      }
+      // purge dupe area
+      if ((cfg->dupeArea.msgbType & MSGTYPE_SQUISH) == MSGTYPE_SQUISH) {
+         printf("%s\n", cfg->dupeArea.areaName);
+         msgCopied = 0;
+         msgProcessed = 0;
+         purgeArea(cfg->dupeArea);
+      }
+      // purge bad area
+      if ((cfg->badArea.msgbType & MSGTYPE_SQUISH) == MSGTYPE_SQUISH) {
+         printf("%s\n", cfg->badArea.areaName);
+         msgCopied = 0;
+         msgProcessed = 0;
+         purgeArea(cfg->badArea);
+      }
       for (i=0; i < cfg->echoAreaCount; i++) {
-         // purge areas
+         // purge echomail areas
          if ((cfg->echoAreas[i].msgbType & MSGTYPE_SQUISH) == MSGTYPE_SQUISH) {
             printf("%s\n", cfg->echoAreas[i].areaName);
             msgCopied = 0;
             msgProcessed = 0;
             purgeArea(cfg->echoAreas[i]);
+         }
+      }
+      for (i=0; i < cfg->localAreaCount; i++) {
+         // purge local areas
+         if ((cfg->localAreas[i].msgbType & MSGTYPE_SQUISH) == MSGTYPE_SQUISH) {
+            printf("%s\n", cfg->localAreas[i].areaName);
+            msgCopied = 0;
+            msgProcessed = 0;
+            purgeArea(cfg->localAreas[i]);
          }
       }
       disposeConfig(cfg);
@@ -302,6 +332,4 @@ int main() {
       printf("Could not read fido config\n");
       return 1;
    }
-
-   
 }
