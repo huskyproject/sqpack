@@ -406,7 +406,7 @@ int main() {
    int i;
    struct _minf m;
    
-   printf("sqpack v1.0.4\n");
+   printf("sqpack v1.1.0\n");
 
    cfg = readConfig();
 
