@@ -723,42 +723,59 @@ void handleArea(s_area *area)
 	};
 }
 
-int main() {
+void doArea(s_area *area, char *cmp) 
+{
+	if (patimat(area->areaName,cmp)) handleArea(area);
+}
+
+int main(int argc, char **argv) {
 
    s_fidoconfig *cfg;
    int i;
    struct _minf m;
-   
+
    printf("sqpack v1.1.0\n");
-
-   cfg = readConfig(NULL);
-
-   if (cfg != NULL ) {
-      m.req_version = 0;
-      m.def_zone = cfg->addr[0].zone;
-      if (MsgOpenApi(&m)!= 0) {
-         printf("MsgOpenApi Error.\n");
-         exit(1);
-      }
-      // purge dupe area
-      handleArea(&(cfg->dupeArea));
-      // purge bad area
-      handleArea(&(cfg->badArea));
-      for (i=0; i < cfg->netMailAreaCount; i++)
-      // purge netmail areas
-	 handleArea(&(cfg->netMailAreas[i]));
-      for (i=0; i < cfg->echoAreaCount; i++)
-         // purge echomail areas
-	 handleArea(&(cfg->echoAreas[i]));
-      for (i=0; i < cfg->localAreaCount; i++) 
-         // purge local areas
-	 handleArea(&(cfg->localAreas[i]));
-      disposeConfig(cfg);
-      printf("\ntotal oldMsg: %lu   total newMsg: %lu\n", 
-	     (unsigned long)totaloldMsg, (unsigned long)totalmsgCopied);
-      return 0;
+   
+   if (argc!=2) {
+	   if (argc>2) printf("too many arguments!\n");
+	   printf ("usage: sqpack *\n");
    } else {
-      printf("Could not read fido config\n");
-      return 1;
+   
+	   cfg = readConfig(NULL);
+
+	   if (cfg != NULL ) {
+		   m.req_version = 0;
+		   m.def_zone = cfg->addr[0].zone;
+		   if (MsgOpenApi(&m)!= 0) {
+			   printf("MsgOpenApi Error.\n");
+			   exit(1);
+		   }
+
+		   // purge dupe area
+		   doArea(&(cfg->dupeArea), argv[1]);
+		   // purge bad area
+		   doArea(&(cfg->badArea), argv[1]);
+
+		   for (i=0; i < cfg->netMailAreaCount; i++)
+			   // purge netmail areas
+			   doArea(&(cfg->netMailAreas[i]), argv[1]);
+
+		   for (i=0; i < cfg->echoAreaCount; i++)
+			   // purge echomail areas
+			   doArea(&(cfg->echoAreas[i]), argv[1]);
+
+		   for (i=0; i < cfg->localAreaCount; i++) 
+			   // purge local areas
+			   doArea(&(cfg->localAreas[i]), argv[1]);
+
+		   disposeConfig(cfg);
+		   printf("\ntotal oldMsg: %lu   total newMsg: %lu\n", 
+				  (unsigned long)totaloldMsg, (unsigned long)totalmsgCopied);
+		   return 0;
+	   } else {
+		   printf("Could not read fido config\n");
+		   return 1;
+	   }
    }
+   return 0;
 }
