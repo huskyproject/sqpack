@@ -1,3 +1,7 @@
+2003-05-15 Thursday 01:07  nssoft
+
+	* Makefile (1.14): Fix makefiles.
+
 2003-05-07 Wednesday 13:03  mche
 
 	* sqpack.vcproj (1.1): project added
