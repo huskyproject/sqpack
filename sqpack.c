@@ -30,9 +30,9 @@
 #include <string.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <smapi/compiler.h>
 #include <fcntl.h>
 
+#include <smapi/compiler.h>
 
 #ifdef HAS_UNISTD_H
 #include <unistd.h>
@@ -42,19 +42,7 @@
 #include <io.h>
 #endif
 
-#ifdef __TURBOC__
-#include <share.h>
-#endif
-
-#ifdef __EMX__
-#include <share.h>
-#endif
-
-#if defined ( __WATCOMC__ )
-#include <share.h>
-#endif
-
-#if defined(__MSVC__)
+#ifdef HAS_SHARE_H
 #include <share.h>
 #endif
 
@@ -65,14 +53,11 @@
 #include <fidoconf/common.h>
 #include <fidoconf/log.h>
 #include <fidoconf/xstr.h>
-#ifdef _MAKE_DLL_MVC_
-#define SH_DENYNO _SH_DENYNO
-#endif
 
 #define PROGRAM_NAME "sqpack v1.3.1-current"
 #define LOGFILE "sqpack.log"
 
-unsigned long msgCopied, msgProcessed; // per Area
+unsigned long msgCopied, msgProcessed; /*  per Area */
 unsigned long totaloldMsg, totalmsgCopied;
 int lock_fd;
 
@@ -435,7 +420,7 @@ int processMsg(dword msgNum, dword numMsg, HAREA oldArea, HAREA newArea,
     dword  textLen, ctrlLen;
     int unsent, i, rc = 0;
 
-    //   unsigned long offset;
+    /*    unsigned long offset; */
 
     w_log(LL_FUNC, "processMsg() begin");
     msg = MsgOpenMsg(oldArea, MOPEN_RW, msgNum);
@@ -474,7 +459,7 @@ int processMsg(dword msgNum, dword numMsg, HAREA oldArea, HAREA newArea,
                 xmsg.replies[0] = MsgUidToMsgn(oldArea, xmsg.replies[0], UID_EXACT) > shift ? MsgUidToMsgn(oldArea, xmsg.replies[0], UID_EXACT) - shift : 0;
                 xmsg.xmreplynext = MsgUidToMsgn(oldArea, xmsg.xmreplynext, UID_EXACT) > shift ? MsgUidToMsgn(oldArea, xmsg.xmreplynext, UID_EXACT) - shift : 0;
             }
-            // copy msg
+            /*  copy msg */
             textLen = MsgGetTextLen(msg);
             ctrlLen = MsgGetCtrlLen(msg);
 
@@ -628,7 +613,7 @@ void renameArea(int areaType, char *oldName, char *newName)
         remove(oldTmp);
         rename(newTmp, oldTmp);
 #endif
-        remove(newTmp); // erase new lastread file
+        remove(newTmp); /*  erase new lastread file */
 
     }
 
@@ -750,12 +735,12 @@ void purgeArea(s_area *area)
         }
 
         w_log(LL_STAT, "OldMsg: %lu; NewMsg: %lu", (unsigned long)numMsg, msgCopied);
-        totaloldMsg+=numMsg; totalmsgCopied+=msgCopied; // total
+        totaloldMsg+=numMsg; totalmsgCopied+=msgCopied; /*  total */
 
         nfree(oldLastread);
         nfree(newLastread);
 
-        //rename oldArea to newArea
+        /* rename oldArea to newArea */
         renameArea(areaType, oldName, newName);
     }
     else {
@@ -903,15 +888,15 @@ int main(int argc, char **argv) {
        doArea(&(config->badArea), argv[1]);
 
     for (i=0; i < config->netMailAreaCount; i++)
-        // purge netmail areas
+        /*  purge netmail areas */
         doArea(&(config->netMailAreas[i]), argv[1]);
 
     for (i=0; i < config->echoAreaCount; i++)
-        // purge echomail areas
+        /*  purge echomail areas */
         doArea(&(config->echoAreas[i]), argv[1]);
 
     for (i=0; i < config->localAreaCount; i++)
-        // purge local areas
+        /*  purge local areas */
         doArea(&(config->localAreas[i]), argv[1]);
 
     w_log(LL_SUMMARY,"Total oldMsg: %lu; total newMsg: %lu",
