@@ -1,12 +1,12 @@
 CC   = gcc
 COPT = -O2 -DUNIX -I..
-LOPT = -L../fidoconfig -L../smapi
+LOPT = -L../fidoconf -L../smapi
 # LOPT = 
 
 all : sqpack 
 
 sqpack: sqpack.c
-	$(CC) $(COPT) $(LOPT) sqpack.c -o sqpack -lsmapisun -lfidoconfig
+	$(CC) $(COPT) $(LOPT) sqpack.c -o sqpack -lsmapisun -lfidoconfigsun
 
 sqpack.1.gz : sqpack.1
 	gzip -c sqpack.1 > sqpack.1.gz

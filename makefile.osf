@@ -3,9 +3,9 @@ include ../huskymak.cfg
 
 CC   = cc
 ifeq ($(DEBUG), 1)
-  COPT = -g -DUNIX -I$(INCDIR)
+  COPT = -g -DUNIX -I$(INCDIR) -I../smapi
 else
-  COPT = -s -DUNIX -I$(INCDIR)
+  COPT = -s -DUNIX -I$(INCDIR) -I../smapi
 endif
 
 LOPT = -L$(LIBDIR)
@@ -19,8 +19,8 @@ sqpack.1.gz : sqpack.1
 	gzip -c sqpack.1 > sqpack.1.gz
 
 install: sqpack sqpack.1.gz
-	install $(IBOPT) sqpack $(BINDIR)
-	install $(IMOPT) sqpack.1.gz $(MANDIR)/man1
+	cp -f sqpack $(BINDIR)
+	cp -f sqpack.1.gz $(MANDIR)/man1
 
 clean: 
 	-rm *~
