@@ -70,11 +70,12 @@
 #define SH_DENYNO _SH_DENYNO
 #endif
 
-#define PROGRAM_NAME "sqpack v1.3.0-current"
+#define PROGRAM_NAME "sqpack v1.3.1-current"
 #define LOGFILE "sqpack.log"
 
 unsigned long msgCopied, msgProcessed; // per Area
 unsigned long totaloldMsg, totalmsgCopied;
+int lock_fd;
 
 void SqReadLastreadFile(char *fileName, UINT32 **lastreadp, ULONG *lcountp,
                         HAREA area)
@@ -853,7 +854,7 @@ void doArea(s_area *area, char *cmp)
 
 int main(int argc, char **argv) {
 
-    s_fidoconfig *cfg;
+    s_fidoconfig *config;
     unsigned int i;
     struct _minf m;
 
@@ -865,42 +866,56 @@ int main(int argc, char **argv) {
     } else {
 
         setvar("module", "sqpack");
-        cfg = readConfig(NULL);
+        config = readConfig(NULL);
 
-        if (cfg != NULL ) {
-           openLog(LOGFILE, PROGRAM_NAME, cfg);
+        if (config != NULL ) {
+            if (config->lockfile) {
+                lock_fd = lockFile(config->lockfile, config->advisoryLock);
+                if( lock_fd < 0 )
+                {
+                    disposeConfig(config);
+                    exit(EX_CANTCREAT);
+                }
+            }
+            openLog(LOGFILE, PROGRAM_NAME, config);
             w_log(LL_START, "Start");
             m.req_version = 0;
-            m.def_zone = cfg->addr[0].zone;
+            m.def_zone = config->addr[0].zone;
             if (MsgOpenApi(&m)!= 0) {
                 w_log(LL_CRIT,"MsgOpenApi Error. Exit.");
                 closeLog();
-                disposeConfig(cfg);
+                if (config->lockfile) {
+                    FreelockFile(config->lockfile ,lock_fd);
+                }
+                disposeConfig(config);
                 exit(1);
             }
 
             // purge dupe area
-            doArea(&(cfg->dupeArea), argv[1]);
+            doArea(&(config->dupeArea), argv[1]);
             // purge bad area
-            doArea(&(cfg->badArea), argv[1]);
+            doArea(&(config->badArea), argv[1]);
 
-            for (i=0; i < cfg->netMailAreaCount; i++)
+            for (i=0; i < config->netMailAreaCount; i++)
                 // purge netmail areas
-                doArea(&(cfg->netMailAreas[i]), argv[1]);
+                doArea(&(config->netMailAreas[i]), argv[1]);
 
-            for (i=0; i < cfg->echoAreaCount; i++)
+            for (i=0; i < config->echoAreaCount; i++)
                 // purge echomail areas
-                doArea(&(cfg->echoAreas[i]), argv[1]);
+                doArea(&(config->echoAreas[i]), argv[1]);
 
-            for (i=0; i < cfg->localAreaCount; i++)
+            for (i=0; i < config->localAreaCount; i++)
                 // purge local areas
-                doArea(&(cfg->localAreas[i]), argv[1]);
+                doArea(&(config->localAreas[i]), argv[1]);
 
             w_log(LL_SUMMARY,"Total oldMsg: %lu; total newMsg: %lu",
                 (unsigned long)totaloldMsg, (unsigned long)totalmsgCopied);
-            disposeConfig(cfg);
             w_log(LL_STOP,"End");
             closeLog();
+            if (config->lockfile) {
+                FreelockFile(config->lockfile ,lock_fd);
+            }
+            disposeConfig(config);
             return 0;
 
         } else {
