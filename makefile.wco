@@ -6,7 +6,7 @@ LINK    = WLINK
 
 !IF $(DEBUG) == 1
 CFLAGS  = -d2 -hw -i=$(INCDIR) -zq
-LFLAGS  =
+LFLAGS  = d watcom
 !ELSE
 CFLAGS  = -i$(INCDIR) -oneatx -zq
 LFLAGS  =

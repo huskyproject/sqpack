@@ -37,6 +37,7 @@
 */
 
 unsigned long msgCopied, msgProcessed; // per Area
+int areaType; // JAM || Squish
 
 void readLastreadFile(char *fileName, UINT32 **lastreadp, ULONG *lcountp,
 		      HAREA area)
@@ -146,7 +147,7 @@ int processMsg(dword msgNum, dword numMsg, HAREA oldArea, HAREA newArea,
    unsigned long offset;
 
    msg = MsgOpenMsg(oldArea, MOPEN_RW, msgNum);
-   if (msg == NULL) return;
+   if (msg == NULL) return rc;
 
 
    MsgReadMsg(msg, &xmsg, 0, 0, NULL, 0, NULL);
@@ -175,6 +176,11 @@ int processMsg(dword msgNum, dword numMsg, HAREA oldArea, HAREA newArea,
         ctrlLen = MsgGetCtrlLen(msg);
 
         text = (char *) malloc(textLen+1);
+
+        // Vlad Pluzhnikov
+        // Crashed on some msg (Watcom/NT). FIX me !!!
+        memset(text,0,textLen+1);
+
         ctrlText = (char *) malloc(ctrlLen+1);
 
         MsgReadMsg(msg, NULL, 0, textLen, (byte*)text, ctrlLen, (byte*)ctrlText);
@@ -184,7 +190,6 @@ int processMsg(dword msgNum, dword numMsg, HAREA oldArea, HAREA newArea,
         MsgCloseMsg(newMsg);
 
         msgCopied++;
-
         free(text);
         free(ctrlText);
 	rc = 1;
@@ -237,16 +242,45 @@ void renameArea(char *oldName, char *newName)
 
    strcpy(oldTmp, oldName);
    strcpy(newTmp, newName);
-   strcat(oldTmp, ".sqd");
-   strcat(newTmp, ".sqd");
-   remove(oldTmp);
-   rename(newTmp, oldTmp);
 
-   oldTmp[strlen(oldTmp)-1] = 'i';
-   newTmp[strlen(newTmp)-1] = 'i';
-   remove(oldTmp);
-   rename(newTmp, oldTmp);
+   if (areaType==MSGTYPE_SQUISH) {
+     strcat(oldTmp, ".sqd");
+     strcat(newTmp, ".sqd");
+     remove(oldTmp);
+     rename(newTmp, oldTmp);
 
+     oldTmp[strlen(oldTmp)-1] = 'i';
+     newTmp[strlen(newTmp)-1] = 'i';
+     remove(oldTmp);
+     rename(newTmp, oldTmp);
+   }
+
+   if (areaType==MSGTYPE_JAM) {
+     strcat(oldTmp, ".jdt");
+     strcat(newTmp, ".jdt");
+     remove(oldTmp);
+     rename(newTmp, oldTmp);
+
+     oldTmp[strlen(oldTmp)-1] = 'x';
+     newTmp[strlen(newTmp)-1] = 'x';
+     remove(oldTmp);
+     rename(newTmp, oldTmp);
+
+     oldTmp[strlen(oldTmp)-2] = 'l';
+     newTmp[strlen(newTmp)-2] = 'l';
+     oldTmp[strlen(oldTmp)-1] = 'r';
+     newTmp[strlen(newTmp)-1] = 'r';
+
+//   remove(oldTmp);
+//   Do not change lastread file (FIX ME)
+//   rename(newTmp, oldTmp);
+     remove(newTmp); // erase new lastread file
+
+     oldTmp[strlen(oldTmp)-2] = 'h';
+     newTmp[strlen(newTmp)-2] = 'h';
+     remove(oldTmp);
+     rename(newTmp, oldTmp);
+   }
    
    free(oldTmp);
    free(newTmp);
@@ -274,10 +308,10 @@ void purgeArea(s_area area)
 	strcat(newName, "_tmp");
 
 	/*oldArea = MsgOpenArea((byte *) oldName, MSGAREA_NORMAL, -1, -1, -1, MSGTYPE_SQUISH);*/
-	oldArea = MsgOpenArea((byte *) oldName, MSGAREA_NORMAL, MSGTYPE_SQUISH);
+	oldArea = MsgOpenArea((byte *) oldName, MSGAREA_NORMAL, areaType);
 	
 	/*if (oldArea) newArea = MsgOpenArea((byte *) newName, MSGAREA_CREATE, area.fperm, area.uid, area.gid,MSGTYPE_SQUISH);*/
-	if (oldArea) newArea = MsgOpenArea((byte *) newName, MSGAREA_CREATE, MSGTYPE_SQUISH);
+	if (oldArea) newArea = MsgOpenArea((byte *) newName, MSGAREA_CREATE, areaType);
 
 	if ((oldArea != NULL) && (newArea != NULL)) {
 		ULONG lcount;
@@ -353,41 +387,91 @@ int main() {
       }
       
       // FIXME: purge netmail area
+      // SQUISH
       if ((cfg->netMailAreas[0].msgbType & MSGTYPE_SQUISH) == MSGTYPE_SQUISH) {
          printf("%s\n", cfg->netMailAreas[0].areaName);
          msgCopied = 0;
          msgProcessed = 0;
+         areaType=MSGTYPE_SQUISH;
+         purgeArea(cfg->netMailAreas[0]);
+      }
+      // JAM
+      if ((cfg->netMailAreas[0].msgbType & MSGTYPE_JAM) == MSGTYPE_JAM) {
+         printf("%s\n", cfg->netMailAreas[0].areaName);
+         msgCopied = 0;
+         msgProcessed = 0;
+         areaType=MSGTYPE_JAM;
          purgeArea(cfg->netMailAreas[0]);
       }
       // purge dupe area
+      // SQUISH
       if ((cfg->dupeArea.msgbType & MSGTYPE_SQUISH) == MSGTYPE_SQUISH) {
          printf("%s\n", cfg->dupeArea.areaName);
          msgCopied = 0;
          msgProcessed = 0;
+         areaType=MSGTYPE_SQUISH;
+         purgeArea(cfg->dupeArea);
+      }
+      // JAM
+      if ((cfg->dupeArea.msgbType & MSGTYPE_JAM) == MSGTYPE_JAM) {
+         printf("%s\n", cfg->dupeArea.areaName);
+         msgCopied = 0;
+         msgProcessed = 0;
+         areaType=MSGTYPE_JAM;
          purgeArea(cfg->dupeArea);
       }
       // purge bad area
+      // SQUISH
       if ((cfg->badArea.msgbType & MSGTYPE_SQUISH) == MSGTYPE_SQUISH) {
          printf("%s\n", cfg->badArea.areaName);
          msgCopied = 0;
          msgProcessed = 0;
+         areaType=MSGTYPE_SQUISH;
+         purgeArea(cfg->badArea);
+      }
+      // JAM
+      if ((cfg->badArea.msgbType & MSGTYPE_JAM) == MSGTYPE_JAM) {
+         printf("%s\n", cfg->badArea.areaName);
+         msgCopied = 0;
+         msgProcessed = 0;
+         areaType=MSGTYPE_JAM;
          purgeArea(cfg->badArea);
       }
       for (i=0; i < cfg->echoAreaCount; i++) {
          // purge echomail areas
+         // SQUISH
          if ((cfg->echoAreas[i].msgbType & MSGTYPE_SQUISH) == MSGTYPE_SQUISH) {
             printf("%s\n", cfg->echoAreas[i].areaName);
             msgCopied = 0;
             msgProcessed = 0;
+            areaType=MSGTYPE_SQUISH;
+            purgeArea(cfg->echoAreas[i]);
+         }
+         // JAM
+         if ((cfg->echoAreas[i].msgbType & MSGTYPE_JAM) == MSGTYPE_JAM) {
+            printf("%s\n", cfg->echoAreas[i].areaName);
+            msgCopied = 0;
+            msgProcessed = 0;
+            areaType=MSGTYPE_JAM;
             purgeArea(cfg->echoAreas[i]);
          }
       }
       for (i=0; i < cfg->localAreaCount; i++) {
          // purge local areas
+         // SQUISH
          if ((cfg->localAreas[i].msgbType & MSGTYPE_SQUISH) == MSGTYPE_SQUISH) {
             printf("%s\n", cfg->localAreas[i].areaName);
             msgCopied = 0;
             msgProcessed = 0;
+            areaType=MSGTYPE_SQUISH;
+            purgeArea(cfg->localAreas[i]);
+         }
+         // JAM
+         if ((cfg->localAreas[i].msgbType & MSGTYPE_JAM) == MSGTYPE_JAM) {
+            printf("%s\n", cfg->localAreas[i].areaName);
+            msgCopied = 0;
+            msgProcessed = 0;
+            areaType=MSGTYPE_JAM;
             purgeArea(cfg->localAreas[i]);
          }
       }
