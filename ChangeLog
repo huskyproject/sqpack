@@ -1,3 +1,8 @@
+2002-11-29 Friday 10:06  stas_degteff
+
+	* makefile.bcd (1.3), makefile.bco (1.3), makefile.wco (1.5),
+	makefile.wcw (1.8): dos2unix
+
 2002-11-26 Tuesday 12:52  pgul
 
 	* sqpack.c (1.81): Fix EMX warning
