@@ -330,8 +330,7 @@ void SdmReadLastreadFile(char *fileName, UINT32 **lastreadp, ULONG *lcountp,
     w_log(LL_FUNC, "SdmReadLastreadFile() end");
 }
 
-void SdmWriteLastreadFile(char *fileName, UINT32 *lastread, ULONG lcount,
-                          HAREA area)
+void SdmWriteLastreadFile(char *fileName, UINT32 *lastread, ULONG lcount)
 {
     char *name;
     int fd;
@@ -370,9 +369,6 @@ void SdmWriteLastreadFile(char *fileName, UINT32 *lastread, ULONG lcount,
         nfree(name);
     }
     w_log(LL_FUNC, "SdmWriteLastreadFile() end");
-#ifdef __WATCOMC__
-    area=area; /* prevent warning */
-#endif
 }
 
 void readLastreadFile(char *fileName, UINT32 **lastreadp, ULONG *lcountp,
@@ -397,7 +393,7 @@ void writeLastreadFile(char *fileName, UINT32 *lastreadp, ULONG lcount,
     else if (areaType == MSGTYPE_JAM)
         JamWriteLastreadFile(fileName, lastreadp, lcount, area);
     else if (areaType == MSGTYPE_SDM)
-        SdmWriteLastreadFile(fileName, lastreadp, lcount, area);
+        SdmWriteLastreadFile(fileName, lastreadp, lcount);
     w_log(LL_FUNC, "writeLastreadFile() end");
 }
 
