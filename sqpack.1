@@ -1,6 +1,6 @@
 .TH SQPACK 1 "sqpack (v0.9)"
 .SH NAME
-sqpack \- purges squish msgbases taken from fidoconfig and purges dupes-files 
+sqpack \- purges squish msgbases taken from fidoconfig 
 .SH SYNTAX
 .TP
 .B Purge areas
@@ -8,10 +8,9 @@ sqpack
 .SH DESCRIPTION
 SqPack takes the information about squish msgbases from fidoconfig and purges
 the msgbases according to the -m and -p statements. See fidoconfig then.
-Additional it purges the dupe-files according to the DupeHistory statement. 
 .SH BUGS
 If purging according to -p there goes something wrong and not all old mails
-are purged. Dupe-file purging is not implemented at the moment.
+are purged.
 The memory requirements are very high. There seems to be a memory leak.
 Please report me, if you find any other.
 hint: if there is a core files after first tries to run sqpack - don't worry!

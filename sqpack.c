@@ -12,11 +12,13 @@ void purgeArea(s_area area, HAREA a) {
 
    highest = MsgGetHighMsg(a);
    msgCount = MsgGetNumMsg(a);
+   currentTime = time(NULL);
    for (i = 0; i < highest; i++) {
       msg = MsgOpenMsg(a, MOPEN_RW, i);
       if (msg==NULL) continue;
       // first test if there are more messages in the area and then kill the msg
       if ((area.max != 0) && (msgCount > area.max)) {
+         MsgCloseMsg(msg);
          MsgKillMsg(a, i);
          msgCount--;
       // if there are not too much msgs test if msg is too old
@@ -25,14 +27,13 @@ void purgeArea(s_area area, HAREA a) {
             MsgReadMsg(msg, &xmsg, 0,0,NULL, 0, NULL);
             MsgCloseMsg(msg);
             date.tm_mday = xmsg.date_written.date.da;
-            date.tm_mon  = xmsg.date_written.date.mo - 1;
+            date.tm_mon  = xmsg.date_written.date.mo;
             date.tm_year = xmsg.date_written.date.yr + 80;
             date.tm_hour = xmsg.date_written.time.hh;
             date.tm_min  = xmsg.date_written.time.mm;
             date.tm_sec  = xmsg.date_written.time.ss << 1;
             
             msgTime = mktime(&date);
-            currentTime = time(NULL);
             // difference between the to times is greater then the number of seconds of the area.purge days, kill it
             if (abs(currentTime - msgTime) > area.purge * 24 * 60 * 60)  {
 //               printf("Trying to delete msg #%d\n", i);
@@ -64,7 +65,7 @@ int main() {
    int i;
    struct _minf m;
    
-   printf("sqpack v0.9\n");
+   printf("sqpack v0.95\n");
 
    cfg = readConfig();
 
@@ -77,8 +78,10 @@ int main() {
       }
       
       for (i=0; i < cfg->echoAreaCount; i++) {
+         // purge areas
          if ((cfg->echoAreas[i].msgbType & MSGTYPE_PASSTHROUGH) != MSGTYPE_PASSTHROUGH)
             openArea(cfg->echoAreas[i]);
+         
       }
       disposeConfig(cfg);
    } else printf("Could not read fido config\n");
