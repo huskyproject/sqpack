@@ -1,3 +1,8 @@
+2003-04-14 Monday 02:12  andr_lukyanov
+
+	* makefile.djg (1.5), makefile.mvc (1.8), makefile.mvcdll (1.9):
+	Fixed compilation with new library structure
+
 2003-04-11 Friday 21:19  i_zkh
 
 	* makefile.mvcdll (1.8): Fixed compiling
