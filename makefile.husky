@@ -2,9 +2,11 @@
 include ../huskymak.cfg
 
 ifeq ($(DEBUG), 1)
-  COPT = -ggdb -O2 -I../smapi -I$(INCDIR)
+  COPT = $(DEBCFLAGS) $(WARNFLAGS) -I../smapi -I$(INCDIR)
+  LFLAGS = $(DEBLFLAGS)
 else
-  COPT = -s -O2 -I../smapi -I$(INCDIR)
+  COPT = $(OPTCFLAGS) $(WARNFLAGS) -I../smapi -I$(INCDIR)
+  LFLAGS = $(OPTLFLAGS)
 endif
 
 CDEFS=-D$(OSTYPE) $(ADDCDEFS)
@@ -17,8 +19,11 @@ endif
 
 all : sqpack$(EXE)
 
-sqpack$(EXE): sqpack.c
-	$(CC) $(COPT) $(CDEFS) $(LOPT) sqpack.c -o sqpack$(EXE)
+sqpack$(OBJ): sqpack.c
+	$(CC) $(COPT) $(CDEFS) sqpack.c -o sqpack$(OBJ)
+
+sqpack$(EXE): sqpack$(OBJ)
+	$(CC) $(LFLAGS) -o sqpack$(EXE) sqpack$(OBJ) $(LOPT)
 
 sqpack.1.gz : sqpack.1
 	gzip -c sqpack.1 > sqpack.1.gz
