@@ -139,10 +139,10 @@ void SqWriteLastreadFile(char *fileName, UINT32 *lastread, ULONG lcount,
 
                 temp = MsgMsgnToUid(area, lastread[i]);
 
-                buffer[0] = temp & 0xFF;
-                buffer[1] = (temp >> 8) & 0xFF;
-                buffer[2] = (temp >> 16) & 0xFF;
-                buffer[3] = (temp >> 24) & 0xFF;
+                buffer[0] = (UCHAR)(  temp & 0xFF);
+                buffer[1] = (UCHAR)( (temp >> 8) & 0xFF );
+                buffer[2] = (UCHAR)( (temp >> 16) & 0xFF );
+                buffer[3] = (UCHAR)( (temp >> 24) & 0xFF );
 
                 write(fd, &buffer, 4);
             }
@@ -464,7 +464,7 @@ int processMsg(dword msgNum, dword numMsg, HAREA oldArea, HAREA newArea,
         if (ttime == 0xfffffffflu) ttime = 0; /* emx */
 
         if (unsent || (area -> purge == 0) || ttime == 0 ||
-            (abs(actualTime - ttime) <= (area -> purge * 24 *60 * 60))) {
+            (labs(actualTime - ttime) <= (long)(area -> purge * 24 *60 * 60))) {
             xmsg.replyto = MsgUidToMsgn(oldArea, xmsg.replyto, UID_EXACT) > shift ? MsgUidToMsgn(oldArea, xmsg.replyto, UID_EXACT) - shift : 0;
             if ((area->msgbType & MSGTYPE_SQUISH) == MSGTYPE_SQUISH){
 
