@@ -1,2 +1,3 @@
-sqpack 1.3.0-current
-Require: fidoconf 1.3-current, smapi-2.3.0-current
+sqpack 1.4.0-stable
+cvs tag: sqpack-1_4-stable
+Require: fidoconf 1.4-stable, smapi-2.4-stable
