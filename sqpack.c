@@ -15,7 +15,7 @@
 #include <fidoconfig.h>
 #include <common.h>
 
-unsigned long msgCopied; // per Area
+unsigned long msgCopied, msgProcessed; // per Area
 
 void readLastreadFile(char *fileName, UINT32 *lastread[], HAREA area)
 {
@@ -107,11 +107,10 @@ unsigned long getOffsetInLastread(UINT32 *lastread[], dword msgnum ) {
    
 }
 
-void processMsg(dword msgNum, HAREA oldArea, HAREA newArea, s_area area, UINT32 *oldLastread[], UINT32 *newLastread[] )
+void processMsg(dword msgNum, dword numMsg, HAREA oldArea, HAREA newArea, s_area area, UINT32 *oldLastread[], UINT32 *newLastread[] )
 {
    HMSG msg, newMsg;
    XMSG xmsg;
-   static unsigned long msgProcessed = 0;
    struct tm tmTime;
    time_t ttime, actualTime = time(NULL);
    char *text, *ctrlText;
@@ -122,7 +121,8 @@ void processMsg(dword msgNum, HAREA oldArea, HAREA newArea, s_area area, UINT32 
    msg = MsgOpenMsg(oldArea, MOPEN_RW, msgNum);
    if (msg == NULL) return;
 
-   if ((area.max == 0) || (MsgGetNumMsg(oldArea)-msgProcessed) <= area.max) { //only max msgs should be in new area
+   if ((area.max == 0) || ((numMsg - msgProcessed) <= area.max)) { //only max msgs should be in new area
+//      printf("%u: %u - %u = %u\n", area.max, numMsg, msgCopied, numMsg - msgCopied);
       MsgReadMsg(msg, &xmsg, 0, 0, NULL, 0, NULL);
       DosDate_to_TmDate(&(xmsg.date_arrived), &tmTime);
       ttime = mktime(&tmTime);
@@ -159,7 +159,6 @@ void processMsg(dword msgNum, HAREA oldArea, HAREA newArea, s_area area, UINT32 
       
       MsgCloseMsg(msg);
    }
-
    msgProcessed++;
 }
 
@@ -216,7 +215,7 @@ void purgeArea(s_area area)
 
       for (i = 1; i <= highMsg; i++) {
          
-         processMsg(i, oldArea, newArea, area, &oldLastread, &newLastread);
+         processMsg(i, numMsg, oldArea, newArea, area, &oldLastread, &newLastread);
       }
 
       writeLastreadFile(oldName, &newLastread, newArea);
@@ -260,6 +259,7 @@ int main() {
          if ((cfg->echoAreas[i].msgbType & MSGTYPE_SQUISH) == MSGTYPE_SQUISH) {
             printf("%s\n", cfg->echoAreas[i].areaName);
             msgCopied = 0;
+            msgProcessed = 0;
             purgeArea(cfg->echoAreas[i]);
          }
       }
