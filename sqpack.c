@@ -62,7 +62,6 @@ unsigned long msgCopied, msgProcessed; /*  per Area */
 unsigned long totaloldMsg, totalmsgCopied;
 unsigned long totalOldBaseSize, totalNewBaseSize;
 int lock_fd;
-char *versionStr;
 int area_found;
 
 void SqReadLastreadFile(char *fileName, UINT32 **lastreadp, ULONG *lcountp,
@@ -846,16 +845,21 @@ int main(int argc, char **argv) {
     s_fidoconfig *config;
     unsigned int i;
     struct _minf m;
+    char *versionStr = NULL;
 
     area_found = 0;
 
     versionStr = GenVersionStr( "sqpack", VER_MAJOR, VER_MINOR, VER_PATCH,
                                VER_BRANCH, cvs_date );
-    printf("%s\n", versionStr);
+
+    printf("%s\n\n", versionStr);
 
     if (argc!=2) {
-        if (argc>2) printf("too many arguments!\n");
-        printf ("Usage: sqpack <areamask>\n");
+        if (argc>2)
+            printf("too many arguments!\n");
+            printf(
+            "Usage: sqpack <areamask>|*\n"
+            "Options:  *\t- all areas\n");
         return 0;
     }
 
