@@ -1,3 +1,12 @@
+sqpack (1.3.0-1) unstable; urgency=low
+
+  * NMU. Joerg, big thanks for Debian packages! But we don't see you now
+    :-(
+  * Update Standards - 3.5.6 now
+  * Corrected Build-dependency for libsmapi-dev and libfidoconf-dev
+
+ -- Pavel Andreew <pavel@collage.etel.ru>  Sun, 30 Jun 2002 05:29:43 +0600
+
 sqpack (1.1.0-1) unstable; urgency=low
 
   * Next Debian Package.
