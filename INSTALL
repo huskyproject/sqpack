@@ -1,0 +1,16 @@
+Unix:
+-----
+
+0. the smapi and the fidoconfig package is required for sqPack.
+
+1. Put sqPack in the directory where the other packages of fido
+   linux reside:
+
+   /usr/src/packages/        -> smapi/
+                             -> hpt/
+                             -> fidoconfig/
+
+2. compile sqPack
+
+You're ready. If you have a working fidoconfig, you can now purge MsgBases under
+unix.
