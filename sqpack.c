@@ -15,6 +15,13 @@
 #include <fidoconfig.h>
 #include <common.h>
 
+#if defined ( __WATCOMC__ )
+#include <string.h>
+#include <stdlib.h>
+#include <prog.h>
+#include <share.h>
+#endif
+
 unsigned long msgCopied, msgProcessed; // per Area
 
 void readLastreadFile(char *fileName, UINT32 *lastread[], HAREA area)
@@ -135,9 +142,9 @@ void processMsg(dword msgNum, dword numMsg, HAREA oldArea, HAREA newArea, s_area
          text = (char *) malloc(textLen+1);
          ctrlText = (char *) malloc(ctrlLen+1);
 
-         MsgReadMsg(msg, NULL, 0, textLen, text, ctrlLen, ctrlText);
+         MsgReadMsg(msg, NULL, 0, textLen, (byte*)text, ctrlLen, (byte*)ctrlText);
          newMsg = MsgOpenMsg(newArea, MOPEN_CREATE, 0);
-         MsgWriteMsg(newMsg, 0, &xmsg, text, textLen, textLen, ctrlLen, ctrlText);
+         MsgWriteMsg(newMsg, 0, &xmsg, (byte*)text, textLen, textLen, ctrlLen, (byte*)ctrlText);
          MsgCloseMsg(newMsg);
 
          msgCopied++;
