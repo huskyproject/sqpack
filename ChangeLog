@@ -1,3 +1,12 @@
+2003-09-18 Thursday 10:44  sfpavel
+
+	* Makefile (sqpack-1_4-stable.1): Fix static building
+
+2003-09-18 Thursday 06:32  sfpavel
+
+	* debian/changelog (sqpack-1_4-stable.6): New stable version:
+	1.4-RC2
+
 2003-05-30 Friday 20:56  d_sergienko
 
 	* sqpack.c (sqpack-1_4-stable.1): warn if no area found by supplied
