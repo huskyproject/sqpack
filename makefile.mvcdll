@@ -6,7 +6,7 @@ CDEFS=  -D__NT__ -DNT -DWINNT -D_CONSOLE -D_MAKE_DLL
 COPT=   -O2
 TLIB=   lib -nologo
 
-SMAPIL=	..\smapi\smapimvc.lib msvcrt.lib Kernel32.lib
+SMAPIL=	..\smapi\smapimvc.lib msvcrt.lib Kernel32.lib /link /opt:nowin98
 FCONFL=	..\fidoconf\fconfmvc.lib
 
 all: sqpack.exe

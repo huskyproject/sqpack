@@ -1,3 +1,9 @@
+sqpack (1.2.2-1) stable; urgency=low
+
+  * New cvs version: 1.2-RC2
+
+ -- Pavel Andreew <pavel@collage.etel.ru>  Tue, 17 Sep 2002 17:17:53 +0600
+
 sqpack (1.2.1-4) stable; urgency=low
 
   * Update BUGS

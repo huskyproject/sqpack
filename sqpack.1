@@ -1,16 +1,16 @@
-.TH SQPACK 1 "sqpack (v1.1.0)"
+.TH SQPACK 1 "sqpack (v1.2)"
 .SH NAME
-sqpack \- purges squish msgbases taken from fidoconfig 
+sqpack \- purges squish msgbases taken from fidoconfig
 .SH SYNTAX
 .TP
 .B Purge areas
 .TP
-sqpack *
+sqpack <areamask>
 .TP
 from script: sqpack "*"
 .SH DESCRIPTION
-sqPack takes the information about squish msgbases from fidoconfig and purges
-the msgbases according to the -m and -p statements. See fidoconfig.
+sqPack takes the information about squish and jam msgbases from fidoconfig
+and purges the msgbases according to the -m and -p statements. See fidoconfig.
 .SH BUGS
 hint: if there is a core files after first tries to run sqpack - don't worry!
 Just edit /etc/fido/config. 99% of troubles comes from a wrong config file.

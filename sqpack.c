@@ -1,3 +1,28 @@
+/* $Id$ */
+/*****************************************************************************
+* SqPack --- FTN messagebase packer (purger)
+*****************************************************************************
+* Copyright (C) 1997-1999 Matthias Tichy (mtt@tichy.de).
+* Copyright (C) 1999-2002 Husky developers team
+*
+* This file is part of HUSKY Fidonet Software project.
+*
+* SQPACK is free software; you can redistribute it and/or modify it
+* under the terms of the GNU General Public License as published by the
+* Free Software Foundation; either version 2, or (at your option) any
+* later version.
+*
+* SQPACK is distributed in the hope that it will be useful, but
+* WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+* General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with HPT; see the file COPYING.  If not, write to the Free
+* Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+*****************************************************************************
+*/
+
 #include <stdio.h>
 #include <errno.h>
 #include <time.h>
@@ -25,6 +50,7 @@
 #include <smapi/prog.h>
 #include <fidoconf/fidoconf.h>
 #include <fidoconf/common.h>
+#include <fidoconf/xstr.h>
 
 #if defined ( __WATCOMC__ )
 #include <string.h>
@@ -36,19 +62,11 @@
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 #include <share.h>
 #endif
-#ifdef _MAKE_DLL_MVC_    
+#ifdef _MAKE_DLL_MVC_
 #define SH_DENYNO _SH_DENYNO
 #endif
-/* Changes
-  v1.0.4
-        SMS Packing ALL areas
-  v1.0.3
-	K.N. Sqpack now newer thrashes reply links. Works fine for me.
-	PS	There is something strange about all this code: it worked
-		fine for the first time, without any debugging. Be prepared for
-		bugs ;)
-	Also allows additional customization: kill read and keep unread
-*/
+
+#define PROGRAM_NAME "sqpack v1.2.2-stable"
 
 unsigned long msgCopied, msgProcessed; // per Area
 unsigned long totaloldMsg, totalmsgCopied;
@@ -60,11 +78,9 @@ void SqReadLastreadFile(char *fileName, UINT32 **lastreadp, ULONG *lcountp,
    struct stat st;
    unsigned long i, temp;
    unsigned char buffer[4];
-   char *name;
+   char *name=NULL;
 
-   name = (char *) malloc(strlen(fileName)+4+1);
-   strcpy(name, fileName);
-   strcat(name, ".sql");
+   xstrscat( &name, fileName, ".sql", NULL );
 
    fd = sopen(name, O_BINARY | O_RDWR, SH_DENYNO, S_IWRITE | S_IREAD);
    if (fd != -1) {
@@ -95,7 +111,7 @@ void SqReadLastreadFile(char *fileName, UINT32 **lastreadp, ULONG *lcountp,
 void SqWriteLastreadFile(char *fileName, UINT32 *lastread, ULONG lcount,
 			HAREA area)
 {
-   char *name;
+   char *name=NULL;
    unsigned char buffer[4];
    int fd;
    unsigned long i, temp;
@@ -103,9 +119,7 @@ void SqWriteLastreadFile(char *fileName, UINT32 *lastread, ULONG lcount,
 
    if (lastread) {
 
-      name = (char *) malloc(strlen(fileName)+4+1);
-      strcpy(name, fileName);
-      strcat(name, ".sql");
+      xstrscat( &name, fileName, ".sql", NULL );
 
       fd = sopen(name, O_BINARY | O_RDWR, SH_DENYNO, S_IWRITE | S_IREAD);
 
@@ -218,12 +232,10 @@ void JamReadLastreadFile(char *fileName, UINT32 **lastreadp, ULONG *lcountp,
    int fd;
    struct stat st;
    unsigned long i;
-   char *name;
+   char *name = NULL;
    JAMLREAD lread;
 
-   name = (char *) malloc(strlen(fileName)+4+1);
-   strcpy(name, fileName);
-   strcat(name, ".jlr");
+   xstrscat( &name, fileName, ".jlr", NULL );
 
    fd = sopen(name, O_BINARY | O_RDWR, SH_DENYNO, S_IWRITE | S_IREAD);
    if (fd != -1) {
@@ -253,7 +265,7 @@ void JamReadLastreadFile(char *fileName, UINT32 **lastreadp, ULONG *lcountp,
 void JamWriteLastreadFile(char *fileName, UINT32 *lastread, ULONG lcount,
 			HAREA area)
 {
-   char *name;
+   char *name = NULL;
    int fd;
    unsigned long i;
    JAMLREAD lread;
@@ -261,9 +273,7 @@ void JamWriteLastreadFile(char *fileName, UINT32 *lastread, ULONG lcount,
 
    if (lastread) {
 
-      name = (char *) malloc(strlen(fileName)+4+1);
-      strcpy(name, fileName);
-      strcat(name, ".jlr");
+      xstrscat( &name, fileName, ".jlr", NULL );
 
       fd = sopen(name, O_BINARY | O_RDWR, SH_DENYNO, S_IWRITE | S_IREAD);
 
@@ -329,7 +339,7 @@ void SdmWriteLastreadFile(char *fileName, UINT32 *lastread, ULONG lcount,
    int fd;
    unsigned long i;
    UINT16 temp;
-   char buf[2];
+   unsigned char buf[2];
 
    if (lastread) {
 
@@ -515,17 +525,14 @@ void updateMsgLinks(UINT32 msgNum, HAREA area, UINT32 rmCount, UINT32 *rmMap, in
 
 void renameArea(int areaType, char *oldName, char *newName)
 {
-   char *oldTmp, *newTmp;
+   char *oldTmp=NULL, *newTmp=NULL;
 
-   oldTmp = (char *) malloc(strlen(oldName)+4+1);
-   newTmp = (char *) malloc(strlen(newName)+4+1);
-
-   strcpy(oldTmp, oldName);
-   strcpy(newTmp, newName);
+   xstrcat(&oldTmp, oldName);
+   xstrcat(&newTmp, newName);
 
    if (areaType==MSGTYPE_SQUISH) {
-     strcat(oldTmp, ".sqd");
-     strcat(newTmp, ".sqd");
+     xstrcat(&oldTmp, ".sqd");
+     xstrcat(&newTmp, ".sqd");
      remove(oldTmp);
      rename(newTmp, oldTmp);
 
@@ -536,8 +543,8 @@ void renameArea(int areaType, char *oldName, char *newName)
    }
 
    if (areaType==MSGTYPE_JAM) {
-     strcat(oldTmp, ".jdt");
-     strcat(newTmp, ".jdt");
+     xstrcat(&oldTmp, ".jdt");
+     xstrcat(&newTmp, ".jdt");
      remove(oldTmp);
      rename(newTmp, oldTmp);
 
@@ -571,8 +578,8 @@ void renameArea(int areaType, char *oldName, char *newName)
 void purgeArea(s_area *area)
 {
 	char *oldName = area -> fileName;
-	char *newName;
-	HAREA oldArea, newArea = NULL;
+	char *newName=NULL;
+	HAREA oldArea=NULL, newArea = NULL;
 	dword highMsg, i, j, numMsg, hw=0;
 	int areaType = area -> msgbType & (MSGTYPE_JAM | MSGTYPE_SQUISH | MSGTYPE_SDM);
 
@@ -586,9 +593,7 @@ void purgeArea(s_area *area)
 	}
 
 	//generated tmp-FileName
-	newName = (char *) malloc(strlen(oldName)+4+1);
-	strcpy(newName, oldName);
-	strcat(newName, "_tmp");
+	xstrscat(&newName, oldName, "_tmp", NULL);
 
 	/*oldArea = MsgOpenArea((byte *) oldName, MSGAREA_NORMAL, -1, -1, -1, MSGTYPE_SQUISH);*/
 	oldArea = MsgOpenArea((byte *) oldName, MSGAREA_NORMAL, (word) areaType);
@@ -637,9 +642,9 @@ void purgeArea(s_area *area)
 			/* renumber the area */
 			char oldmsgname[PATHLEN], newmsgname[PATHLEN];
 			for (i = j = 1; i <= highMsg; i++) {
-				strcpy(oldmsgname, oldName);
+				strncpy(oldmsgname, oldName, PATHLEN);
 				Add_Trailing(oldmsgname, PATH_DELIM);
-				strcpy(newmsgname, oldmsgname);
+				strncpy(newmsgname, oldmsgname, PATHLEN);
 				sprintf(oldmsgname+strlen(oldmsgname), "%u.msg", (unsigned int)i);
 				sprintf(newmsgname+strlen(newmsgname), "%u.msg", (unsigned int)j);
 				if (access(oldmsgname, 0))
@@ -721,11 +726,11 @@ int main(int argc, char **argv) {
    unsigned int i;
    struct _minf m;
 
-   printf("sqpack v1.2.1-stable\n");
+   printf( PROGRAM_NAME "\n");
 
    if (argc!=2) {
 	   if (argc>2) printf("too many arguments!\n");
-	   printf ("usage: sqpack \"*\"\n");
+	   printf ("usage: sqpack <areamask>\n");
    } else {
 
 	   setvar("module", "sqpack");
