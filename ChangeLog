@@ -1,3 +1,7 @@
+2002-07-16 Tuesday 20:45  stas
+
+	* sqpack.c (1.60): Fix log messages.
+
 2002-07-14 Sunday 20:21  stas
 
 	* sqpack.c (1.59): Use safe string functions (partially)
