@@ -195,6 +195,11 @@ void purgeArea(s_area area)
 
    UINT32 *oldLastread, *newLastread = NULL;
 
+   if (!area.max && !area.purge) {
+      printf("   No purging needed!\n");
+      return;
+   }
+
    //generated tmp-FileName
    newName = (char *) malloc(strlen(oldName)+4+1);
    strcpy(newName, oldName);

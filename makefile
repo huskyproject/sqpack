@@ -2,7 +2,8 @@ CC   = gcc
 COPT = -g -O2 -DUNIX -I../smapi -I../fidoconfig
 INSTBINDIR = /usr/local/bin
 INSTMANDIR = /usr/local/man
-LOPT = -L../fidoconfig -L../smapi
+# LOPT = -L../fidoconfig -L../smapi
+LOPT = 
 
 all : sqpack 
 
