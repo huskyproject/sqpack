@@ -1,3 +1,8 @@
+2003-02-25 Tuesday 10:04  sfpavel
+
+	* debian/changelog (sqpack-1_4-stable.4): New debian version:
+	1.4-beta2
+
 2003-02-19 Wednesday 06:59  sfpavel
 
 	* debian/: changelog, control, rules (sqpack-1_4-stable.[3,2,1]):
