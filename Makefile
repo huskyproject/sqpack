@@ -17,7 +17,7 @@ else
   LOPT = -L$(LIBDIR) -lsmapi -lfidoconfig
 endif
 
-all : sqpack$(EXE)
+all : sqpack$(EXE) sqpack.1.gz
 
 sqpack$(OBJ): sqpack.c
 	$(CC) $(COPT) $(CDEFS) sqpack.c -o sqpack$(OBJ)
