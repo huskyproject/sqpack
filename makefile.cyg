@@ -1,0 +1,21 @@
+CC      = gcc
+COPT=   -O2 -DNT -D__NT__ -DWINNT -D__CYG__ -I. -I.. -Wall -pedantic -c -Wno-char-subscripts -mno-cygwin
+LFLAGS=-mno-cygwin
+
+LINKSMAPI=../smapi/libsmapicyg.a
+LINKFIDOC=../fidoconf/libfidoconfigcyg.a
+
+all : sqpack.exe
+
+sqpack.o: sqpack.c
+	$(CC) $(COPT) sqpack.c -o sqpack.o
+
+sqpack.exe: sqpack.o
+	$(CC) $(LFLAGS) -o sqpack.exe sqpack.o ../smapi/patmat.o $(LINKSMAPI) $(LINKFIDOC)
+
+clean:
+	-rm -f *.o
+	-rm *~
+
+distclean: clean
+	-rm sqpack.exe
