@@ -396,83 +396,84 @@ unsigned long getOffsetInLastread(UINT32 *lastread, ULONG lcount, dword msgnum)
 /* returns zero if msg was killed, nonzero if it was copied */
 
 int processMsg(dword msgNum, dword numMsg, HAREA oldArea, HAREA newArea,
-		s_area *area, UINT32 shift)
+               s_area *area, UINT32 shift)
 {
-   HMSG msg, newMsg;
-   XMSG xmsg;
-   struct tm tmTime;
-   time_t ttime, actualTime = time(NULL);
-   char *text, *ctrlText;
-   dword  textLen, ctrlLen;
-   int unsent, i, rc = 0;
-
-//   unsigned long offset;
-
-   msg = MsgOpenMsg(oldArea, MOPEN_RW, msgNum);
-   if (msg == NULL) return rc;
-
-   if (MsgReadMsg(msg, &xmsg, 0, 0, NULL, 0, NULL)<0) {
-      MsgCloseMsg(msg);
-      msgProcessed++;
-      return rc;
-   }
-
-   unsent = (xmsg.attr & MSGLOCAL) && !(xmsg.attr & MSGSENT);
-
-   if (unsent || (((area -> max == 0) || ((numMsg - msgProcessed + msgCopied) <= area -> max) ||
-(area -> keepUnread && !(xmsg.attr & MSGREAD))) && !((xmsg.attr & MSGREAD) && area -> killRead))) {
-      //only max msgs should be in new area
-
-     if (xmsg.attr & MSGLOCAL) {
-        DosDate_to_TmDate((SCOMBO*)&(xmsg.date_written), &tmTime);
-     } else {
-        DosDate_to_TmDate((SCOMBO*)&(xmsg.date_arrived), &tmTime);
-     }
-/*     DosDate_to_TmDate(&(xmsg.attr & MSGLOCAL ? xmsg.date_written :
-			 xmsg.date_arrived), &tmTime);*/
-     ttime = mktime(&tmTime);
-     if (ttime == 0xfffffffflu) ttime = 0; /* emx */
-
-     if (unsent || (area -> purge == 0) || ttime == 0 ||
-         (abs(actualTime - ttime) <= (area -> purge * 24 *60 * 60))) {
-	xmsg.replyto = MsgUidToMsgn(oldArea, xmsg.replyto, UID_EXACT) > shift ? MsgUidToMsgn(oldArea, xmsg.replyto, UID_EXACT) - shift : 0;
-	if ((area->msgbType & MSGTYPE_SQUISH) == MSGTYPE_SQUISH)
-		for (i = 0; i < MAX_REPLY; i++)
-			xmsg.replies[i] = MsgUidToMsgn(oldArea, xmsg.replies[i], UID_EXACT) > shift ? MsgUidToMsgn(oldArea, xmsg.replies[i], UID_EXACT) - shift : 0;
-	else {
-		xmsg.replies[0] = MsgUidToMsgn(oldArea, xmsg.replies[0], UID_EXACT) > shift ? MsgUidToMsgn(oldArea, xmsg.replies[0], UID_EXACT) - shift : 0;
-		xmsg.xmreplynext = MsgUidToMsgn(oldArea, xmsg.xmreplynext, UID_EXACT) > shift ? MsgUidToMsgn(oldArea, xmsg.xmreplynext, UID_EXACT) - shift : 0;
-	}
-	// copy msg
-        textLen = MsgGetTextLen(msg);
-        ctrlLen = MsgGetCtrlLen(msg);
-
-        text = (char *) malloc(textLen+1);
-        text[textLen] = '\0';
-
-        ctrlText = (char *) malloc(ctrlLen+1);
-        ctrlText[ctrlLen] = '\0';
-
-        MsgReadMsg(msg, NULL, 0, textLen, (byte*)text, ctrlLen, (byte*)ctrlText);
-
-        if (area->msgbType & MSGTYPE_SDM)
-		MsgWriteMsg(msg, 0, &xmsg, (byte*)text, textLen, textLen, ctrlLen, (byte*)ctrlText);
-        else {
-		newMsg = MsgOpenMsg(newArea, MOPEN_CREATE, 0);
-		MsgWriteMsg(newMsg, 0, &xmsg, (byte*)text, textLen, textLen, ctrlLen, (byte*)ctrlText);
-		MsgCloseMsg(newMsg);
+    HMSG msg, newMsg;
+    XMSG xmsg;
+    struct tm tmTime;
+    time_t ttime, actualTime = time(NULL);
+    char *text, *ctrlText;
+    dword  textLen, ctrlLen;
+    int unsent, i, rc = 0;
+    
+    //   unsigned long offset;
+    
+    msg = MsgOpenMsg(oldArea, MOPEN_RW, msgNum);
+    if (msg == NULL) return rc;
+    
+    if (MsgReadMsg(msg, &xmsg, 0, 0, NULL, 0, NULL)<0) {
+        MsgCloseMsg(msg);
+        msgProcessed++;
+        return rc;
+    }
+    
+    unsent = ((xmsg.attr & MSGLOCAL) && !(xmsg.attr & MSGSENT)) || (xmsg.attr & MSGLOCKED);
+    
+    if (unsent || (((area -> max == 0) || ((numMsg - msgProcessed + msgCopied) <= area -> max) ||
+        (area -> keepUnread && !(xmsg.attr & MSGREAD))) && !((xmsg.attr & MSGREAD) && area -> killRead))) {
+        //only max msgs should be in new area
+        
+        if (xmsg.attr & MSGLOCAL) {
+            DosDate_to_TmDate((SCOMBO*)&(xmsg.date_written), &tmTime);
+        } else {
+            DosDate_to_TmDate((SCOMBO*)&(xmsg.date_arrived), &tmTime);
         }
-
-        msgCopied++;
-        free(text);
-        free(ctrlText);
-	rc = 1;
-      }
-
-   }
-   MsgCloseMsg(msg);
-   msgProcessed++;
-   return rc;
+        /*     DosDate_to_TmDate(&(xmsg.attr & MSGLOCAL ? xmsg.date_written :
+        xmsg.date_arrived), &tmTime);*/
+        ttime = mktime(&tmTime);
+        if (ttime == 0xfffffffflu) ttime = 0; /* emx */
+        
+        if (unsent || (area -> purge == 0) || ttime == 0 ||
+            (abs(actualTime - ttime) <= (area -> purge * 24 *60 * 60))) {
+            xmsg.replyto = MsgUidToMsgn(oldArea, xmsg.replyto, UID_EXACT) > shift ? MsgUidToMsgn(oldArea, xmsg.replyto, UID_EXACT) - shift : 0;
+            if ((area->msgbType & MSGTYPE_SQUISH) == MSGTYPE_SQUISH){
+                
+                for (i = 0; i < MAX_REPLY; i++)
+                    xmsg.replies[i] = MsgUidToMsgn(oldArea, xmsg.replies[i], UID_EXACT) > shift ? MsgUidToMsgn(oldArea, xmsg.replies[i], UID_EXACT) - shift : 0;
+            }else {
+                xmsg.replies[0] = MsgUidToMsgn(oldArea, xmsg.replies[0], UID_EXACT) > shift ? MsgUidToMsgn(oldArea, xmsg.replies[0], UID_EXACT) - shift : 0;
+                xmsg.xmreplynext = MsgUidToMsgn(oldArea, xmsg.xmreplynext, UID_EXACT) > shift ? MsgUidToMsgn(oldArea, xmsg.xmreplynext, UID_EXACT) - shift : 0;
+            }
+            // copy msg
+            textLen = MsgGetTextLen(msg);
+            ctrlLen = MsgGetCtrlLen(msg);
+            
+            text = (char *) malloc(textLen+1);
+            text[textLen] = '\0';
+            
+            ctrlText = (char *) malloc(ctrlLen+1);
+            ctrlText[ctrlLen] = '\0';
+            
+            MsgReadMsg(msg, NULL, 0, textLen, (byte*)text, ctrlLen, (byte*)ctrlText);
+            
+            if (area->msgbType & MSGTYPE_SDM)
+                MsgWriteMsg(msg, 0, &xmsg, (byte*)text, textLen, textLen, ctrlLen, (byte*)ctrlText);
+            else {
+                newMsg = MsgOpenMsg(newArea, MOPEN_CREATE, 0);
+                MsgWriteMsg(newMsg, 0, &xmsg, (byte*)text, textLen, textLen, ctrlLen, (byte*)ctrlText);
+                MsgCloseMsg(newMsg);
+            }
+            
+            msgCopied++;
+            free(text);
+            free(ctrlText);
+            rc = 1;
+        }
+        
+    }
+    MsgCloseMsg(msg);
+    msgProcessed++;
+    return rc;
 }
 
 UINT32 getShiftedNum(UINT32 msgNum, UINT32 rmCount, UINT32 *rmMap)
@@ -717,7 +718,7 @@ void doArea(s_area *area, char *cmp)
 int main(int argc, char **argv) {
 
    s_fidoconfig *cfg;
-   int i;
+   unsigned int i;
    struct _minf m;
 
    printf("sqpack v1.1.0\n");
