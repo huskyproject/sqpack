@@ -347,7 +347,7 @@ void SdmWriteLastreadFile(char *fileName, UINT32 *lastread, ULONG lcount,
             UINT16 temp = (UINT16)MsgMsgnToUid(area, lastread[i]);
             put_word(buf, temp);
 #else /* msgns are equial to uids after renumber */
-            put_word(buf, lastread[i]);
+            put_word(buf, (UINT16)lastread[i]);
 #endif
             write(fd, buf, 2);
          }
