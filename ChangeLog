@@ -1,7 +1,7 @@
 2002-11-10 Sunday 09:49  sfpavel
 
-	* BUGS, sqpack.c, debian/changelog (sqpack-1_2-stable.[2,11,9]):
-	sqpack 1.2 release
+	* BUGS, sqpack.c, debian/changelog (sqpack-1_2-stable.[2,11,9])
+	(utags: sqpack-1_2-release): sqpack 1.2 release
 
 2002-10-25 Friday 05:02  stas_degteff
 
@@ -12,13 +12,14 @@
 
 	* makefile.bcd, makefile.bco, makefile.cyg, makefile.djg,
 	makefile.emo, makefile.emx, makefile.mgw
-	(sqpack-1_2-stable.[2,2,3,3,2,2,2]): Use quick put_word() & etc.
-	implementation for DOS, OS/2 & Windows
+	(sqpack-1_2-stable.[2,2,3,3,2,2,2]) (utags: sqpack-1_2-release):
+	Use quick put_word() & etc. implementation for DOS, OS/2 & Windows
 
 2002-10-25 Friday 04:57  stas_degteff
 
-	* makefile.mvc, makefile.mvcdll (sqpack-1_2-stable.[1,2]): turn on
-	quick method for put_word() & etc for win32
+	* makefile.mvc, makefile.mvcdll (sqpack-1_2-stable.[1,2]) (utags:
+	sqpack-1_2-release): turn on quick method for put_word() & etc for
+	win32
 
 2002-10-22 Tuesday 06:04  stas_degteff
 
@@ -26,10 +27,12 @@
 
 2002-10-22 Tuesday 05:59  stas_degteff
 
-	* Makefile, makefile.bcd, makefile.bco, makefile.cyg, makefile.djg,
-	makefile.emo, makefile.emx, makefile.lnx, makefile.wco,
-	makefile.wcw (sqpack-1_2-stable.[1,1,1,2,2,1,1,1,1,1]): Fix clean
-	and distclean makefile's tags
+	* Makefile (tags: sqpack-1_2-release), makefile.bcd, makefile.bco,
+	makefile.cyg, makefile.djg, makefile.emo, makefile.emx,
+	makefile.lnx (tags: sqpack-1_2-release), makefile.wco (tags:
+	sqpack-1_2-release), makefile.wcw (tags: sqpack-1_2-release)
+	(sqpack-1_2-stable.[1,1,1,2,2,1,1,1,1,1]): Fix clean and distclean
+	makefile's tags
 
 2002-10-18 Friday 09:22  stas_degteff
 
@@ -61,14 +64,16 @@
 
 2002-09-17 Tuesday 11:32  sfpavel
 
-	* VERSION, makefile.mgw, makefile.mvcdll, sqpack.1, sqpack.c,
+	* VERSION (tags: sqpack-1_2-release), makefile.mgw,
+	makefile.mvcdll, sqpack.1 (tags: sqpack-1_2-release), sqpack.c,
 	debian/changelog (sqpack-1_2-stable.[1,1,1,1,4,8]): Ver. 1.2-RC2:
 	merge fixes from current branch
 
 2002-09-09 Monday 10:18  sfpavel
 
-	* sqpack.c, debian/changelog, debian/rules
-	(sqpack-1_2-stable.[3,7,3]): Fix init of 'hw' variable
+	* sqpack.c, debian/changelog, debian/rules (tags:
+	sqpack-1_2-release) (sqpack-1_2-stable.[3,7,3]): Fix init of 'hw'
+	variable
 
 2002-09-09 Monday 05:34  stas_degteff
 
@@ -85,8 +90,8 @@
 
 2002-08-26 Monday 06:21  sfpavel
 
-	* debian/: changelog, copyright, rules (sqpack-1_2-stable.[6,2,1]):
-	Update http location
+	* debian/: changelog, copyright (tags: sqpack-1_2-release), rules
+	(sqpack-1_2-stable.[6,2,1]): Update http location
 
 2002-08-22 Thursday 06:23  sfpavel
 
@@ -99,7 +104,7 @@
 
 2002-08-01 Thursday 06:27  stas
 
-	* debian/: changelog, control, copyright
+	* debian/: changelog, control (tags: sqpack-1_2-release), copyright
 	(sqpack-1_2-stable.[3,2,1]): Debian package patch from Pavel
 	Andreew <pavel@collage.etel.ru>
 
@@ -109,7 +114,8 @@
 
 2002-07-02 Tuesday 14:34  stas
 
-	* INSTALL (sqpack-1_2-stable.1): Update documentation
+	* INSTALL (tags: sqpack-1_2-release) (sqpack-1_2-stable.1): Update
+	documentation
 
 2002-07-02 Tuesday 14:31  stas
 
@@ -129,12 +135,12 @@
 
 2002-03-05 Tuesday 13:42  joerg.jaspert
 
-	* debian/: changelog (1.5), control (1.4), huskymak.cfg (1.5),
-	rules (1.4): New Debian Package
+	* debian/: changelog (1.5), control (1.4), huskymak.cfg (1.5,
+	sqpack-1_2-release), rules (1.4): New Debian Package
 
 2002-02-26 Tuesday 12:43  ml
 
-	* .cvs2cl (1.1): log via cvs messages
+	* .cvs2cl (1.1, sqpack-1_2-release): log via cvs messages
 
 2002-02-26 Tuesday 12:27  ml
 
@@ -164,8 +170,8 @@
 
 2001-07-02 Monday 22:18  joerg.jaspert
 
-	* debian/: README.Debian (1.2), changelog (1.4), control (1.3):
-	Rebuild
+	* debian/: README.Debian (1.2, sqpack-1_2-release), changelog
+	(1.4), control (1.3): Rebuild
 
 2001-07-02 Monday 22:18  joerg.jaspert
 
@@ -194,8 +200,8 @@
 
 2001-04-12 Thursday 11:03  joerg.jaspert
 
-	* debian/: changelog (1.2), dirs (1.2), huskymak.cfg (1.2), rules
-	(1.2): Changed the man-page installation
+	* debian/: changelog (1.2), dirs (1.2, sqpack-1_2-release),
+	huskymak.cfg (1.2), rules (1.2): Changed the man-page installation
 
 2001-04-12 Thursday 11:02  joerg.jaspert
 
@@ -205,8 +211,9 @@
 2001-04-11 Wednesday 20:56  joerg.jaspert
 
 	* debian/: README.Debian (1.1), changelog (1.1), control (1.1),
-	copyright (1.1), dirs (1.1), docs (1.1), huskymak.cfg (1.1), rules
-	(1.1): Files to build Package on Debian-Systems
+	copyright (1.1), dirs (1.1), docs (1.1, sqpack-1_2-release),
+	huskymak.cfg (1.1), rules (1.1): Files to build Package on
+	Debian-Systems
 
 2001-04-11 Wednesday 20:55  joerg.jaspert
 
@@ -251,7 +258,7 @@
 
 2000-08-06 Sunday 20:53  tobi
 
-	* makefile.be (1.2): beos legacy makefile
+	* makefile.be (1.2, sqpack-1_2-release): beos legacy makefile
 
 2000-08-06 Sunday 20:36  tobi
 
@@ -265,9 +272,10 @@
 
 2000-07-12 Wednesday 11:33  tobi
 
-	* makefile.bcd (1.2), makefile.bco (1.2), makefile.bsd (1.4),
-	makefile.djg (1.2), makefile.emo (1.4), makefile.lnx (1.3),
-	makefile.sun (1.7), makefile.unx (1.2), makefile.wco (1.4),
+	* makefile.bcd (1.2), makefile.bco (1.2), makefile.bsd (1.4,
+	sqpack-1_2-release), makefile.djg (1.2), makefile.emo (1.4),
+	makefile.lnx (1.3), makefile.sun (1.7, sqpack-1_2-release),
+	makefile.unx (1.2, sqpack-1_2-release), makefile.wco (1.4),
 	sqpack.c (1.37): merged makefile fixes from stable
 
 2000-07-12 Wednesday 11:25  tobi
@@ -393,8 +401,8 @@
 
 1999-04-13 Tuesday 17:33  mt
 
-	* COPYING (1.1, sqpack-1_1_0b-release, sqpack-1_1_0a-release):
-	forget to add it
+	* COPYING (1.1, sqpack-1_2-release, sqpack-1_1_0b-release,
+	sqpack-1_1_0a-release): forget to add it
 
 1999-04-08 Thursday 15:25  mt
 
