@@ -1,3 +1,8 @@
+2002-07-30 Tuesday 20:54  stas
+
+	* sqpack.c (1.66): Add log message: old & new size of echoarea
+	files
+
 2002-07-22 Monday 13:56  mche
 
 	* makefile.mvcdll (1.2): corrected file cleaning
