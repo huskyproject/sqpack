@@ -1,3 +1,8 @@
+2002-10-03 Thursday 09:31  mche
+
+	* makefile.mvc (1.2), makefile.mvcdll (1.3): INTEL defined for msvc
+	makefiles and vsnprintf fix
+
 2002-10-02 Wednesday 06:30  pgul
 
 	* sqpack.c (1.75): fix msg-areas renumber
