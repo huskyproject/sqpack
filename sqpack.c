@@ -66,6 +66,7 @@ int lock_fd;
 char *versionStr;
 int area_found;
 
+
 void SqReadLastreadFile(char *fileName, UINT32 **lastreadp, ULONG *lcountp,
                         HAREA area)
 {
@@ -863,9 +864,32 @@ void handleArea(s_area *area)
     w_log(LL_FUNC, "handleArea() end");
 }
 
-void doArea(s_area *area, char *cmp)
+void doArea(s_area *area, char **areaMasks, int areaMaskCount)
 {
-    if(area) if (patimat(area->areaName,cmp)) handleArea(area);
+    int i;
+    int wasInclusion = 0; /* states that there are one or more inclusion masks */
+                          /* and areas that didn't matched the inclusion mask */
+                          /* should not be processed */
+
+    if (area) {
+
+        /* check for inclusion */
+        for (i = 0; i < areaMaskCount; i++) {
+            if (*areaMasks[i] == '!') continue;
+            wasInclusion++;
+            if (patimat(area->areaName, areaMasks[i])) break;
+        }
+        if (wasInclusion && (i == areaMaskCount)) return;  /* not in inclusion mask */
+
+        /* check for exclusion */
+        for (i = 0; i < areaMaskCount; i++) {
+            if (*areaMasks[i] != '!') continue;
+            if (patimat(area->areaName, areaMasks[i]+1)) break;
+        }
+        if (i != areaMaskCount) return;  /* is in exclusion mask */
+
+        handleArea(area);
+    }
 }
 
 int main(int argc, char **argv) {
@@ -873,6 +897,10 @@ int main(int argc, char **argv) {
     s_fidoconfig *config;
     unsigned int i;
     struct _minf m;
+    char *configFile = NULL;
+
+    int areaMaskCount = 0;
+    char **areaMasks = NULL;
 
     area_found = 0;
 
@@ -880,17 +908,41 @@ int main(int argc, char **argv) {
                                VER_BRANCH, cvs_date );
     printf("%s\n", versionStr);
 
-    if (argc!=2) {
-        if (argc>2) printf("\ntoo many arguments!\n\n");
-        printf ("Usage: sqpack <areamask>\n");
+    if (argc == 1) {
+        printf ("Usage: sqpack [-c config] <[!]areamask> [ [!]areamask ... ]\n");
         return 0;
     }
 
+    areaMasks = scalloc(sizeof(char *), argc);
+
+    i = 0;
+    while (i < argc-1) {
+        i++;
+        if (stricmp(argv[i], "-c") == 0) {
+            if (i < argc-1) {
+                i++;
+                configFile = argv[i];
+            } else {
+                printf("Error: config filename missing on command line\n");
+                return 1;
+            }
+        } else {
+            areaMasks[areaMaskCount] = argv[i];
+            areaMaskCount++;
+        }
+    }
+
+    if (!areaMaskCount) {
+        printf("Error: at least one area mask should be specified\n");
+        return 1;
+    }
+
     setvar("module", "sqpack");
-    config = readConfig(NULL);
+    config = readConfig(configFile);  /* if config file not specified on command */
+                                      /* line, NULL would be passed. That's ok. */
 
     if (!config) {
-        printf("Could not read fido config\n");
+        printf("Error: can't read fido config\n");
         return 1;
     }
 
@@ -919,22 +971,22 @@ int main(int argc, char **argv) {
 
     /* purge dupe area */
     if(config->dupeArea.areaName && config->dupeArea.fileName)
-       doArea(&(config->dupeArea), argv[1]);
+       doArea(&(config->dupeArea), areaMasks, areaMaskCount);
     /* purge bad area  */
     if(config->badArea.areaName && config->badArea.fileName)
-       doArea(&(config->badArea), argv[1]);
+       doArea(&(config->badArea), areaMasks, areaMaskCount);
 
     for (i=0; i < config->netMailAreaCount; i++)
         /*  purge netmail areas */
-        doArea(&(config->netMailAreas[i]), argv[1]);
+        doArea(&(config->netMailAreas[i]), areaMasks, areaMaskCount);
 
     for (i=0; i < config->echoAreaCount; i++)
         /*  purge echomail areas */
-        doArea(&(config->echoAreas[i]), argv[1]);
+        doArea(&(config->echoAreas[i]), areaMasks, areaMaskCount);
 
     for (i=0; i < config->localAreaCount; i++)
         /*  purge local areas */
-        doArea(&(config->localAreas[i]), argv[1]);
+        doArea(&(config->localAreas[i]), areaMasks, areaMaskCount);
 
     if (area_found) {
         w_log(LL_SUMMARY,"Total old  msg:%10lu; new  msg:%10lu",
@@ -942,7 +994,7 @@ int main(int argc, char **argv) {
         w_log(LL_SUMMARY,"Total old size:%10lu; new size:%10lu",
               (unsigned long)totalOldBaseSize, (unsigned long)totalNewBaseSize);
     } else {
-        w_log(LL_WARN, "No areas like `%s' found", argv[1]);
+        w_log(LL_WARN, "No areas found");
     }
     w_log(LL_STOP,"End");
     closeLog();
