@@ -1,7 +1,16 @@
+sqpack 1.1.0a
+-------------
+(pending for release)
+
+----- cvs ci ------
+Tue Aug 06 20:36:01 CEST 2000
+tobi:
+* support for BeOS
+
+
 sqpack 1.1.0
 ------------
 (released on Mi  19 Jul 2000 01:08:13 CEST)
-
 
 ----- cvs ci ------
 Mon May 22 14:52:27 CEST 2000

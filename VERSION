@@ -1,1 +1,5 @@
-1.1.0-stable
+1.1.0a-stable
+requires fidoconf-0.10-stable
+requires smapi-1.6.4-stable
+requires huskybse-0.1-stable
+
