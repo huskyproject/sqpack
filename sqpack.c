@@ -51,6 +51,7 @@
 #include <fidoconf/fidoconf.h>
 #include <fidoconf/common.h>
 #include <fidoconf/log.h>
+#include <fidoconf/xstr.h>
 
 #if defined ( __WATCOMC__ )
 #include <string.h>
@@ -79,12 +80,11 @@ void SqReadLastreadFile(char *fileName, UINT32 **lastreadp, ULONG *lcountp,
    struct stat st;
    unsigned long i, temp;
    unsigned char buffer[4];
-   char *name;
+   char *name=NULL;
 
    w_log(LL_FUNC, "SqReadLastreadFile() begin");
-   name = (char *) malloc(strlen(fileName)+4+1);
-   strcpy(name, fileName);
-   strcat(name, ".sql");
+
+   xstrscat( &name, fileName,  ".sql" );
 
    fd = sopen(name, O_BINARY | O_RDWR, SH_DENYNO, S_IWRITE | S_IREAD);
    if (fd != -1) {
@@ -116,7 +116,7 @@ void SqReadLastreadFile(char *fileName, UINT32 **lastreadp, ULONG *lcountp,
 void SqWriteLastreadFile(char *fileName, UINT32 *lastread, ULONG lcount,
 			HAREA area)
 {
-   char *name;
+   char *name=NULL;
    unsigned char buffer[4];
    int fd;
    unsigned long i, temp;
@@ -124,9 +124,7 @@ void SqWriteLastreadFile(char *fileName, UINT32 *lastread, ULONG lcount,
    w_log(LL_FUNC, "SqWriteLastreadFile() begin");
    if (lastread) {
 
-      name = (char *) malloc(strlen(fileName)+4+1);
-      strcpy(name, fileName);
-      strcat(name, ".sql");
+      xstrscat( &name, fileName,  ".sql" );
 
       fd = sopen(name, O_BINARY | O_RDWR, SH_DENYNO, S_IWRITE | S_IREAD);
 
@@ -260,9 +258,8 @@ void JamReadLastreadFile(char *fileName, UINT32 **lastreadp, ULONG *lcountp,
    JAMLREAD lread;
 
    w_log(LL_FUNC, "JamReadLastreadFile() begin");
-   name = (char *) malloc(strlen(fileName)+4+1);
-   strcpy(name, fileName);
-   strcat(name, ".jlr");
+
+   xstrscat( &name, fileName,  ".jlr" );
 
    fd = sopen(name, O_BINARY | O_RDWR, SH_DENYNO, S_IWRITE | S_IREAD);
    if (fd != -1) {
@@ -302,9 +299,7 @@ void JamWriteLastreadFile(char *fileName, UINT32 *lastread, ULONG lcount,
    w_log(LL_FUNC, "JamWriteLastreadFile() begin");
    if (lastread) {
 
-      name = (char *) malloc(strlen(fileName)+4+1);
-      strcpy(name, fileName);
-      strcat(name, ".jlr");
+      xstrscat( &name, fileName,  ".jlr" );
 
       fd = sopen(name, O_BINARY | O_RDWR, SH_DENYNO, S_IWRITE | S_IREAD);
 
@@ -572,18 +567,16 @@ void updateMsgLinks(UINT32 msgNum, HAREA area, UINT32 rmCount, UINT32 *rmMap, in
 
 void renameArea(int areaType, char *oldName, char *newName)
 {
-   char *oldTmp, *newTmp;
+   char *oldTmp=NULL, *newTmp=NULL;
 
    w_log(LL_FUNC, "renameArea() begin");
-   oldTmp = (char *) malloc(strlen(oldName)+4+1);
-   newTmp = (char *) malloc(strlen(newName)+4+1);
 
-   strcpy(oldTmp, oldName);
-   strcpy(newTmp, newName);
+   xstrcat(&oldTmp, oldName);
+   xstrcat(&newTmp, newName);
 
    if (areaType==MSGTYPE_SQUISH) {
-     strcat(oldTmp, ".sqd");
-     strcat(newTmp, ".sqd");
+     xstrcat(&oldTmp, ".sqd");
+     xstrcat(&newTmp, ".sqd");
      remove(oldTmp);
      rename(newTmp, oldTmp);
 
@@ -594,8 +587,8 @@ void renameArea(int areaType, char *oldName, char *newName)
    }
 
    if (areaType==MSGTYPE_JAM) {
-     strcat(oldTmp, ".jdt");
-     strcat(newTmp, ".jdt");
+     xstrcat(&oldTmp, ".jdt");
+     xstrcat(&newTmp, ".jdt");
      remove(oldTmp);
      rename(newTmp, oldTmp);
 
@@ -646,9 +639,7 @@ void purgeArea(s_area *area)
 	}
 
 	//generated tmp-FileName
-	newName = (char *) malloc(strlen(oldName)+4+1);
-	strcpy(newName, oldName);
-	strcat(newName, "_tmp");
+	xstrscat(&newName, oldName, "_tmp");
 
 	/*oldArea = MsgOpenArea((byte *) oldName, MSGAREA_NORMAL, -1, -1, -1, MSGTYPE_SQUISH);*/
 	oldArea = MsgOpenArea((byte *) oldName, MSGAREA_NORMAL, (word) areaType);
@@ -697,9 +688,9 @@ void purgeArea(s_area *area)
 			/* renumber the area */
 			char oldmsgname[PATHLEN], newmsgname[PATHLEN];
 			for (i = j = 1; i <= highMsg; i++) {
-				strcpy(oldmsgname, oldName);
+				strncpy(oldmsgname, oldName, PATHLEN);
 				Add_Trailing(oldmsgname, PATH_DELIM);
-				strcpy(newmsgname, oldmsgname);
+				strncpy(newmsgname, oldmsgname, PATHLEN);
 				sprintf(oldmsgname+strlen(oldmsgname), "%u.msg", (unsigned int)i);
 				sprintf(newmsgname+strlen(newmsgname), "%u.msg", (unsigned int)j);
 				if (access(oldmsgname, 0))
