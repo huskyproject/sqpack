@@ -84,7 +84,7 @@ void SqReadLastreadFile(char *fileName, UINT32 **lastreadp, ULONG *lcountp,
 
    w_log(LL_FUNC, "SqReadLastreadFile() begin");
 
-   xstrscat( &name, fileName,  ".sql" );
+   xstrscat( &name, fileName,  ".sql" , NULL);
 
    fd = sopen(name, O_BINARY | O_RDWR, SH_DENYNO, S_IWRITE | S_IREAD);
    if (fd != -1) {
@@ -124,7 +124,7 @@ void SqWriteLastreadFile(char *fileName, UINT32 *lastread, ULONG lcount,
    w_log(LL_FUNC, "SqWriteLastreadFile() begin");
    if (lastread) {
 
-      xstrscat( &name, fileName,  ".sql" );
+      xstrscat( &name, fileName,  ".sql" , NULL );
 
       fd = sopen(name, O_BINARY | O_RDWR, SH_DENYNO, S_IWRITE | S_IREAD);
 
@@ -259,7 +259,7 @@ void JamReadLastreadFile(char *fileName, UINT32 **lastreadp, ULONG *lcountp,
 
    w_log(LL_FUNC, "JamReadLastreadFile() begin");
 
-   xstrscat( &name, fileName,  ".jlr" );
+   xstrscat( &name, fileName,  ".jlr" , NULL);
 
    fd = sopen(name, O_BINARY | O_RDWR, SH_DENYNO, S_IWRITE | S_IREAD);
    if (fd != -1) {
@@ -299,7 +299,7 @@ void JamWriteLastreadFile(char *fileName, UINT32 *lastread, ULONG lcount,
    w_log(LL_FUNC, "JamWriteLastreadFile() begin");
    if (lastread) {
 
-      xstrscat( &name, fileName,  ".jlr" );
+      xstrscat( &name, fileName,  ".jlr" , NULL);
 
       fd = sopen(name, O_BINARY | O_RDWR, SH_DENYNO, S_IWRITE | S_IREAD);
 
@@ -639,7 +639,7 @@ void purgeArea(s_area *area)
 	}
 
 	//generated tmp-FileName
-	xstrscat(&newName, oldName, "_tmp");
+	xstrscat(&newName, oldName, "_tmp", NULL);
 
 	/*oldArea = MsgOpenArea((byte *) oldName, MSGAREA_NORMAL, -1, -1, -1, MSGTYPE_SQUISH);*/
 	oldArea = MsgOpenArea((byte *) oldName, MSGAREA_NORMAL, (word) areaType);
