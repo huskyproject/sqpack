@@ -14,11 +14,11 @@
 #include <share.h>
 #endif
 
-#include <fcntl.h>
 #ifdef __EMX__
 #include <share.h>
 #include <sys/types.h>
 #endif
+#include <fcntl.h>
 #include <sys/stat.h>
 
 #include <smapi/msgapi.h>
@@ -41,10 +41,10 @@
   v1.0.4
         SMS Packing ALL areas
   v1.0.3
-	K.N. Sqpack now newer thrashes reply links. Works fine for me. 
+	K.N. Sqpack now newer thrashes reply links. Works fine for me.
 	PS	There is something strange about all this code: it worked
-		fine for the first time, without any debugging. Be prepared for 
-		bugs ;) 
+		fine for the first time, without any debugging. Be prepared for
+		bugs ;)
 	Also allows additional customization: kill read and keep unread
 */
 
@@ -63,14 +63,14 @@ void SqReadLastreadFile(char *fileName, UINT32 **lastreadp, ULONG *lcountp,
    name = (char *) malloc(strlen(fileName)+4+1);
    strcpy(name, fileName);
    strcat(name, ".sql");
-   
+
    fd = sopen(name, O_BINARY | O_RDWR, SH_DENYNO, S_IWRITE | S_IREAD);
    if (fd != -1) {
-      
+
       fstat(fd, &st);
       *lcountp = st.st_size / 4;
       *lastreadp = (UINT32 *) malloc(*lcountp * sizeof(UINT32));
-      
+
       for (i = 0; i < *lcountp; i++) {
          read(fd, &buffer, 4);
          temp = buffer[0] + (((unsigned long)(buffer[1])) << 8) +
@@ -80,7 +80,7 @@ void SqReadLastreadFile(char *fileName, UINT32 **lastreadp, ULONG *lcountp,
       }
 
       close(fd);
-      
+
    } else {
 		*lastreadp = NULL;
 		*lcountp = 0;
@@ -97,8 +97,8 @@ void SqWriteLastreadFile(char *fileName, UINT32 *lastread, ULONG lcount,
    unsigned char buffer[4];
    int fd;
    unsigned long i, temp;
-   
-   
+
+
    if (lastread) {
 
       name = (char *) malloc(strlen(fileName)+4+1);
@@ -114,7 +114,7 @@ void SqWriteLastreadFile(char *fileName, UINT32 *lastread, ULONG lcount,
          for (i = 0; i < lcount; i++) {
 
             temp = MsgMsgnToUid(area, lastread[i]);
-            
+
             buffer[0] = temp & 0xFF;
             buffer[1] = (temp >> 8) & 0xFF;
             buffer[2] = (temp >> 16) & 0xFF;
@@ -124,9 +124,9 @@ void SqWriteLastreadFile(char *fileName, UINT32 *lastread, ULONG lcount,
          }
 
          close(fd);
-              
+
       } else printf("Could not write lastread file %s, error %u!\n", name, errno);
-      
+
       free(name);
    }
 }
@@ -170,7 +170,7 @@ JAMLREAD;
 int read_jamlread(int fd, JAMLREAD *plread)
 {
     unsigned char buf[JAMLREAD_SIZE];
-        
+
     if (read(fd, buf, JAMLREAD_SIZE) != JAMLREAD_SIZE)
         return 0;
 
@@ -185,12 +185,12 @@ int read_jamlread(int fd, JAMLREAD *plread)
 int write_jamlread(int fd, JAMLREAD *plread)
 {
     unsigned char buf[JAMLREAD_SIZE];
-        
+
     put_dword(buf, plread->UserCRC);
     put_dword(buf + 4, plread->UserID);
     put_dword(buf + 8, plread->LastReadMsg);
     put_dword(buf + 12, plread->HighReadMsg);
-    
+
     if (write(fd, buf, JAMLREAD_SIZE) != JAMLREAD_SIZE)
         return 0;
 
@@ -200,10 +200,10 @@ int write_jamlread(int fd, JAMLREAD *plread)
 int write_partial_jamlread(int fd, JAMLREAD *plread)
 {
     unsigned char buf[JAMLREAD_SIZE/2];
-        
+
     put_dword(buf + 0, plread->LastReadMsg);
     put_dword(buf + 4, plread->HighReadMsg);
-    
+
     if (write(fd, buf, JAMLREAD_SIZE/2) != JAMLREAD_SIZE/2)
         return 0;
 
@@ -222,26 +222,28 @@ void JamReadLastreadFile(char *fileName, UINT32 **lastreadp, ULONG *lcountp,
    name = (char *) malloc(strlen(fileName)+4+1);
    strcpy(name, fileName);
    strcat(name, ".jlr");
-   
+
    fd = sopen(name, O_BINARY | O_RDWR, SH_DENYNO, S_IWRITE | S_IREAD);
    if (fd != -1) {
-      
+
       fstat(fd, &st);
       *lcountp = st.st_size / JAMLREAD_SIZE;
       *lastreadp = (UINT32 *) malloc(*lcountp * sizeof(UINT32) * 2);
-      
+
       for (i = 0; i < *lcountp; i++) {
-         read_jamlread(fd, &lread); 
+         read_jamlread(fd, &lread);
          (*lastreadp)[i*2] = MsgUidToMsgn(area, lread.LastReadMsg, UID_PREV);
          (*lastreadp)[i*2+1] = MsgUidToMsgn(area, lread.HighReadMsg, UID_PREV);
       }
 
       close(fd);
-      
+
    } else {
 		*lastreadp = NULL;
 		*lcountp = 0;
    };
+
+   *lcountp = (*lcountp) << 1; /* rest of sqpack does not now of 2 lastread ptrs */
 
    free(name);
 }
@@ -253,8 +255,8 @@ void JamWriteLastreadFile(char *fileName, UINT32 *lastread, ULONG lcount,
    int fd;
    unsigned long i;
    JAMLREAD lread;
-   
-   
+
+
    if (lastread) {
 
       name = (char *) malloc(strlen(fileName)+4+1);
@@ -265,7 +267,7 @@ void JamWriteLastreadFile(char *fileName, UINT32 *lastread, ULONG lcount,
 
       if (fd != -1) {
 
-         for (i = 0; i < lcount; i++) {
+         for (i = 0; i < (lcount >> 1); i++) {
 
             lread.LastReadMsg = MsgMsgnToUid(area, lastread[i*2]);
             lread.HighReadMsg = MsgMsgnToUid(area, lastread[i*2+1]);
@@ -275,9 +277,9 @@ void JamWriteLastreadFile(char *fileName, UINT32 *lastread, ULONG lcount,
          }
 
          close(fd);
-              
+
       } else printf("Could not write lastread file %s, error %u!\n", name, errno);
-      
+
       free(name);
    }
 }
@@ -295,21 +297,21 @@ void SdmReadLastreadFile(char *fileName, UINT32 **lastreadp, ULONG *lcountp,
    strcpy(name, fileName);
    Add_Trailing(name, PATH_DELIM);
    strcat(name, "lastread");
-   
+
    fd = sopen(name, O_BINARY | O_RDWR, SH_DENYNO, S_IWRITE | S_IREAD);
    if (fd != -1) {
-      
+
       fstat(fd, &st);
       *lcountp = st.st_size / 2; /*sizeof(UINT16)*/
       *lastreadp = (UINT32 *) malloc(*lcountp * sizeof(UINT32));
-      
+
       for (i = 0; i < *lcountp; i++) {
          read(fd, &temp, 2);
          (*lastreadp)[i] = MsgUidToMsgn(area, temp, UID_PREV);
       }
 
       close(fd);
-      
+
    } else {
 		*lastreadp = NULL;
 		*lcountp = 0;
@@ -326,7 +328,7 @@ void SdmWriteLastreadFile(char *fileName, UINT32 *lastread, ULONG lcount,
    unsigned long i;
    UINT16 temp;
    char buf[2];
-   
+
    if (lastread) {
 
       name = (char *) malloc(strlen(fileName)+9+1);
@@ -347,9 +349,9 @@ void SdmWriteLastreadFile(char *fileName, UINT32 *lastread, ULONG lcount,
          }
 
          close(fd);
-              
+
       } else printf("Could not write lastread file %s, error %u!\n", name, errno);
-      
+
       free(name);
    }
 }
@@ -386,7 +388,7 @@ unsigned long getOffsetInLastread(UINT32 *lastread, ULONG lcount, dword msgnum)
    }
 
    return (-1);
-   
+
 }
 
 /* returns zero if msg was killed, nonzero if it was copied */
@@ -401,7 +403,7 @@ int processMsg(dword msgNum, dword numMsg, HAREA oldArea, HAREA newArea,
    char *text, *ctrlText;
    dword  textLen, ctrlLen;
    int unsent, i, rc = 0;
-   
+
 //   unsigned long offset;
 
    msg = MsgOpenMsg(oldArea, MOPEN_RW, msgNum);
@@ -418,7 +420,7 @@ int processMsg(dword msgNum, dword numMsg, HAREA oldArea, HAREA newArea,
    if (unsent || (((area -> max == 0) || ((numMsg - msgProcessed + msgCopied) <= area -> max) ||
 (area -> keepUnread && !(xmsg.attr & MSGREAD))) && !((xmsg.attr & MSGREAD) && area -> killRead))) {
       //only max msgs should be in new area
-     
+
      if (xmsg.attr & MSGLOCAL) {
         DosDate_to_TmDate((SCOMBO*)&(xmsg.date_written), &tmTime);
      } else {
@@ -435,7 +437,7 @@ int processMsg(dword msgNum, dword numMsg, HAREA oldArea, HAREA newArea,
 	// xmreplynext is #define to replies[MAX_REPLY-1]
 	// xmsg.xmreplynext = xmsg.xmreplynext > shift ? xmsg.xmreplynext - shift : 0;
 	for (i = 0; i < MAX_REPLY; i++)
-		xmsg.replies[i] = MsgUidToMsgn(oldArea, xmsg.replies[i], UID_EXACT) > shift ? MsgUidToMsgn(oldArea, xmsg.replies[i], UID_EXACT) - shift : 0; 
+		xmsg.replies[i] = MsgUidToMsgn(oldArea, xmsg.replies[i], UID_EXACT) > shift ? MsgUidToMsgn(oldArea, xmsg.replies[i], UID_EXACT) - shift : 0;
 	// copy msg
         textLen = MsgGetTextLen(msg);
         ctrlLen = MsgGetCtrlLen(msg);
@@ -461,7 +463,7 @@ int processMsg(dword msgNum, dword numMsg, HAREA oldArea, HAREA newArea,
         free(ctrlText);
 	rc = 1;
       }
-      
+
    }
    MsgCloseMsg(msg);
    msgProcessed++;
@@ -475,7 +477,7 @@ UINT32 getShiftedNum(UINT32 msgNum, UINT32 rmCount, UINT32 *rmMap)
    for (i = 0; i < rmCount; i+=2)
 	if (msgNum >= rmMap[i])
 		nMsgNum -= rmMap[i + 1];
-	else 
+	else
 		break;
    return msgNum > 0L ? msgNum : 0L;
 }
@@ -485,18 +487,18 @@ void updateMsgLinks(UINT32 msgNum, HAREA area, UINT32 rmCount, UINT32 *rmMap)
    HMSG msg;
    XMSG xmsg;
    int i;
-   
+
    msg = MsgOpenMsg(area, MOPEN_RW, getShiftedNum(msgNum, rmCount, rmMap));
    if (msg == NULL) return;
 
    MsgReadMsg(msg, &xmsg, 0, 0, NULL, 0, NULL);
-	
+
    xmsg.replyto = getShiftedNum(xmsg.replyto, rmCount, rmMap);
    // xmreplynext is #define to replies[MAX_REPLY-1]
    // xmsg.xmreplynext = getShiftedNum(xmsg.xmreplynext, rmCount, rmMap);
    for (i = 0; i < MAX_REPLY; i++)
 	xmsg.replies[i] = getShiftedNum(xmsg.replies[i], rmCount, rmMap);
-   
+
    MsgWriteMsg(msg, 0, &xmsg, NULL, 0, 0, 0, NULL);
    MsgCloseMsg(msg);
 }
@@ -505,7 +507,7 @@ void updateMsgLinks(UINT32 msgNum, HAREA area, UINT32 rmCount, UINT32 *rmMap)
 void renameArea(int areaType, char *oldName, char *newName)
 {
    char *oldTmp, *newTmp;
-   
+
    oldTmp = (char *) malloc(strlen(oldName)+4+1);
    newTmp = (char *) malloc(strlen(newName)+4+1);
 
@@ -552,7 +554,7 @@ void renameArea(int areaType, char *oldName, char *newName)
      remove(newTmp); // erase new lastread file
 
    }
-   
+
    free(oldTmp);
    free(newTmp);
 }
@@ -581,7 +583,7 @@ void purgeArea(s_area *area)
 
 	/*oldArea = MsgOpenArea((byte *) oldName, MSGAREA_NORMAL, -1, -1, -1, MSGTYPE_SQUISH);*/
 	oldArea = MsgOpenArea((byte *) oldName, MSGAREA_NORMAL, areaType);
-	
+
 	/*if (oldArea) newArea = MsgOpenArea((byte *) newName, MSGAREA_CREATE, area.fperm, area.uid, area.gid,MSGTYPE_SQUISH);*/
 	if (oldArea) {
 		if (areaType == MSGTYPE_SDM)
@@ -604,14 +606,14 @@ void purgeArea(s_area *area)
 		removeMap = (UINT32 *) calloc(2, sizeof(UINT32));
 
 		for (i = 1; i <= highMsg; i++) {
-			if (!processMsg(i, numMsg, oldArea, newArea, area, 
+			if (!processMsg(i, numMsg, oldArea, newArea, area,
 				removeMap[1])) {
 				if (!(rmIndex & 1)) {
 				/* We started to delete new portion of */
 					removeMap = (UINT32 *) realloc(removeMap, (rmIndex + 2) * sizeof(UINT32));
 					removeMap[rmIndex++] = i;
 					removeMap[rmIndex] = 0;
-				}; 
+				};
 				removeMap[rmIndex]++; /* Anyway, update counter */
 				if (areaType == MSGTYPE_SDM)
 					MsgKillMsg(oldArea, i);
@@ -642,7 +644,7 @@ void purgeArea(s_area *area)
 		}
 
 		if (rmIndex > 2) { /* there were several areas with deleted msgs */
-			for (j = 1; j <= highMsg; j++) 
+			for (j = 1; j <= highMsg; j++)
 				updateMsgLinks(i, newArea, rmIndex + 1, removeMap);
 		}
 
@@ -668,7 +670,7 @@ void purgeArea(s_area *area)
 
 		printf("   oldMsg: %lu   newMsg: %lu\n", (unsigned long)numMsg, msgCopied);
         totaloldMsg+=numMsg; totalmsgCopied+=msgCopied; // total
-		
+
 		free(oldLastread);
 		free(newLastread);
 
@@ -694,7 +696,7 @@ void handleArea(s_area *area)
 	};
 }
 
-void doArea(s_area *area, char *cmp) 
+void doArea(s_area *area, char *cmp)
 {
 	if (patimat(area->areaName,cmp)) handleArea(area);
 }
@@ -706,12 +708,12 @@ int main(int argc, char **argv) {
    struct _minf m;
 
    printf("sqpack v1.1.0\n");
-   
+
    if (argc!=2) {
 	   if (argc>2) printf("too many arguments!\n");
 	   printf ("usage: sqpack \"*\"\n");
    } else {
-   
+
 	   cfg = readConfig(NULL);
 
 	   if (cfg != NULL ) {
@@ -735,12 +737,12 @@ int main(int argc, char **argv) {
 			   // purge echomail areas
 			   doArea(&(cfg->echoAreas[i]), argv[1]);
 
-		   for (i=0; i < cfg->localAreaCount; i++) 
+		   for (i=0; i < cfg->localAreaCount; i++)
 			   // purge local areas
 			   doArea(&(cfg->localAreas[i]), argv[1]);
 
 		   disposeConfig(cfg);
-		   printf("\ntotal oldMsg: %lu   total newMsg: %lu\n", 
+		   printf("\ntotal oldMsg: %lu   total newMsg: %lu\n",
 				  (unsigned long)totaloldMsg, (unsigned long)totalmsgCopied);
 		   return 0;
 	   } else {
