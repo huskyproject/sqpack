@@ -408,7 +408,7 @@ int main() {
    
    printf("sqpack v1.1.0\n");
 
-   cfg = readConfig();
+   cfg = readConfig(NULL);
 
    if (cfg != NULL ) {
       m.req_version = 0;
