@@ -36,7 +36,7 @@ clean:
 	dh_testroot
 	rm -f build-stamp configure-stamp
 
-	-$(MAKE) clean
+	-$(MAKE) distclean
 	-rm -f configure-stamp
 	-rm -f build-stamp
 	-rm -rf debian/$(PACKAGE)
