@@ -352,12 +352,12 @@ int main() {
          exit(1);
       }
       
-      // purge netmail area
-      if ((cfg->netMailArea.msgbType & MSGTYPE_SQUISH) == MSGTYPE_SQUISH) {
-         printf("%s\n", cfg->netMailArea.areaName);
+      // FIXME: purge netmail area
+      if ((cfg->netMailAreas[0].msgbType & MSGTYPE_SQUISH) == MSGTYPE_SQUISH) {
+         printf("%s\n", cfg->netMailAreas[0].areaName);
          msgCopied = 0;
          msgProcessed = 0;
-         purgeArea(cfg->netMailArea);
+         purgeArea(cfg->netMailAreas[0]);
       }
       // purge dupe area
       if ((cfg->dupeArea.msgbType & MSGTYPE_SQUISH) == MSGTYPE_SQUISH) {
