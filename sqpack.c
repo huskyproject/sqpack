@@ -573,7 +573,7 @@ void purgeArea(s_area *area)
 	char *oldName = area -> fileName;
 	char *newName;
 	HAREA oldArea, newArea = NULL;
-	dword highMsg, i, j, numMsg, hw;
+	dword highMsg, i, j, numMsg, hw=0;
 	int areaType = area -> msgbType & (MSGTYPE_JAM | MSGTYPE_SQUISH | MSGTYPE_SDM);
 
 	UINT32 *oldLastread, *newLastread = NULL;

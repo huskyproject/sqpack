@@ -1,3 +1,9 @@
+sqpack (1.2.1-4) stable; urgency=low
+
+  * Update BUGS
+
+ -- Pavel Andreew <pavel@collage.etel.ru>  Mon,  9 Sep 2002 15:53:28 +0600
+
 sqpack (1.2.1-3) stable; urgency=low
 
   * debian/copyright: new http-location of sources

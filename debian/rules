@@ -17,13 +17,11 @@ configure: configure-stamp
 configure-stamp:
 	dh_testdir
 	# Add here commands to configure the package.
-
 	touch configure-stamp
 
 build: configure-stamp build-stamp
 build-stamp:
 	dh_testdir
-
 	# Add here commands to compile the package.
 	$(MAKE)
 
@@ -43,7 +41,6 @@ clean:
 	-rm -f debian/prerm.debhelper
 	-rm -f debian/substvars
 	-rm -f debian/files
-
 	dh_clean
 
 install: build
@@ -51,7 +48,6 @@ install: build
 	dh_testroot
 	dh_clean -k
 	dh_installdirs
-
 	# Add here commands to install the package into debian/sqpack.
 	$(MAKE) install DESTDIR=$(CURDIR)/debian/sqpack
 
