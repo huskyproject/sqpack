@@ -3,6 +3,11 @@ sqpack 1.1.0
 (released on Mon May 22 14:58:56 CEST 2000)
 
 ----- cvs ci ------
+Mon Sep  4 13:00:42 NOVST 2000
+max (patch from Pavel Gulchouck):
+* JAM replynext update
+
+----- cvs ci ------
 Sun Sep  3 19:40:14 NOVST 2000
 max (patch from Pavel Gulchouck):
 * JAM lastreads update
