@@ -1,3 +1,28 @@
+2002-07-14 Sunday 20:21  stas
+
+	* sqpack.c (1.59): Use safe string functions (partially)
+
+2002-07-14 Sunday 20:10  stas
+
+	* sqpack.c (1.58): Prevent warning (use unsigned)
+
+2002-07-14 Sunday 20:09  stas
+
+	* sqpack.c (1.57): Initialise some string vars
+
+2002-07-14 Sunday 20:05  stas
+
+	* sqpack.1 (1.12), sqpack.c (1.56): Change Usage information
+
+2002-07-14 Sunday 19:59  stas
+
+	* sqpack.c (1.55): Implement husky standard logging
+
+2002-07-14 Sunday 19:33  stas
+
+	* HISTORY (1.1), VERSION (1.2), sqpack.c (1.54): Add version info
+	files.
+
 2002-07-04 Thursday 07:59  stas
 
 	* sqpack.c (1.53): Fix version number display [patch from Pavel
