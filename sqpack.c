@@ -127,19 +127,26 @@ void processMsg(dword msgNum, dword numMsg, HAREA oldArea, HAREA newArea,
    time_t ttime, actualTime = time(NULL);
    char *text, *ctrlText;
    dword  textLen, ctrlLen, oldMsgnum, newMsgnum;
+   int unsent;
    
    unsigned long offset;
 
    msg = MsgOpenMsg(oldArea, MOPEN_RW, msgNum);
    if (msg == NULL) return;
 
-   if ((area.max == 0) || ((numMsg - msgProcessed) <= area.max)) { //only max msgs should be in new area
-//      printf("%u: %u - %u = %u\n", area.max, numMsg, msgCopied, numMsg - msgCopied);
-      MsgReadMsg(msg, &xmsg, 0, 0, NULL, 0, NULL);
-      DosDate_to_TmDate(&(xmsg.date_arrived), &tmTime);
-      ttime = mktime(&tmTime);
 
-      if ((area.purge == 0) || (abs(actualTime - ttime) <= ( area.purge * 24 *60 * 60))) {
+   MsgReadMsg(msg, &xmsg, 0, 0, NULL, 0, NULL);
+
+   unsent = (xmsg.attr & MSGLOCAL) && !(xmsg.attr & MSGSENT);
+
+   if (unsent || (area.max == 0) || ((numMsg - msgProcessed + msgCopied) <= area.max)) {
+      //only max msgs should be in new area
+     
+     DosDate_to_TmDate(&(xmsg.attr & MSGLOCAL ? xmsg.date_written :
+			 xmsg.date_arrived), &tmTime);
+     ttime = mktime(&tmTime);
+
+     if (unsent || (area.purge == 0) || (abs(actualTime - ttime) <= (area.purge * 24 *60 * 60))) {
          // copy msg
          textLen = MsgGetTextLen(msg);
          ctrlLen = MsgGetCtrlLen(msg);
