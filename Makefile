@@ -24,11 +24,11 @@ endif
 
 all : sqpack$(EXE) sqpack.1.gz
 
-sqpack$(OBJ): sqpack.c
-	$(CC) $(COPT) $(CDEFS) sqpack.c -o sqpack$(OBJ)
+sqpack$(_OBJ): sqpack.c
+	$(CC) $(COPT) $(CDEFS) sqpack.c -o sqpack$(_OBJ)
 
-sqpack$(EXE): sqpack$(OBJ)
-	$(CC) $(LFLAGS) -o sqpack$(EXE) sqpack$(OBJ) $(LOPT)
+sqpack$(EXE): sqpack$(_OBJ)
+	$(CC) $(LFLAGS) -o sqpack$(EXE) sqpack$(_OBJ) $(LOPT)
 
 sqpack.1.gz : sqpack.1
 	gzip -9c sqpack.1 > sqpack.1.gz
@@ -43,7 +43,7 @@ uninstall:
 
 clean:
 	-$(RM) $(RMOPT) *~
-	-$(RM) $(RMOPT) *$(OBJ)
+	-$(RM) $(RMOPT) *$(_OBJ)
 
 
 distclean: clean
