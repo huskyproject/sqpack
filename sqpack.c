@@ -34,7 +34,10 @@ void purgeArea(s_area area, HAREA a) {
             msgTime = mktime(&date);
             currentTime = time(NULL);
             // difference between the to times is greater then the number of seconds of the area.purge days, kill it
-            if (abs(currentTime - msgTime) > area.purge * 24 * 60 * 60) rc = MsgKillMsg(a, i);
+            if (abs(currentTime - msgTime) > area.purge * 24 * 60 * 60)  {
+//               printf("Trying to delete msg #%d\n", i);
+               rc = MsgKillMsg(a, i);
+            }
             if (rc) printf("Could not delete msg# %d\n", i);
             rc = 0;
          }
@@ -60,6 +63,8 @@ int main() {
    s_fidoconfig *cfg;
    int i;
    struct _minf m;
+   
+   printf("sqpack v0.9\n");
 
    cfg = readConfig();
 
@@ -72,7 +77,8 @@ int main() {
       }
       
       for (i=0; i < cfg->echoAreaCount; i++) {
-         openArea(cfg->echoAreas[i]);
+         if ((cfg->echoAreas[i].msgbType & MSGTYPE_PASSTHROUGH) != MSGTYPE_PASSTHROUGH)
+            openArea(cfg->echoAreas[i]);
       }
       disposeConfig(cfg);
    } else printf("Could not read fido config\n");
