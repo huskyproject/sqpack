@@ -1,3 +1,70 @@
+2003-02-06 Thursday 11:12  mche
+
+	* sqpack.c (1.91): added some aligment to output messages
+
+2003-01-27 Monday 02:33  andr_lukyanov
+
+	* makefile.mvc (1.7): Fix MSVC compilation
+
+2003-01-21 Tuesday 06:19  stas_degteff
+
+	* sqpack.dsp (1.3): 0x0a --> 0x0d0x0a for *.dsp
+
+2003-01-15 Wednesday 12:48  andr_lukyanov
+
+	* makefile.mvc (1.6), makefile.mvcdll (1.7): fix MSVC compilation
+
+2003-01-15 Wednesday 10:13  stas_degteff
+
+	* makefile.bcd (1.4), makefile.bco (1.4), makefile.be (1.3),
+	makefile.bsd (1.5), makefile.cyg (1.5), makefile.djg (1.4),
+	makefile.emo (1.6), makefile.emx (1.2), makefile.lnx (1.4),
+	makefile.mgw (1.2), makefile.mvc (1.5), makefile.mvcdll (1.6),
+	makefile.sun (1.8), makefile.unx (1.3), makefile.wco (1.6),
+	makefile.wcw (1.9): Update makefiles
+
+2003-01-15 Wednesday 10:12  stas_degteff
+
+	* sqpack.c (1.90): Fix Watcom C 10.0 compilation
+
+2003-01-15 Wednesday 09:42  stas_degteff
+
+	* sqpack.c (1.89): Update defines
+
+2003-01-14 Tuesday 13:33  stas_degteff
+
+	* sqpack.c (1.88): Use compiler-specific macroses from
+	smapi/compiler.h
+
+2003-01-14 Tuesday 13:29  stas_degteff
+
+	* makefile.mvc (1.4), makefile.mvcdll (1.5): Remove obsolete macro
+
+2003-01-12 Sunday 15:11  mche
+
+	* sqpack.dsp (1.2): define INTEL for MSVC in compiler.h
+
+2003-01-05 Sunday 11:09  pgul
+
+	* sqpack.c (1.87): Fix log message
+
+2003-01-04 Saturday 13:26  stas_degteff
+
+	* sqpack.c (1.86): Fix comments
+
+2003-01-04 Saturday 13:18  stas_degteff
+
+	* sqpack.c (1.85): Bugfix: check dupearea & badarea existence in
+	config; check for NULL ponters
+
+2003-01-04 Saturday 13:09  stas_degteff
+
+	* sqpack.c (1.84): Improve diagnostics for low disk space
+
+2002-12-27 Friday 14:48  mche
+
+	* sqpack.c (1.83), sqpack.dsp (1.1): create bsy-file while working
+
 2002-12-06 Friday 07:00  mche
 
 	* sqpack.c (1.82): fix warnings
