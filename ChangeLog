@@ -1,3 +1,7 @@
+2003-06-16 Monday 17:16  d_sergienko
+
+	* sqpack.c (1.101): make some checks
+
 2003-06-05 Thursday 22:14  d_sergienko
 
 	* sqpack.c (1.100): speedup processing areas
