@@ -539,7 +539,7 @@ UINT32 getShiftedNum(UINT32 msgNum, UINT32 rmCount, UINT32 *rmMap)
             nMsgNum -= rmMap[i + 1];
         else
             break;
-        return msgNum > 0L ? msgNum : 0L;
+    return msgNum > 0L ? msgNum : 0L;
 }
 
 void updateMsgLinks(UINT32 msgNum, HAREA area, UINT32 rmCount, UINT32 *rmMap, int areaType)
@@ -740,7 +740,7 @@ void purgeArea(s_area *area)
             for (j = 0; j < lcount; j++) {
                 for (i=0; i<rmIndex; i+=2) {
                     if (oldLastread[j] >= removeMap[i]) {
-                        if (oldLastread[j] > removeMap[i] + removeMap[i+1]) {
+                        if (oldLastread[j] >= removeMap[i] + removeMap[i+1]) {
                             newLastread[j] -= removeMap[i+1];
                         } else {
                             newLastread[j] -= oldLastread[j] - removeMap[i] + 1;
