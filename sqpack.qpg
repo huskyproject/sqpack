@@ -1,0 +1,92 @@
+<QPG:Generation>
+   <QPG:Options>
+      <QPG:User unattended="yes" verbosity="0" listfiles="yes"/>
+      <QPG:Defaults type="qnx_package"/>
+      <QPG:Source></QPG:Source>
+      <QPG:Release date="today" number="+"/>
+      <QPG:Build></QPG:Build>
+      <QPG:FileSorting strip="yes"/>
+      <QPG:Package targets="standart"/>
+      <QPG:Repository generate="yes"/>
+      <QPG:FinalDir></QPG:FinalDir>
+      <QPG:Cleanup></QPG:Cleanup>
+   </QPG:Options>
+
+   <QPG:Responsible>
+      <QPG:Company>QNX.ORG.RU Community</QPG:Company>
+      <QPG:Department></QPG:Department>
+      <QPG:Group></QPG:Group>
+      <QPG:Team>QNX.ORG.RU Team</QPG:Team>
+      <QPG:Employee>Mike Gorchak</QPG:Employee>
+      <QPG:EmailAddress>mike@malva.ua</QPG:EmailAddress>
+   </QPG:Responsible>
+
+   <QPG:Values>
+      <QPG:Files>
+         <QPG:Add file="./COPYING" install="LicenseUrl/" handling="repdata"/>
+         <QPG:Add permissions="0755" file="./sqpack" install="/opt/bin/"/>
+         <QPG:Add permissions="0644" file="./BUGS" install="/usr/doc/husky/sqpack/"/>
+         <QPG:Add permissions="0644" file="./COPYING" install="/usr/doc/husky/sqpack/"/>
+         <QPG:Add permissions="0644" file="./ChangeLog" install="/usr/doc/husky/sqpack/"/>
+         <QPG:Add permissions="0644" file="./HISTORY" install="/usr/doc/husky/sqpack/"/>
+         <QPG:Add permissions="0644" file="./INSTALL" install="/usr/doc/husky/sqpack/"/>
+         <QPG:Add permissions="0644" file="./VERSION" install="/usr/doc/husky/sqpack/"/>
+         <QPG:Add permissions="0644" file="./sqpack.1" install="/opt/man/man1/"/>
+      </QPG:Files>
+      <QPG:PackageFilter>
+         <QPM:PackageManifest>
+            <QPM:PackageDescription>
+               <QPM:PackageType>Application</QPM:PackageType>
+               <QPM:PackageName>sqpack</QPM:PackageName>
+               <QPM:PackageReleaseNumber>1</QPM:PackageReleaseNumber>
+               <QPM:PackageRepository>http://qnx.org.ru/repository</QPM:PackageRepository>
+               <QPM:FileVersion>2.0</QPM:FileVersion>
+            </QPM:PackageDescription>
+            <QPM:ProductDescription>
+               <QPM:ProductName>sqpack</QPM:ProductName>
+               <QPM:ProductIdentifier>sqpack</QPM:ProductIdentifier>
+               <QPM:ProductEmail></QPM:ProductEmail>
+               <QPM:VendorName>husky</QPM:VendorName>
+               <QPM:VendorInstallName>husky</QPM:VendorInstallName>
+               <QPM:VendorURL>http://husky.sourceforge.net</QPM:VendorURL>
+               <QPM:VendorEmbedURL/>
+               <QPM:VendorEmail></QPM:VendorEmail>
+               <QPM:AuthorName>Husky Team</QPM:AuthorName>
+               <QPM:AuthorURL>http://husky.sourceforge.net/team.html</QPM:AuthorURL>
+               <QPM:AuthorEmbedURL/>
+               <QPM:AuthorEmail></QPM:AuthorEmail>
+               <QPM:ProductIconSmall/>
+               <QPM:ProductIconLarge/>
+               <QPM:ProductDescriptionShort>sqpack - purges squish msgbases taken from fidoconfig.</QPM:ProductDescriptionShort>
+               <QPM:ProductDescriptionLong>sqpack - purges squish msgbases taken from fidoconfig.</QPM:ProductDescriptionLong>
+               <QPM:ProductDescriptionURL>http://husky.sourceforge.net</QPM:ProductDescriptionURL>
+               <QPM:ProductDescriptionEmbedURL/>
+            </QPM:ProductDescription>
+            <QPM:ReleaseDescription>
+               <QPM:ReleaseVersion>1.9</QPM:ReleaseVersion>
+               <QPM:ReleaseUrgency>Low</QPM:ReleaseUrgency>
+               <QPM:ReleaseStability>Experimental</QPM:ReleaseStability>
+               <QPM:ReleaseNoteMinor/>
+               <QPM:ReleaseNoteMajor/>
+               <QPM:ReleaseBuild>1</QPM:ReleaseBuild>
+               <QPM:CountryExclude/>
+               <QPM:ReleaseCopyright>GNU General Public License</QPM:ReleaseCopyright>
+            </QPM:ReleaseDescription>
+            <QPM:ContentDescription>
+               <QPM:ContentTopic>Communication and Connectivity/Chat and Messaging</QPM:ContentTopic>
+               <QPM:ContentKeyword>FIDO, Husky, FTN, SQUISH</QPM:ContentKeyword>
+               <QPM:Processor/>
+               <QPM:TargetProcessor/>
+               <QPM:TargetOS>qnx6</QPM:TargetOS>
+               <QPM:HostOS>qnx6</QPM:HostOS>
+               <QPM:DisplayEnvironment>Console</QPM:DisplayEnvironment>
+               <QPM:TargetAudience>Developer</QPM:TargetAudience>
+            </QPM:ContentDescription>
+            <QPM:LicenseUrl>repdata://LicenseUrl/COPYING</QPM:LicenseUrl>
+            <QPM:ProductInstallationDependencies>
+               <QPM:ProductRequirements/>
+            </QPM:ProductInstallationDependencies>
+         </QPM:PackageManifest>
+      </QPG:PackageFilter>
+   </QPG:Values>
+</QPG:Generation>
