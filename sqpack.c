@@ -648,6 +648,7 @@ int renameArea(int areaType, char *oldName, char *newName)
     nfree(oldTmp);
     nfree(newTmp);
     w_log(LL_FUNC, "renameArea() end");
+    return 0;
 }
 
 void purgeArea(s_area *area)
@@ -769,7 +770,7 @@ void purgeArea(s_area *area)
         nfree(newLastread);
 
         /* rename oldArea to newArea */
-        if (!renameArea(areaType, oldName, newName))
+        if (renameArea(areaType, oldName, newName))
             w_log(LL_ERR, "Couldn't rename message base %s to %s: %s!",
                   oldName, newName, strerror(errno));
     }
