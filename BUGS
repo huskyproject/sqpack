@@ -2,3 +2,12 @@ Serguei Revtov (sir@cb.tver.ru):
 
   There're still problems with lastreads in sqpack with Jam bases. I've
 tryed to fix that but seems didn't :(
+
+Lodewijk Otto:
+
+ When the partition where the messagebases are situated runs full,
+sqpack still goos on purging messages, and in this process copies only
+part of large message-bases, and does not keep the old one, when it
+runs out of disk-space. I have twice lost an important number of
+messages now this way.
+     
