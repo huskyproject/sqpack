@@ -1,3 +1,7 @@
+2004-01-23 Friday 04:56  andr_lukyanov
+
+	* sqpack.c (sqpack-1_4-stable.3): Fix stdout version strings
+
 2003-12-28 Sunday 21:55  d_sergienko
 
 	* sqpack.c (sqpack-1_4-stable.2): fix warnings
