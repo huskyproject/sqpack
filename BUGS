@@ -2,4 +2,8 @@ Serguei Revtov (sir@cb.tver.ru):
 
   There're still problems with lastreads in sqpack with Jam bases. I've
 tryed to fix that but seems didn't :(
-    
+
+Max Levenkov (sackett@mail.ru):
+
+  If message base has 250 msgs, purged on 200 msg, lastread on 5 msg, then
+  after purging lasread still on 5 msg instead of 1.
