@@ -34,7 +34,7 @@ install: sqpack$(EXE) sqpack.1.gz
 
 clean: 
 	-$(RM) *~
-	-$(RM) *.o
+	-$(RM) *$(OBJ)
 
 
 distclean: clean
