@@ -2,6 +2,11 @@ sqpack 1.0.3
 ------------
 
 ----- cvs ci ------
+Fri Feb  4 00:34:29 NOVT 2000
+max:
+- lastread recalculation in sqpack (patch from Serguei)
+
+----- cvs ci ------
 Fri Nov 18  14:19:00
 Fedor:
 + purge Jam areas (from Vlad Pluzhnikov).

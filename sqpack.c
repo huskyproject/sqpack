@@ -345,10 +345,23 @@ void purgeArea(s_area *area)
 		if (rmIndex > 2) { /* there were several areas with deleted msgs */
 			for (j = 1; j <= highMsg; j++) 
 				updateMsgLinks(i, newArea, rmIndex + 1, removeMap);
-		} else if (rmIndex = 1) 
-			for (j = 0; j < lcount; j++) 
-				if ((newLastread[j] = oldLastread[j] - removeMap[1]) < 0L);
-		writeLastreadFile(oldName, newLastread, lcount, newArea);
+		}
+
+		if (rmIndex) { /* someting was removed, maybe need to update lastreadfile */
+		   for (j = 0; j < lcount; j++) {
+		      for (i=0; i<rmIndex; i+=2) {
+			 if (oldLastread[j] > removeMap[i]) {
+			    if (oldLastread[j] > removeMap[i] + removeMap[i+1]) {
+			       newLastread[j] -= removeMap[i+1];
+			    } else {
+			       newLastread[j] -= oldLastread[j] - removeMap[i];
+			    }
+			 }
+		      }
+		   }
+
+		   writeLastreadFile(oldName, newLastread, lcount, newArea);
+		}
 
 		MsgCloseArea(oldArea);
 		MsgCloseArea(newArea);
