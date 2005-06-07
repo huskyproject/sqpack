@@ -1,3 +1,9 @@
+sqpack (1.4.0+rc4-1) unstable; urgency=low
+
+  * Latest 1.4 pre-release
+
+ -- Pavel Andreew <sfpavel@users.sourceforge.net>  Tue,  7 Jun 2005 20:53:41 +0600
+
 sqpack (1.4.0+rc3-1) unstable; urgency=low
 
   * New stable version
