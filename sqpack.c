@@ -867,7 +867,7 @@ int main(int argc, char **argv) {
     config = readConfig(NULL);
 
     if (!config) {
-        printf("Could not read fido config\n");
+        printf("Could not read fido config. Set FIDOCONFIG enviroment variable to config file pathname or run sqpack from config's directory.\n");
         return 1;
     }
 
