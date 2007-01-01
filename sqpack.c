@@ -340,6 +340,8 @@ void SdmWriteLastreadFile(char *fileName, UINT32 *lastread, ULONG lcount,
     unsigned long i;
     unsigned char buf[2];
 
+    unused(area);
+
     w_log(LL_FUNC, "SdmWriteLastreadFile() begin");
     if (lastread) {
 
