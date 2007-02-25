@@ -812,7 +812,7 @@ void handleArea(s_area *area)
         char *p          = strrchr(msgBaseDir, PATH_DELIM);
         
         if(p) *p = '\0';
-        freeSpace = fc_GetDiskFreeSpace(msgBaseDir);
+        freeSpace = husky_GetDiskFreeSpace(msgBaseDir);
         if(p) *p = PATH_DELIM;
 
         if ((area->msgbType & MSGTYPE_SQUISH) == MSGTYPE_SQUISH)
