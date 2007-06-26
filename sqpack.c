@@ -414,7 +414,7 @@ unsigned long getOffsetInLastread(UINT32 *lastread, ULONG lcount, dword msgnum)
         if (lastread[i] == msgnum) return i;
     }
 
-    return (-1);
+    return (unsigned long)(-1);
 
 }
 
@@ -914,7 +914,7 @@ int main(int argc, char **argv) {
                                VER_BRANCH, cvs_date );
     printf("%s\n", versionStr);
 
-    if (argc == 1) {
+    if (argc <= 1) {
         printf ("Usage: sqpack [-c config] <[!]areamask> [ [!]areamask ... ]\n");
         return 0;
     }
@@ -922,10 +922,10 @@ int main(int argc, char **argv) {
     areaMasks = scalloc(sizeof(char *), argc);
 
     i = 0;
-    while (i < argc-1) {
+    while (i < (unsigned)argc-1) {
         i++;
         if (stricmp(argv[i], "-c") == 0) {
-            if (i < argc-1) {
+            if (i < (unsigned)argc-1) {
                 i++;
                 configFile = argv[i];
             } else {
@@ -964,7 +964,7 @@ int main(int argc, char **argv) {
     openLog(LOGFILE, versionStr);
     w_log(LL_START, "Start");
     m.req_version = 0;
-    m.def_zone = config->addr[0].zone;
+    m.def_zone = (word)config->addr[0].zone;
     if (MsgOpenApi(&m)!= 0) {
         w_log(LL_CRIT,"MsgOpenApi Error. Exit.");
         closeLog();
