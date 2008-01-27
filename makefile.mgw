@@ -4,11 +4,13 @@ CC=gcc
 RM=del
 
 CDEFS	= 
-CFLAGS	= -Wall -I./h -I.. -O3 
+CFLAGS	= -Wall -I./h -I../huskylib -I../smapi -I../fidoconf -O3 
 COPT	= -c
 
 LFLAGS=-L../smapi -L../fidoconf
-LIBS=-lfidoconfigmgw -lsmapimgw -luser32
+#LIBS=-lfidoconfigmgw -lsmapimgw
+LIBS	= ../fidoconf/fidoconf.dll ../smapi/make/smapi.dll ../huskylib/make/husky.dll
+
 
 default: all
 
