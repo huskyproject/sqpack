@@ -28,7 +28,7 @@ _SRC_DIR= ../
 H_DIR   = ../
 
 # Programm name
-SQPACK	= $(B)pktinfo$(_EXE)
+SQPACK	= $(B)sqpack$(_EXE)
 
 # Object files (please sort list to easy check by human)
 OBJS    = $(O)sqpack$(_OBJ)
