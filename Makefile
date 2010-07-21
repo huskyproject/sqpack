@@ -34,8 +34,8 @@ sqpack.1.gz : sqpack.1
 	gzip -9c sqpack.1 > sqpack.1.gz
 
 install: sqpack$(_EXE) sqpack.1.gz
-	$(INSTALL) $(IBOPT) sqpack$(_EXE) $(BINDIR)
-	$(INSTALL) $(IMOPT) sqpack.1.gz $(MANDIR)/man1
+	$(INSTALL) $(IBOPT) sqpack$(_EXE) $(DESTDIR)$(BINDIR)
+	$(INSTALL) $(IMOPT) sqpack.1.gz $(DESTDIR)$(MANDIR)/man1
 
 uninstall:
 	-$(RM) $(RMOPT) $(BINDIR)$(DIRSEP)sqpack$(_EXE)
