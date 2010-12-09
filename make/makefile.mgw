@@ -1,0 +1,32 @@
+# $Id$
+# Legacy makefile for MinGW32
+#
+
+## include common makefiles part ##
+include ../../huskybse/huskymak.mgw
+include makefile.inc
+
+CINCL	+= -I$(H_DIR) -I../../fidoconf -I../../smapi -I../../huskylib
+
+LIBS	= ../../fidoconf/make/$(LIBPREFIX)fidoconfig$(LIBSUFFIX)$(_LIB) \
+	  ../../smapi/make/$(LIBPREFIX)smapi$(LIBSUFFIX)$(_LIB) \
+	  ../../huskylib/make/$(LIBPREFIX)husky$(LIBSUFFIX)$(_LIB)
+
+default: all
+
+TARGET=$(LIBNAME)$(_EXE)
+
+all: $(TARGET)
+
+%$(_OBJ): $(_SRC_DIR)%$(_C)
+	@echo Compiling $<
+	@$(CC) $(CFLAGS) $(CINCL) $(CDEFS) $(OBJOPT) $(_SRC_DIR)$*$(_C)
+
+$(TARGET): $(OBJS)
+	@$(CC) $(CFLAGS) $(EXENAMEFLAG) $(TARGET) $(OBJS) $(LIBS)
+
+clean:
+	-$(RM) *$(_OBJ)
+
+distclean:
+	-$(RM) $(TARGET)
