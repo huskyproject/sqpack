@@ -915,6 +915,8 @@ int main(int argc, char **argv) {
     printf("%s\n", versionStr);
 
     if (argc <= 1) {
+        printf ("sqpack purges messages from squish or jam message bases\n");
+        printf ("according to -p and -m parameters in EchoArea lines\n");
         printf ("Usage: sqpack [-c config] <[!]areamask> [ [!]areamask ... ]\n");
         return 0;
     }
