@@ -2,9 +2,14 @@
 ifeq ($(DEBIAN), 1)
 # Every Debian-Source-Paket has one included.
 include /usr/share/husky/huskymak.cfg
+else ifdef RPM_BUILD_ROOT
+# RPM build requires all files to be in the source directory
+include huskymak.cfg
 else
 include ../huskymak.cfg
 endif
+
+MAN1DIR  = $(MANDIR)$(DIRSEP)man1
 
 ifeq ($(DEBUG), 1)
   COPT = $(DEBCFLAGS) $(WARNFLAGS) -I$(INCDIR)
@@ -34,12 +39,13 @@ sqpack.1.gz : sqpack.1
 	gzip -9c sqpack.1 > sqpack.1.gz
 
 install: sqpack$(_EXE) sqpack.1.gz
+	$(MKDIR) $(MKDIROPT) $(DESTDIR)$(BINDIR) $(DESTDIR)$(MAN1DIR)
 	$(INSTALL) $(IBOPT) sqpack$(_EXE) $(DESTDIR)$(BINDIR)
-	$(INSTALL) $(IMOPT) sqpack.1.gz $(DESTDIR)$(MANDIR)/man1
+	$(INSTALL) $(IMOPT) sqpack.1.gz $(DESTDIR)$(MAN1DIR)
 
 uninstall:
 	-$(RM) $(RMOPT) $(BINDIR)$(DIRSEP)sqpack$(_EXE)
-	-$(RM) $(RMOPT) $(MANDIR)$(DIRSEP)man1$(DIRSEP)sqpack.1.gz
+	-$(RM) $(RMOPT) $(MAN1DIR)$(DIRSEP)sqpack.1.gz
 
 clean:
 	-$(RM) $(RMOPT) *~
