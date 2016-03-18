@@ -1,4 +1,4 @@
-%define reldate 20150523
+%define reldate 20160318
 %define reltype C
 # may be one of: C (current), R (release), S (stable)
 
@@ -11,7 +11,6 @@ URL: http://huskyproject.org
 License: GPL
 Requires:  huskylib >= 1.9, fidoconf >= 1.9, smapi >= 2.5
 BuildRequires: huskylib >= 1.9, fidoconf >= 1.9, smapi >= 2.5
-BuildRequires: fidoconf-devel >= 1.9
 Source: %{name}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-root
 
@@ -22,6 +21,7 @@ sqpack is a tool for purging messages in squish or jam msgbases
 %setup -q -n %{name}
 
 %build
+sed -i -re 's,OPTLFLAGS=-s,OPTLFLAGS=-s -static,g' huskymak.cfg
 make
 
 %install
