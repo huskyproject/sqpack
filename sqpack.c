@@ -65,6 +65,7 @@ unsigned long totalOldBaseSize, totalNewBaseSize;
 int lock_fd;
 char *versionStr;
 int area_found;
+s_fidoconfig *config;
 
 
 void SqReadLastreadFile(char *fileName, UINT32 **lastreadp, ULONG *lcountp,
@@ -843,7 +844,7 @@ void handleArea(s_area *area)
             baseSize += sb.st_size;
          }
         baseSize /= 1024; /* convert to Kbytes */
-        if(baseSize >= freeSpace)
+        if(baseSize >= freeSpace && config->minDiskFreeSpace != 0)
             process = 0;
 
         if(process)
@@ -896,7 +897,6 @@ void doArea(s_area *area, char **areaMasks, int areaMaskCount)
 
 int main(int argc, char **argv) {
 
-    s_fidoconfig *config;
     unsigned int i;
     struct _minf m;
     char *configFile = NULL;
