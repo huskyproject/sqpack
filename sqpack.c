@@ -675,7 +675,11 @@ void purgeArea(s_area *area)
     }
 
     /* generated tmp-FileName */
+#ifdef __DOS__
+    xstrscat(&newName, "_sqpktmp", NULL);
+#else
     xstrscat(&newName, oldName, "_tmp", NULL);
+#endif
 
     oldArea = MsgOpenArea((byte *) oldName, MSGAREA_NORMAL, (word) areaType);
 
