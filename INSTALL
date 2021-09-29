@@ -1,6 +1,11 @@
 
-Please read the files (especially README.Makefiles) in the
-husky-common-package FIRST!
+Please read the files (especially INSTALL.asciidoc, README.Makefiles) in the
+husky-common-package "huskybse" FIRST! If you don't have this package you
+should grab it:
+
+git clone https://github.com/huskyproject/huskybse.git
+
+Or you may read it on GitHub: https://github.com/huskyproject/huskybse
 
 Unix:
 -----
