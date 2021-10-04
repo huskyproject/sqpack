@@ -126,6 +126,7 @@ endif
 
 
 # Depend
+ifeq ($(MAKECMDGOALS),depend)
 sqpack_depend: $(sqpack_DEPS) ;
 
 # Build a dependency makefile for the source file
@@ -137,6 +138,7 @@ $(sqpack_DEPS): $(sqpack_DEPDIR)%$(_DEP): $(sqpack_SRCDIR)%.c | $(sqpack_DEPDIR)
 
 $(sqpack_DEPDIR): | do_not_run_depend_as_root $(sqpack_BUILDDIR)
 	[ -d $@ ] || $(MKDIR) $(MKDIROPT) $@
+endif
 
 $(sqpack_BUILDDIR):
 	[ -d $@ ] || $(MKDIR) $(MKDIROPT) $@
