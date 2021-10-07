@@ -750,7 +750,7 @@ void purgeArea(s_area * area)
     char * oldName = area->fileName;
     char * newName = NULL;
     HAREA oldArea = NULL, newArea = NULL;
-    dword highMsg, i, j, numMsg, hw = 0;
+    dword i, j, numMsg, hw = 0;
     int areaType = area->msgbType & (MSGTYPE_JAM | MSGTYPE_SQUISH | MSGTYPE_SDM);
     UINT32 * oldLastread, * newLastread = 0;
     UINT32 * removeMap;
@@ -790,7 +790,6 @@ void purgeArea(s_area * area)
     {
         ULONG lcount;
         MsgLock(oldArea);
-        highMsg = MsgGetHighMsg(oldArea);
         numMsg  = MsgGetNumMsg(oldArea);
 
         if(areaType != MSGTYPE_SDM)
