@@ -851,12 +851,18 @@ void purgeArea(s_area * area)
             /* renumber the area */
             /* TODO: update replylinks */
             char oldmsgname[PATHLEN], newmsgname[PATHLEN];
-            int pathlen;
+            size_t pathlen, oldlen;
+            oldlen = strlen(oldName);
+            if(oldlen > PATHLEN - 2)
+            {
+                oldName[PATHLEN - 2] = '\0';
+                oldlen = PATHLEN - 2;
+            }
             numMsg = MsgGetNumMsg(oldArea);
-            strncpy(oldmsgname, oldName, PATHLEN);
+            strncpy(oldmsgname, oldName, oldlen);
             Add_Trailing(oldmsgname, PATH_DELIM);
-            strncpy(newmsgname, oldmsgname, PATHLEN);
             pathlen = strlen(oldmsgname);
+            strncpy(newmsgname, oldmsgname, pathlen);
 
             for(i = 1; i <= numMsg; i++)
             {
