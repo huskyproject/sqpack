@@ -1119,7 +1119,8 @@ int main(int argc, char ** argv)
 #endif
 
     area_found = 0;
-    versionStr = GenVersionStr("sqpack", VER_MAJOR, VER_MINOR, VER_PATCH, VER_BRANCH, cvs_date);
+    versionStr = GenVersionStr("sqpack", sqpack_VER_MAJOR, sqpack_VER_MINOR,
+                               sqpack_VER_PATCH, sqpack_VER_BRANCH, cvs_date);
     printf("%s\n", versionStr);
 
     if(argc <= 1)
