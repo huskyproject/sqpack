@@ -5,18 +5,6 @@
 # Requires: husky enviroment
 #
 
-# Version
-sqpack_g1:=$(GREP) -Po 'define\s+VER_MAJOR\s+\K\d+'
-sqpack_g2:=$(GREP) -Po 'define\s+VER_MINOR\s+\K\d+'
-sqpack_g3:=$(GREP) -Po 'define\s+VER_PATCH\s+\K\d+'
-sqpack_g4:=$(GREP) -Po 'char\s+cvs_date\[\]\s*=\s*"\K\d+-\d+-\d+'
-sqpack_VERMAJOR := $(shell $(sqpack_g1) $(sqpack_ROOTDIR)$(sqpack_H_DIR)version.h)
-sqpack_VERMINOR := $(shell $(sqpack_g2) $(sqpack_ROOTDIR)$(sqpack_H_DIR)version.h)
-sqpack_VERPATCH := $(shell $(sqpack_g3) $(sqpack_ROOTDIR)$(sqpack_H_DIR)version.h)
-sqpack_cvsdate  := $(shell $(sqpack_g4) $(sqpack_ROOTDIR)$(sqpack_H_DIR)cvsdate.h)
-sqpack_reldate  := $(subst -,,$(sqpack_cvsdate))
-sqpack_VER      := $(sqpack_VERMAJOR).$(sqpack_VERMINOR).$(sqpack_reldate)
-
 sqpack_LIBS := $(fidoconf_TARGET_BLD) $(smapi_TARGET_BLD) $(huskylib_TARGET_BLD)
 
 sqpack_CFLAGS = $(CFLAGS)
