@@ -25,11 +25,11 @@ ifdef MAN1DIR
     sqpack_MAN1DST := $(DESTDIR)$(MAN1DIR)$(DIRSEP)$(sqpack_MAN1PAGES).gz
 endif
 
-.PHONY: sqpack_all sqpack_install sqpack_uninstall sqpack_clean \
+.PHONY: sqpack_build sqpack_install sqpack_uninstall sqpack_clean \
         sqpack_distclean sqpack_depend sqpack_rmdir_DEP sqpack_rm_DEPS \
         sqpack_clean_OBJ sqpack_main_distclean
 
-sqpack_all: $(sqpack_TARGET_BLD) $(sqpack_MAN1BLD)
+sqpack_build: $(sqpack_TARGET_BLD) $(sqpack_MAN1BLD)
 
 ifneq ($(MAKECMDGOALS), depend)
     ifneq ($(MAKECMDGOALS), distclean)
