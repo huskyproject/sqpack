@@ -121,7 +121,7 @@ sqpack_depend: $(sqpack_DEPS) ;
 $(sqpack_DEPS): $(sqpack_DEPDIR)%$(_DEP): $(sqpack_SRCDIR)%.c | $(sqpack_DEPDIR)
 	@set -e; rm -f $@; \
 	$(CC) -MM $(sqpack_CFLAGS) $(sqpack_CDEFS) $< > $@.$$$$; \
-	sed 's,\($*\)$(_OBJ)[ :]*,$(sqpack_OBJDIR)\1$(_OBJ) $@ : ,g' < $@.$$$$ > $@; \
+	sed 's,\($*\)$(__OBJ)[ :]*,$(sqpack_OBJDIR)\1$(_OBJ) $@ : ,g' < $@.$$$$ > $@; \
 	rm -f $@.$$$$
 
 $(sqpack_DEPDIR): | do_not_run_depend_as_root $(sqpack_BUILDDIR)
