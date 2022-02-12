@@ -7,13 +7,8 @@
 
 sqpack_LIBS := $(fidoconf_TARGET_BLD) $(smapi_TARGET_BLD) $(huskylib_TARGET_BLD)
 
-sqpack_CFLAGS = $(CFLAGS)
 sqpack_CDEFS := $(CDEFS) -I$(fidoconf_ROOTDIR) -I$(smapi_ROOTDIR) \
                           -I$(huskylib_ROOTDIR) -I$(sqpack_ROOTDIR)$(sqpack_H_DIR)
-
-sqpack_SRC  = $(sqpack_SRCDIR)sqpack.c
-sqpack_OBJS = $(addprefix $(sqpack_OBJDIR),$(notdir $(sqpack_SRC:.c=$(_OBJ))))
-sqpack_DEPS = $(addprefix $(sqpack_DEPDIR),$(notdir $(sqpack_SRC:.c=$(_DEP))))
 
 sqpack_TARGET     = sqpack$(_EXE)
 sqpack_TARGET_BLD = $(sqpack_BUILDDIR)$(sqpack_TARGET)
@@ -41,11 +36,11 @@ endif
 
 
 # Build application
-$(sqpack_TARGET_BLD): $(sqpack_OBJS) $(sqpack_LIBS) | do_not_run_make_as_root
+$(sqpack_TARGET_BLD): $(sqpack_ALL_OBJS) $(sqpack_LIBS) | do_not_run_make_as_root
 	$(CC) $(LFLAGS) $(EXENAMEFLAG) $@ $^
 
 # Compile .c files
-$(sqpack_OBJS): $(sqpack_SRC) | $(sqpack_OBJDIR) do_not_run_make_as_root
+$(sqpack_ALL_OBJS): $(sqpack_ALL_SRC) | $(sqpack_OBJDIR) do_not_run_make_as_root
 	$(CC) $(sqpack_CFLAGS) $(sqpack_CDEFS) -o $@ $<
 
 $(sqpack_OBJDIR): | do_not_run_make_as_root $(sqpack_BUILDDIR)
@@ -111,22 +106,3 @@ sqpack_uninstall:
 ifdef MAN1DIR
 	-$(RM) $(RMOPT) $(sqpack_MAN1DST)
 endif
-
-
-# Depend
-ifeq ($(MAKECMDGOALS),depend)
-sqpack_depend: $(sqpack_DEPS) ;
-
-# Build a dependency makefile for the source file
-$(sqpack_DEPS): $(sqpack_DEPDIR)%$(_DEP): $(sqpack_SRCDIR)%.c | $(sqpack_DEPDIR)
-	@set -e; rm -f $@; \
-	$(CC) -MM $(sqpack_CFLAGS) $(sqpack_CDEFS) $< > $@.$$$$; \
-	sed 's,\($*\)$(__OBJ)[ :]*,$(sqpack_OBJDIR)\1$(_OBJ) $@ : ,g' < $@.$$$$ > $@; \
-	rm -f $@.$$$$
-
-$(sqpack_DEPDIR): | do_not_run_depend_as_root $(sqpack_BUILDDIR)
-	[ -d $@ ] || $(MKDIR) $(MKDIROPT) $@
-endif
-
-$(sqpack_BUILDDIR):
-	[ -d $@ ] || $(MKDIR) $(MKDIROPT) $@
