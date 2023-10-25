@@ -16,8 +16,8 @@ sqpack_TARGET_DST = $(BINDIR_DST)$(sqpack_TARGET)
 
 ifdef MAN1DIR
     sqpack_MAN1PAGES := sqpack.1
-    sqpack_MAN1BLD := $(sqpack_BUILDDIR)$(sqpack_MAN1PAGES).gz
-    sqpack_MAN1DST := $(DESTDIR)$(MAN1DIR)$(DIRSEP)$(sqpack_MAN1PAGES).gz
+    sqpack_MAN1BLD := $(sqpack_BUILDDIR)$(sqpack_MAN1PAGES)$(_COMPR)
+    sqpack_MAN1DST := $(DESTDIR)$(MAN1DIR)$(DIRSEP)$(sqpack_MAN1PAGES)$(_COMPR)
 endif
 
 .PHONY: sqpack_build sqpack_install sqpack_uninstall sqpack_clean \
@@ -50,7 +50,11 @@ $(sqpack_OBJDIR): | do_not_run_make_as_root $(sqpack_BUILDDIR)
 # Build man pages
 ifdef MAN1DIR
     $(sqpack_MAN1BLD): $(sqpack_MANDIR)$(sqpack_MAN1PAGES) | do_not_run_make_as_root
-	gzip -c $< > $@
+    ifdef COMPRESS
+		$(COMPRESS) -c $< > $@
+    else
+		$(CP) $(CPOPT) $< $@
+    endif
 else
     $(sqpack_MAN1BLD): ;
 endif
